@@ -1,0 +1,112 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<section class="food_section ">
+    <div class="container" style="width:100%;margin-left:0;margin-right:0;max-width:100%;">
+        <div class="heading_container">
+            <h2>
+                Liste des commandes en attente
+            </h2>
+        </div>
+        <h4 class="d-flex justify-content-center">Emplacements</h4>
+        <ul id="emplacementsFilterList" class="filters_menu">
+            
+            <li class="active"  data-filter="*">Tous les emplacements</li>
+            
+        </ul>
+        <div class="d-flex justify-content-center">
+            <div class="col-md-6">
+                <label class="form-label">Rechercher</label>
+                <input type="text" class="form-control" placeholder="" id="searchText" />
+            </div>
+        </div>
+     
+        <div class="d-flex justify-content-center">
+            <div class="center my-3 justify-content-center align-self-center" id="noItemsAlert" style="display:none">Aucune commande en attente n'est disponible</div>
+
+        </div> 
+        <div class="row">
+            
+
+            <div class="col-md-12   filters-content " >
+        
+                <div class=" col-md-12 row grid" id="messagesList" style="padding:20px;">
+                    </div>
+              
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    <script>
+       
+        $(function(){
+
+            $("#searchText").on("input", function () {
+                var value = $(this).val()
+                $(".grid").isotope({
+                    // filter element with numbers greater than 50
+                    filter: function () {
+                        // _this_ is the item element. Get text of element's .number
+                        var fullname = $(this).find('.fullname').text();
+                        fullname = fullname ? fullname : "";
+                        // return true to show, false to hide
+                        console.log("fullname  ", fullname)
+                        value = value.toLowerCase();
+                        return fullname.toLowerCase().includes(value)
+                    }
+                })
+            });
+
+
+            var errorHandler = (err) => {
+
+                ToastR("Une erreur a été rencontré", "error", 15);
+            }
+            var successEmplacementsHandler = function (res) {
+                // console.log(JSON.stringify(res))
+                if (res) {
+
+                    if (res.success && res.data) {
+                        //  ToastR(res.message, res.status, 15);
+                        var len = res.data.length;
+
+                        res.data.forEach((item, index) => {
+                            if(item.actif){
+
+                                var selected = item.id == "@ViewBag.CategorieId" ? "selected" : "";
+                                $("#catId").append(`<option ${selected} value="${item.id}">${item.name}</option>`);
+
+                                $("#emplacementsFilterList").append(`<li id="li_filter_${item.id}" data-filter=".emplacement_${item.id}">${item.name.toUpperCase()}</li>`);
+                            }
+
+                           
+                        })
+
+
+
+                    }
+                }
+            }
+
+
+
+
+
+
+            ajaxManager('GET', '/Emplacement/GetEmplacements', successEmplacementsHandler, errorHandler);
+      
+
+
+
+            console.log("href = "+ location.pathname);
+            GetPendingCommandes();
+
+        })
+        
+    </script>
+}

@@ -1,0 +1,23 @@
+﻿@media print {
+    header, footer {
+        display: none !important;
+    }
+
+    thead, tfoot {
+        display: none !important
+    }
+
+    @page :footer {
+        display: none
+    }
+
+    @page :header {
+        display: none
+    }
+}
+
+
+* {
+margin-left:auto;
+margin-right:auto;
+}

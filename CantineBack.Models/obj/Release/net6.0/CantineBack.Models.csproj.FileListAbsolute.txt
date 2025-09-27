@@ -1,0 +1,11 @@
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\bin\Release\net6.0\CantineBack.Models.deps.json
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\bin\Release\net6.0\CantineBack.Models.dll
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\bin\Release\net6.0\CantineBack.Models.pdb
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\obj\Release\net6.0\CantineBack.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\obj\Release\net6.0\CantineBack.Models.AssemblyInfoInputs.cache
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\obj\Release\net6.0\CantineBack.Models.AssemblyInfo.cs
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\obj\Release\net6.0\CantineBack.Models.csproj.CoreCompileInputs.cache
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\obj\Release\net6.0\CantineBack.Models.dll
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\obj\Release\net6.0\refint\CantineBack.Models.dll
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\obj\Release\net6.0\CantineBack.Models.pdb
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\obj\Release\net6.0\ref\CantineBack.Models.dll

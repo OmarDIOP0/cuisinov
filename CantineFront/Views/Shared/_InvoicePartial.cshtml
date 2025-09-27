@@ -1,0 +1,150 @@
+﻿
+@using CantineBack.Models.Dtos
+@using DpworldDkr.Helpers
+@model SoldAmountReport
+@{
+    int length = Model.Items?.Count ?? 0;
+}
+<div class="invoice-box " id="invoice-box">
+
+    <table cellpadding="0" cellspacing="0" style="width:100%">
+   
+        <tr class="top " style="">
+            <td colspan="4">
+                <table style="width:100%">
+                    <tr>
+                        <td class="title" style="width:80%">
+
+                            <img alt="Logo" src="~/images/DPWorldLogo.png" width="130" height="96" class=" logo-default" />
+                        </td>
+                      
+                        <td class="address" style="font-size:8px!important">
+                            DP World Dakar<br />
+                            Terminal à Conteneurs,<br />
+                            Zone Nord,<br />
+                            Port Autonome de Dakar<br />
+                            Dakar, SENEGAL<br />
+                            Tél : +221 33 889 08 20<br />
+                            Fax : +221 33 889 08 20<br />
+                            www.dpworld.com
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+
+        <tr class="information">
+            <td colspan="4">
+                <table style="width:100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                         
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr class="invoicenumber">
+                       
+                            <td colspan="3" style="width:100%;text-align:center;font-weight:bold">SNACK CONTAINER : RAPPORT DES VENTES  </td>
+                        
+
+                        </tr>
+                        @if (Model.UseDateTimeFilter)
+                        {
+                            <tr class="date">
+                                <td style="width:50%"> Date de Début:  @Model.StartDate.ToString("dd/MM/yyyy HH:mm:ss")<br /></td>
+                                <td style="width:50%"> Date de Fin:  @Model.EndDate.ToString("dd/MM/yyyy HH:mm:ss")<br /></td>
+                            </tr>
+                          @*  <tr class="date">
+                                <td style="width:50%" colspan="2"></td>
+                                <td colspan="2">
+                                    Date Fin:  @Model.EndDate.ToString("dd/MM/yyyy HH:mm:ss")<br />
+
+                                </td>
+                            </tr>*@
+                        }
+                        else
+                        {
+                            <tr class="date">
+                                <td style="width:50%" > Date de Début:  @Model.StartDate.ToString("dd/MM/yyyy")<br /></td>
+                                <td style="width:50%" > Date de Fin:  @Model.EndDate.ToString("dd/MM/yyyy")<br /></td>
+                               
+                            </tr>
+                           @* <tr class="date">
+                                <td style="width:50%" colspan="2"></td>
+                                <td colspan="2">
+                                    Date Fin:  @Model.EndDate.ToString("dd/MM/yyyy")<br />
+
+                                </td>
+                            </tr>*@
+                        }
+                        
+
+                    </tbody>
+
+                </table>
+            </td>
+        </tr>
+
+
+
+      
+        <tr class="heading">
+            <td>Code</td>
+            <td>Libellé</td>
+
+            <td>Montant</td>
+        </tr>
+
+        @if (Model.Items != null)
+        {
+           
+            for (int i = 0; i < length; i++)
+            {
+                var item = Model.Items[i];
+                <tr class="item">
+                    <td>@item.Code</td>
+                    <td>@item.Label</td>
+
+                    <td id="frais">@item.Amount  XOF</td>
+                </tr>
+             
+            }
+      
+        }
+
+
+
+
+
+        <tr class="total">
+            <td></td>
+            <td></td>
+
+            <td id="totalFrais" style=" font-weight: bold;">Total: @Functions.FormatMonetaire(Model.Items?.Sum(iv=>iv.Amount)) XOF </td>
+        </tr>
+        @{
+            var x = 14 - length ;
+            for (int i = 0; i < x; i++)
+            {
+                <tr class="emptyitem">
+                    <td colspan="4" style="width:100%"></td>
+
+
+                </tr>
+
+            }
+            <tr>
+                <td colspan="4" style="width:100%">
+
+                    <img alt="Logo" src="~/images/invoicefooter.png" width="100%" class=" logo-default" />
+                </td>
+
+            </tr>
+        }
+    </table>
+</div>

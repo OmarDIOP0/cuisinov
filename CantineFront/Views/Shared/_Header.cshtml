@@ -1,0 +1,174 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@inject IHttpContextAccessor Accessor
+@{
+
+    var CartBadgeCount = Accessor.HttpContext?.Session.GetInt32("CartBadgeCount") ?? 0;
+    bool logged = Convert.ToBoolean(Accessor.HttpContext?.Session.GetString("Logged") ?? "false");
+    bool isAdmin = Convert.ToBoolean(Accessor.HttpContext?.Session.GetString("IsAdmin") ?? "false");
+    bool isGerant = Convert.ToBoolean(Accessor.HttpContext?.Session.GetString("IsGerant") ?? "false");
+    string  username = Accessor.HttpContext?.Session.GetString("Username")??"";
+    string isVisible = CartBadgeCount <= 0 ? "none" : "normal";
+    int soldeNav = Accessor.HttpContext?.Session.GetInt32("Solde")??0;
+}
+
+<!-- header section strats -->
+<header class="header_section">
+    <div class="pl-5 pr-0 ">
+        @*container*@
+        <nav class="navbar navbar-expand-lg custom_nav-container text-responsive">
+            <a class="navbar-brand" href="/Home/Menu">
+                <span>
+                    Cafetaria
+                </span>
+            </a>
+
+            <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class=""> </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav  mr-auto ">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/Home/Menu">Menu <span class="sr-only">(current)</a>
+                    </li>
+                    @if (logged)
+                    {
+                        if (!isGerant)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Commande/MyCommands">Mes Commandes</a>
+                            </li>
+                        }
+                        @if (isAdmin ||isGerant)
+                        {
+
+                         
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Commande/List">Commandes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Commande/Index">Commandes en attentes</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Home/BookValidation">Validation</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Autres
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                    <a class="dropdown-item" href="/Article/List">Articles</a>
+
+                                    <a class="dropdown-item" href="/Categorie/List">Categories</a>
+                                    @if(isAdmin){
+                                        <a class="dropdown-item" href="/Emplacement/List">Emplacements</a>
+                                        <a class="dropdown-item" href="/User/List">Utilisateurs</a>
+                                        <a class="dropdown-item" href="/Department/List">Departements</a>
+                                    }
+                              
+          
+                                </div>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        
+                    }
+                  
+
+
+
+                </ul>
+                <div class="user_option mr-2">
+                       @if (logged)
+                    {
+                        <a class="nav-link text-white" href="#!" style="" id="soldeNav"></a>
+                    }
+                    @{
+
+                        string urlBooking = logged ? "/Home/Book" : "/Home/BookShop";
+                    }
+                    <a class="cart_link" href="#" id="cartButton">
+                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
+                        <g>
+                        <g>
+                        <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
+                   c29.184,0,53.248-23.552,53.248-53.248C398.336,362.926,374.784,338.862,345.6,338.862z" />
+                    </g>
+                  </g>
+                        <g>
+                        <g>
+                        <path d="M439.296,84.91c-1.024,0-2.56-0.512-4.096-0.512H112.64l-5.12-34.304C104.448,27.566,84.992,10.67,61.952,10.67H20.48
+                   C9.216,10.67,0,19.886,0,31.15c0,11.264,9.216,20.48,20.48,20.48h41.472c2.56,0,4.608,2.048,5.12,4.608l31.744,216.064
+                   c4.096,27.136,27.648,47.616,55.296,47.616h212.992c26.624,0,49.664-18.944,55.296-45.056l33.28-166.4
+                   C457.728,97.71,450.56,86.958,439.296,84.91z" />
+                    </g>
+                  </g>
+                        <g>
+                        <g>
+                        <path d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
+                   c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
+                    </g>
+                  </g>
+                        <g>
+                  </g>
+                        <g>
+                  </g>
+                        <g>
+                  </g>
+                        <g>
+                  </g>
+                        <g>
+                  </g>
+                        <g>
+                  </g>
+                        <g>
+                  </g>
+                        <g>
+                  </g>
+                        <g>
+                  </g>
+                        <g>
+                  </g>
+                        <g>
+                  </g>
+                        <g>
+                  </g>
+                        <g>
+                  </g>
+                        <g>
+                  </g>
+                        <g>
+                  </g>
+                </svg>
+                        <span class="badge badge-danger" id="cartBadge" style="display:@isVisible">@CartBadgeCount</span>
+                    </a>
+
+                    @if (logged)
+                    {
+                        if (!isGerant)
+                        {
+                            <a id="monQrCode" class=" fw-bold fs-2" style="display:none;color:#ffbe33;font-size:11px" >QR Code</a>
+                        }
+                       
+                        <a href="#!" class="text-white"><i class="fa fa-user">&nbsp;@username</i> </a>
+                        <a class="nav-link logout px-0" href="/Login/Logout">Deconnexion</a>
+                    }
+                    else
+                    {
+                        <a class="nav-link logout" href="/Login/Index">connexion</a>
+                    }
+
+                        
+                        
+                    </div>
+            </div>
+        </nav>
+    </div>
+</header>
+<!-- end header section -->

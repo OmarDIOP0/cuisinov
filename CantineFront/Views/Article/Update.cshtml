@@ -1,0 +1,225 @@
+﻿@using CantineFront.ViewModels
+@using Newtonsoft.Json
+@inject IHttpContextAccessor Accessor
+@model ArticleViewModel
+@section Styles{
+
+
+
+    <!-- alternatively you can use the font awesome icon library if using with `fas` theme (or Bootstrap 4.x) by uncommenting below. -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
+    <!-- the fileinput plugin styling CSS file -->
+    <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+
+    <!-- if using RTL (Right-To-Left) orientation, load the RTL CSS file after fileinput.css by uncommenting below -->
+    <!-- link href="~/lib/bootstrap-fileinput/css/fileinput-rtl.min.css" media="all" rel="stylesheet" type="text/css" /-->
+}
+@{
+    bool isAdmin = Convert.ToBoolean(Accessor.HttpContext?.Session.GetString("IsAdmin") ?? "false");
+    List<string> ImagesPreviews = new List<string>();
+    List<object> ImagesKeys = new List<object>();
+    string ImagesPreviewsJSON = "";
+    string ImagesKeysJSON = "";
+    if (!String.IsNullOrWhiteSpace(Model.ImageBase64))
+    {
+
+        ImagesPreviews.Add($"<img class=\"kv-preview-data file-preview-image\" src=\"data:image/png;base64,{Model.ImageBase64}\">");
+        ImagesKeys.Add(new { key = 1, extra = new { id = 2 } });
+
+
+    }
+    string actif = (Model.Article?.Actif??false)?"checked":"";
+    string isArticleOnMenu = (Model.Article?.IsArticleOnMenu ?? false) ? "checked" : "";
+    string isApproved = (Model.Article?.IsApproved ?? false) ? "checked" : "";
+    ImagesPreviewsJSON = JsonConvert.SerializeObject(ImagesPreviews);
+    ImagesKeysJSON = JsonConvert.SerializeObject(ImagesKeys);
+
+    string controlStockQuantity = (Model.Article?.ControlStockQuantity ?? false) ? "checked" : "";
+}
+<!-- book section -->
+<section class="book_section layout_padding">
+    <div class="container">
+        <div class="heading_container">
+            <h2>
+                Modifier article
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form_container">
+                    <form action="" class="row" id="form">
+                        <input type="hidden" name="Id" value="@Model.Article.Id" />
+                        <input type="hidden" name="ImageBase64" value="@Model.ImageBase64" />
+                     @*   <input type="hidden" name="IsArticleOnMenu" value="@actif" />
+                        <input type="hidden" name="Actif" value="@isArticleOnMenu" />*@
+
+                        <div class="col-md-4 ">
+                            
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="actif" @actif>
+                                <label class="form-check-label" for="actif">Actif</label>
+                            </div>
+                           
+                        </div>
+                        <div class="col-md-4">
+
+                        
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="isArticleOnMenu" @isArticleOnMenu>
+                                <label class="form-check-label" for="isArticleOnMenu">Visible sur le menu</label>
+                            </div>
+                        </div>
+                        @if(isAdmin){
+                            <div class="col-md-4">
+
+
+                                <div class="form-group form-check">
+                                    <input type="checkbox" class="form-check-input" id="isApproved" @isApproved>
+                                    <label class="form-check-label" for="isApproved">Approuvé</label>
+                                </div>
+                            </div>
+                        }
+                    
+                        <div class="col-12">
+                            <label class="form-label">Nom</label>
+                            <input type="text" class="form-control" placeholder="" name="Title" id="Title"   value="@Model.Article.Title"/>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Description</label>
+                            <input type="text" class="form-control" placeholder="" name="Description" id="Description" value="@Model.Article.Description">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Prix d'achat</label>
+                            <input type="number" class="form-control" placeholder="" name="PrixDachat" id="PrixDachat" value="@Model.Article.PrixDachat" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Prix de vente</label>
+                            <input type="number" class="form-control" placeholder="" name="PrixDeVente" id="PrixDeVente" value="@Model.Article.PrixDeVente" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Quantité en Stock</label>
+                            <input type="number" class="form-control" placeholder="" name="QuantiteStock" id="QuantiteStock" value="@Model.Article.QuantiteStock" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Catégorie</label>
+                            <select class="form-control nice-select wide" name="CategorieId" id="CategorieId">
+                                <option value="" disabled selected>
+                                    Sélectionnez la catégorie?
+                                </option>
+                                @if (Model.Categories != null)
+                                {
+                                    foreach (var item in Model.Categories)
+                                    {
+                                        bool selected = Model.Article.CategorieId == item.Id;
+                                        <option selected="@selected" value="@item.Id" >@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-8 ">
+
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" @controlStockQuantity id="controlStockQuantity">
+                                <label class="form-check-label" for="ControlStockQuantity">Vérifier le stock lors de la commande</label>
+                            </div>
+
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Image</label>
+                            <input type="file" placeholder="" id="image" name="Image" />
+                        </div>
+                        @* <div>
+                        <input type="date" class="form-control">
+                        </div>*@
+                        <div class="btn_box d-flex justify-content-between  col-12">
+                            <button class="custom-btn" id="btnUpdate" type="button" data-redirectroute="/Article/List" data-url="/Article/UpdateArticle">
+                                Enregistrer
+                            </button>
+
+                            <button class="custom-btn" style="background-color:#007bff !important;border-color:#007bff !important;color:#fff !important" type="button" onclick="history.back()">
+                                Retour
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 card  ">
+
+                <div class="  row d-flex justify-content-center">
+
+                    <p class="col-12 text-center bg-danger text-white my-2">
+                        Liste des commandes en attente
+                    </p>
+                    <div class=" col-md-11 row " id="messagesList">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end book section -->
+@section Scripts{
+
+    <script>
+
+
+        $(function () {
+
+            $("#image").fileinput({
+                language: "fr",
+                showPreview: true,
+                showUpload: false,
+                overwriteInitial: true,
+                ShowCaption: false, // does not display the local file name
+                AllowedFileTypes: ['image'], // Allow upload of pictures only
+                allowedFileExtensions: ["png"],
+
+                maxFileSize: 100,
+                maxFileCount: 1,
+                minImageWidth: 50,
+                minImageHeight: 50,
+                initialPreview: @Html.Raw(ImagesPreviewsJSON),
+                initialPreviewConfig: @Html.Raw(ImagesKeysJSON),
+
+                previewSettings: {
+                    image: { width: "50px", height: "auto" },
+                    html: { width: "50px", height: "auto" },
+                    other: { width: "50px", height: "auto" }
+                },
+                theme: 'fas',
+            }).on('fileuploaded', function (event, data, previewId, index) {
+                //var response = data.response;
+                //$('input#coverUploader').attr('required', false);
+                //var input = $('<input type="hidden" name="cover" />');
+                //input.attr('value', response.key);
+                //$('form').append(input);
+            }).on('filecleared', function (event) {
+                //$(".file-drop-zone-title").css({ fontSize: "11px" })
+                //$("#images").attr('required', true);
+                //console.log("filecleared")
+            });
+
+            $('#form').validate({
+
+                rules: {
+                    PrixDeVente: { required: true, min: 1 },
+                    PrixDachat: { required: false, min: 0 },
+                    QuantiteStock: { required: false, min: 0 },
+                },
+                feedbackIcons: {
+                    valid: 'fa fa-check',
+                    invalid: 'fa fa-remove',
+                    validating: 'fa fa-refresh'
+                },
+                errorClass: "error fail-alert",
+                validClass: "valid success-alert"
+
+            });
+            GetPendingCommandes();
+        })
+
+    </script>
+
+                    }

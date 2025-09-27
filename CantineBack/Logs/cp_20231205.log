@@ -1,0 +1,5 @@
+2023-12-05T16:23:48.5611079+00:00 [INF] (Microsoft.Hosting.Lifetime) Now listening on: "https://localhost:7143"
+2023-12-05T16:23:48.6651976+00:00 [INF] (Microsoft.Hosting.Lifetime) Now listening on: "http://localhost:5225"
+2023-12-05T16:23:48.6702674+00:00 [INF] (Microsoft.Hosting.Lifetime) Application started. Press Ctrl+C to shut down.
+2023-12-05T16:23:48.6712534+00:00 [INF] (Microsoft.Hosting.Lifetime) Hosting environment: "Development"
+2023-12-05T16:23:48.6713811+00:00 [INF] (Microsoft.Hosting.Lifetime) Content root path: "C:\Users\AGueye1\source\repos\NetCore\Cafetaria\CantineBack\"

@@ -1,0 +1,243 @@
+﻿@using CantineFront.ViewModels
+@model UserViewModel
+@section Styles{
+
+
+
+    <!-- alternatively you can use the font awesome icon library if using with `fas` theme (or Bootstrap 4.x) by uncommenting below. -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
+    <!-- the fileinput plugin styling CSS file -->
+    <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+
+    <!-- if using RTL (Right-To-Left) orientation, load the RTL CSS file after fileinput.css by uncommenting below -->
+    <!-- link href="~/lib/bootstrap-fileinput/css/fileinput-rtl.min.css" media="all" rel="stylesheet" type="text/css" /-->
+}
+
+<!-- book section -->
+<section class="book_section layout_padding">
+    <div class="container">
+        <div class="heading_container">
+            <h2>
+                Créer un utilisateur
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form_container">
+                    <form action="" class="row" id="form">
+                        <div class="col-md-4 ">
+
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="isInterimEmployee" >
+                                <label class="form-check-label" for="isInterimEmployee">Est Intérimaire</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-8">
+
+
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="useActiveDirectoryAuth" >
+                                <label class="form-check-label" for="useActiveDirectoryAuth">Uilise les Identfiants Windows</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Prénom</label>
+                            <input type="text" class="form-control" placeholder="" name="Prenom" id="Prenom" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Nom</label>
+                            <input type="text" class="form-control" placeholder="" name="Nom" id="Nom" required/>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Login</label>
+                            <input type="text" class="form-control" placeholder="" name="Login" id="Login" required />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Matricule</label>
+                            <input type="text" class="form-control" placeholder="" name="Matricule" id="Matricule" required />
+                        </div>
+                        <div class="col-8">
+                            <label class="form-label">Email</label>
+                            <input type="text" class="form-control" placeholder="" name="Email" id="Email"  />
+                        </div>
+                        <div class="col-8">
+                            <label class="form-label">Téléphone</label>
+                            <input type="text" class="form-control" placeholder="" name="Telephone" id="Telephone" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Département</label>
+                            <select class="form-control nice-select wide" name="DepartmentId" id="DepartmentId" required>
+                                <option value="" disabled selected>
+                                    Sélectionnez le département?
+                                </option>
+                                @if (Model.Departments != null)
+                                {
+                                    foreach (var item in Model.Departments)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Profil</label>
+                            <select class="form-control nice-select wide" name="Profile" id="Profile" required>
+                                <option value="" disabled selected>
+                                    Sélectionnez le profil?
+                                </option>
+
+                                <option value="USER">USER</option>
+                                <option value="GERANT">GERANT</option>
+                                <option value="ADMIN">ADMIN</option>
+                              
+                            </select>
+                        </div>
+
+                        <div class="btn_box d-flex justify-content-between  col-12">
+                            <button class="custom-btn" id="btnCreate" type="button" data-redirectroute="/User/List" data-url="/User/CreateUser">
+                                Ajouter
+                            </button>
+                            <button class="custom-btn" style="background-color:#007bff !important;border-color:#007bff !important;color:#fff !important" type="button" onclick="history.back()">
+                                Retour
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 card  ">
+
+                <div class="  row d-flex justify-content-center">
+
+                    <p class="col-12 text-center bg-danger text-white my-2">
+                        Liste des commandes en attente
+                    </p>
+                    <div class=" col-md-11 row " id="messagesList">
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+<!-- end book section -->
+@section Scripts{
+
+    <script>
+
+        $(function () {
+
+            $("#Profile").on("change",function(){
+                let val=$(this).val();
+
+               
+                    $("#Matricule").prop("required", (val!="GERANT"));
+       
+            });
+
+
+            GetPendingCommandes();
+        })
+        //$("#btnCreate").on("click",function(){
+
+
+        //    //if (!$('#ssrForm').valid()) return;
+        //    try {
+
+        //        //run_waitMe('img');
+        //        startLoadingById("body");
+
+
+        //        form = document.getElementById('form');
+        //        //let postData = serializeObject(form);
+        //        let postData = new FormData(form);
+ 
+        //        //var successHandler = (res) => {
+        //        //    endLoadingById("body");
+                 
+                    
+        //        //}
+        //        var successHandler = (data) => {
+        //            endLoadingById("body");
+        //            if (data == undefined || data == null || data == "")
+        //                ToastR("Une erreur a été rencontrée", "error", 10);
+        //            else {
+        //                console.log(data)
+        //                if (data.success) {
+        //                    ToastR(data.message, "success", 10);
+        //                    setTimeout(function(){
+        //                        window.location = window.location.origin + '/User/List';
+        //                    },3000);    
+                          
+                   
+
+        //                }
+
+        //                else {
+        //                    if (data.message != undefined && data.message.trim() != "")
+        //                        ToastR(data.message, "error", 10);
+        //                    if (data.errors != undefined && data.errors != null) {
+
+        //                        for (var elementId in data.errors) {
+        //                            var errorMessages = data.errors[elementId];
+        //                            let length = errorMessages.length;
+        //                            for (var i = 0; i < length; i++) {
+
+        //                                $(`#${elementId}-error${i}`).remove();
+        //                                if ($(`#${elementId}`).is('select')) {
+        //                                    $(`.sumo_${elementId}`).after(`<label id="${elementId}-error${i}" class="error fail-alert" for="Intitule">${errorMessages[i]}</label>`);
+
+        //                                }
+        //                                else
+        //                                    $(`#${elementId}`).after(`<label id="${elementId}-error${i}" class="error fail-alert" for="Intitule">${errorMessages[i]}</label>`);
+
+        //                            }
+
+        //                        }
+        //                    }
+        //                }
+
+        //            }
+
+        //        };
+        //        var errorHandler = (err) => {
+        //            endLoadingById("body");
+                   
+        //            ToastR("Une erreur inattendue a été rencontrée", "error", 15);
+        //        }
+
+
+
+        //        $.ajax({
+        //            type: "POST",
+        //            url: "/User/CreateUser",
+        //            crossDomain: false,
+        //            data: postData,
+        //            dataType: "json",
+        //            contentType: "multipart/form-data",
+        //            processData: false,
+        //            contentType: false,
+        //            headers: {
+        //                "Accept": "application/json"
+        //            },
+        //            success: successHandler,
+        //            error: errorHandler
+        //        });
+
+        //    } catch (e) {
+        //        console.log("Error : " + e);
+        //    }
+        //    finally {
+
+             
+
+        //    }
+
+        //}
+        
+        //)    ;
+
+    </script>
+
+                    }

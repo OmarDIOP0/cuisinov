@@ -1,0 +1,125 @@
+﻿<div class="p-2 container">
+
+
+    <div class="d-flex justify-content-end m-2">
+        <a class="btn btn-primary" href="/Categorie/Create"><i class="fa fa-plus"></i> Ajouter</a>
+    </div>
+
+
+
+    <table class="table" id="tbCategories">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Nom</th>
+                <th scope="col">Statut</th>
+
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+     
+    </table>
+</div>
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+
+        $(function () {
+         //   $("#tbCategories").DataTable();
+            var successHandler = function (res) {
+                console.log(JSON.stringify(res))
+                if (res) {
+
+                    if (res.success) {
+                        ToastR(res.message, res.status, 15);
+                       
+                     $('#tbCategories').DataTable({
+                            data: res.data,
+                            responsive: true,
+                            destroy: true,
+                            columns: [
+                                {
+                                    width: '5%',
+                                    data: null,
+                                    defaultContent: '',
+                                },
+                                {
+                                    width: '60%',
+                                    data: 'name',
+                                    defaultContent: '',
+                                },
+                                
+                                {
+
+                                    data: "actif",
+                                    width: '7%',
+                                    defaultContent: "",
+                                    render: function (data, type, row) {
+
+                                        var className = (data == true ? "badge-success" : "badge-danger");
+                                        var status = (data == true ? "actif" : "inactif");
+
+                                        return `<span class="badge badge-pill ${className}">${status}</span>`;
+                                    }
+                                },
+                                {
+                                    
+                                    data:null,
+                                    width: '20%',
+                                    defaultContent: "",
+                                    render: function (data, type, row) {
+
+
+                                        var btnEdit = `          <a class="btn btn-primary m-2" href="/Categorie/Update/${row.id}"><span class='fa fa-edit'></span></a>`;
+                                        var btnDelete=`    
+                                                <button type="button" data-method="DELETE"
+                                                                data-message=" Voulez-vous vraiment supprimer le controle <b>${row.name}</b>"
+                                                                data-url="/Categorie/DeleteCategorie/${row.id}" data-toggle="modal"
+                                                        data-target="#confirmModal" rel="tooltip"
+                                                        class="btn btn-danger m-2" data-original-title="" title="">
+                                                    <span class="fa-remove  fa"></span>
+                                                </button>`;
+
+                                                return btnEdit+btnDelete;
+                                    }
+                                }
+                            ], "language": {
+                                "zeroRecords": "Aucune donnée n'est disponible",
+                                "lengthMenu": "Afficher _MENU_ éléments",
+                                "info": "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+                                "search": "Rechercher : ",
+                                "oPaginate": {
+                                    "sFirst": "Premier",
+                                    "sLast": "Dernier",
+                                    "sNext": "Suivant",
+                                    "sPrevious": "Précédent"
+                                },
+                            }
+                        });
+
+
+                    } else {
+                      
+                        ToastR(res.message, res.status, 15);
+                    }
+                }
+            }
+
+            var errorHandler = (err) => {
+              
+                ToastR("Une erreur a été rencontré", "error", 15);
+            }
+
+
+            ajaxManager('GET', '/Categorie/GetCategories', successHandler, errorHandler);
+
+
+
+
+        });
+
+    </script>
+            }

@@ -1,0 +1,658 @@
+﻿@section Styles{
+    <link href="~/css/starrating.css" rel="stylesheet" />
+ <link href="~/datatables.net-buttons-bs/buttons.bootstrap.min.css" rel="stylesheet" />
+
+<style>
+        .buttons-pdf, .buttons-excel.buttons-html5 {
+            background-color: forestgreen !important;
+            margin-bottom: 20px;
+            color:white !important;
+        }
+
+</style>
+}
+<div class=" container-fluid py-5">
+
+
+
+    <div class="row d-flex justify-content-center " id="divFilterDate">
+
+        <div class="col-md-8 col-sm-12 row">
+            <div class="form-group col-md-4 ">
+                <label for="startDate">Date de début</label>
+                <input max="@ViewBag.MaxDate" value="@ViewBag.StartDate" data-format="yyyy-MM-dd" name="startDate" id="startDate" type="datetime-local" class="form-control" placeholder="">
+
+            </div>
+            <div class="form-group col-md-4 ">
+                <label for="endDate">Date de fin</label>
+                <input max="@ViewBag.MaxDate" value="@ViewBag.EndDate" name="endDate" id="endDate" type="datetime-local" class="form-control" placeholder="">
+
+            </div>
+            <div class=" form-group col-md-4 d-flex  align-items-end">
+                <button type="button" class="btn btn-primary" id="btnFilter">Valider</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="d-flex justify-content-end">
+
+        <button type="button" data-method="POST"
+                data-target="#generateReportModal" data-toggle="modal" rel="tooltip"
+                class="btn btn-primary btn-lg mx-2" data-original-title="" title="">
+            Générer un rapport de ventes
+        </button>
+
+
+    </div>
+    <div class="d-flex justify-content-center align-content-center align-items-center "><span class="display-5 fw-bold">Montant Total des Ventes livrées :</span> <h3 class=" fw-bold" id="totalMontantVente"></h3></div>
+    <div class="col-md-12">
+        <table class="table col-md-12" id="tbCommandes" style="width:100%">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Mat.</th>
+                    <th scope="col">Nom Complet</th>
+                    <th scope="col">Montant</th>
+                    <th scope="col">Payée avec </th>
+                    <th scope="col">Emplacement</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Statut</th>
+                    <th scope="col">Détails</th>
+
+                </tr>
+            </thead>
+
+        </table>
+    </div>
+
+</div>
+<div class="modal fade modal-lg" id="documentPartial">
+</div>
+
+@section Scripts{
+@*    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+*@    
+<!--BEGIN DATA EXCEL EXPORT-->
+    <script src="~/jszip/jszip.min.js"></script>
+    <script src="~/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/datatables-buttons/js/buttons.print.min.js"></script>
+    <!--END DATA EXCEL EXPORT-->
+    <script type="text/javascript">
+        function loadData(dataRequest) {
+
+            var successHandler = function (res) {
+                //  console.log(JSON.stringify(res))
+                if (res) {
+
+                    if (res.success) {
+                        try {
+                            $('#tbCommandes').dataTable().fnDestroy();
+                            $('#tbCommandes').DataTable().clear().draw();
+                        }
+                        catch {
+
+                        }
+                        var dataList = res.data;
+                        if (dataList) {
+                            const formatter = new Intl.NumberFormat("fr-FR");
+                            var totalAmount = dataList.reduce((accumulator, currentValue) => {
+
+                            //    console.log(currentValue)
+                                if (currentValue.isDelivered == true && currentValue.isDeleted != true && currentValue.isRejected!=true) {
+                                    return accumulator + currentValue.montant;
+                                    }
+                                  return accumulator;
+                                }, 0);
+
+                          $("#totalMontantVente").html(formatter.format(totalAmount)+" F CFA")
+
+                }
+
+                $.fn.dataTable.moment("DD/MM/YYYY HH:mm");
+                var table = $('#tbCommandes').DataTable({
+                    data: dataList,
+                    responsive: true,
+                    order: [[6, "desc"]],
+                    destroy: true,
+                            dom: 'Bfrtip',
+                    //dom: "<'row mt-2'<'col-sm-6 col-xs-6 col-md-4 mt-2'B><'col-sm-6 col-md-4 mt-2 'l><'col-sm-12 col-md-4'f>>" +
+                    //    "<'row'<'col-sm-12'tr>>" +
+                    //    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    text: 'Export',
+                    buttons: [
+
+                        {
+                            extend: 'excelHtml5', titleAttr: 'Excel',
+                                    text: '<span><i class="fa fa-file-excel-o"></i>&nbsp;Excel</span>',
+                            exportOptions: {
+                                columns: [":not('.js-not-exportable')"], orthogonal: 'export', rows: ":not('.ignorerow')"
+
+                            },
+
+                            filename: function () {
+                                        var startDateString = "";
+                                        var endDateString = "";
+                                        var startDate = $("#startDate").val();
+                                        var endDate = $("#endDate").val();
+                                        if(startDate){
+                                            startDateString = moment(startDate).format("DDMMYYYY HHmm");
+                                        }
+                                       if(endDate){
+                                            endDateString = moment(endDate).format("DDMMYYYY HHmm");
+                                       }
+                                      
+                                //var m = new Date();
+                                //var dateString = m.getUTCFullYear() + "-" + (m.getUTCMonth() + 1) + "-" + m.getUTCDate() + " " + m.getUTCHours() + m.getUTCMinutes();
+     
+                                return 'SNACK_CONTAINERS_REPORT' + "_" + startDateString+"_"+endDateString;
+                            }
+                        }
+
+                    ],
+                    columns: [
+                        {
+                            data: null,
+                            width: '1%',
+                            defaultContent: ''
+                                    , className: "js-not-exportable"
+
+
+                        },
+                        {
+                            data: "userNavigation",
+                            width: '5%',
+                            defaultContent: '',
+
+                            render: function (data, type, row) {
+
+                                if (data == null) {
+                                    return "";
+                                }
+                                return `<b>${data.matricule}</b>`
+                            }
+                        }
+                        ,
+                        {
+                            data: "userNavigation",
+                            width: '15%',
+                            defaultContent: '',
+
+                            render: function (data, type, row) {
+
+                                if (data == null) {
+                                    return "";
+                                }
+                                return `${data.prenom} ${data.nom}`
+                            }
+                        },
+                        {
+                            width: '5%',
+                            data: 'montant',
+                            defaultContent: '',
+                        }
+                        ,
+                        {
+
+                            data: "paymentMethodNavigation",
+                            width: '8%',
+                            defaultContent: "",
+                            render: function (data, type, row) {
+
+                                if (data == null) {
+                                    return "";
+                                }
+                                return data.name
+                            }
+                        },
+                        {
+
+                            data: "emplacementNavigation",
+                            width: '10%',
+                            defaultContent: "",
+                            render: function (data, type, row) {
+
+                                if (data == null) {
+                                    return "";
+                                }
+                                return data.name
+                            }
+                        }
+                        ,
+                        {
+
+                            data: "date",
+                            width: '10%',
+                            defaultContent: "",
+                            render: function (data, type, row) {
+
+                                if (data == null) {
+                                    return "";
+                                }
+                                var date = moment(data).format("DD/MM/YYYY HH:mm");
+
+                                return date;
+                            }
+                        }
+                        ,
+
+                        {
+
+                            data: "isDelivered",
+                            width: '10%',
+                            defaultContent: "",
+                            render: function (data, type, row, meta) {
+                                var btnRateDetail = "";
+                                        if (type === 'export') {
+                                            if (row.isRejected == true) {
+                                            return "rejetée";
+                                            }
+                                            if (row.isDeleted == true) {
+                                                return "rejetée";
+                                            }
+                                            if (data == true) {
+                                                return "livrée";
+                                            }else{
+                                                return "en attente";
+                                            }
+                                            
+                                        }
+                                if (row.isRating == true) {
+                                    var checked5 = row.rate == 5 ? "checked" : "";
+                                    var checked4 = row.rate == 4 ? "checked" : "";
+                                    var checked3 = row.rate == 3 ? "checked" : "";
+                                    var checked2 = row.rate == 2 ? "checked" : "";
+                                    var checked1 = row.rate == 1 ? "checked" : "";
+
+                                    console.log("checked5 = ", checked5)
+                                    console.log("checked4 = ", checked4)
+                                    console.log("checked3 = ", checked3)
+                                    console.log("checked2 = ", checked2)
+                                    console.log("checked1 = ", checked1)
+                                    var note = `<div class='rating' disabled style='max-width:100px;pointer-events: none !important'>
+                                                                                                                      <input type='radio' name='rating${row.id}' ${checked5} value='5' id='5ll${row.id}'><label for='5ll${row.id}' style='font-size:1vw;'>☆</label>
+                                                                                                                      <input type='radio' name='rating${row.id}' ${checked4} value='4' id='4ll${row.id}'><label for='4ll${row.id}' style='font-size:1vw;'>☆</label>
+                                                                                                                      <input type='radio' name='rating${row.id}' ${checked3} value='3' id='3ll${row.id}'><label for='3ll${row.id}' style='font-size:1vw;'>☆</label>
+                                                                                                                      <input type='radio' name='rating${row.id}' ${checked2} value='2' id='2ll${row.id}'><label for='2ll${row.id}' style='font-size:1vw;'>☆</label>
+                                                                                                                      <input type='radio' name='rating${row.id}' ${checked1} value='1' id='1ll${row.id}'><label for='1ll${row.id}' style='font-size:1vw;'>☆</label>
+                                                                                                                    </div>`;
+                                    btnRateDetail = `
+
+                                                                                            <button type="button" data-method="GET"
+                                                                                                                                         data-modaltitle="Commentaire et note du client"
+                                                                                                                                                          data-modalbody="${note}<br>${row.customerFeedback}"
+                                                                                                                                         data-toggle="modal"
+                                                                                                                                          data-target="#genericModal" rel="tooltip"
+                                                                                                                                        class="btn btn-primary btn-sm m-2" data-original-title="" title="">
+                                                                                                                                    Avis du client
+                                                                                             </button>
+                                                                            `;
+                                }
+
+                                if (row.isRejected == true) {
+
+                                    return `<span  class="badge badge-danger"> rejetée</span>
+
+                                                                                    <button type="button" data-method="GET"
+                                                                                                                                 data-modaltitle="Motif du rejet"
+                                                                                                                                          data-modalbody="${row.rejectComment}"
+                                                                                                                                 data-toggle="modal"
+                                                                                                                                  data-target="#genericModal" rel="tooltip"
+                                                                                                                                class="btn btn-primary btn-sm m-2" data-original-title="" title="">
+                                                                                                                            Motif
+                                                                                     </button>
+                                                            `;
+                                }
+
+                                if (data == true) {
+
+                                    return `<span class="badge badge-success"> livrée</span>` + btnRateDetail;
+                                }
+                                var btnReject = "";
+                                if (data != true) {
+                                    if (row.userId != null && row.userId > 0) {
+                                        btnReject = `
+                                                                                                                <button type="button" data-method="POST"
+                                                                                                                         data-modaltitle="Rejeter une commande"
+                                                                                                                                         data-successhandler="rejetSuccessHandler"
+                                                                                                                                 data-errorhandler="errorHandler"
+                                                                                                                                 data-callback="updateStatusCell"
+                                                                                                                                         data-forward="rejectFormValid()"
+                                                                                                                                 data-getdata="getDataForm(${row.id})"
+                                                                                                                                                                                data-modalbody="Motif du rejet<br><textarea class='form-control' name='motif' id='motif' ></textarea>"
+                                                                                                                                        data-url="/Commande/Reject" data-toggle="modal"
+                                                                                                                                data-target="#genericModal" rel="tooltip"
+                                                                                                                                class="btn btn-danger btn-sm mx-2" data-original-title="" title="">
+                                                                                                                   Rejeter
+                                                                                                                </button>`;
+                                    }
+
+                                }
+
+                                var btnDelivery = `<a class="btn btn-primary btn-sm float-end "
+                                                                   data-method="POST"
+                                                                           data-callback="DeliveryCallback"
+                                                                                                                                data-message="Veuillez confirmer?"
+                                                                                                                                data-url="/Commande/Delivery/${row.id}" data-toggle="modal"
+                                                                                                                        data-target="#confirmModal"
+                                                                 data-commandid="${row.id}"  href="#!">Livrer</a>
+                                                                `
+
+                                return btnDelivery + btnReject + btnRateDetail
+                                // return `<a class="btn btn-primary btn-sm float-end btnDelivery"  data-commandid="${row.id}"  href="#!">Livrer</a>`;
+
+
+                            }
+
+
+                        }
+                        ,
+                        {
+
+                            data: "ligneCommandesNavigation",
+                            width: '10%',
+                            defaultContent: "",
+                                    className: "dt-custom-control custom px-2 js-not-exportable",
+                            render: function (data, type, row, meta) {
+                                if (type === 'export') {
+
+                                    return "";
+                                }
+                                return `<span class="dt-custom-control-plus"></span> <a> Détails</a> `;
+
+
+                            }
+                        }
+
+                    ]
+                    , "language": {
+                        "zeroRecords": "Aucune donnée n'est disponible",
+                        "lengthMenu": "Afficher _MENU_ éléments",
+                        "info": "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+                        "search": "Rechercher : ",
+                        "oPaginate": {
+                            "sFirst": "Premier",
+                            "sLast": "Dernier",
+                            "sNext": "Suivant",
+                            "sPrevious": "Précédent"
+                        },
+                    }
+                    ,
+                    drawCallback: function (setting) {
+
+
+                        $('[data-toggle="tooltip"]').tooltip();
+
+
+                    },
+                });
+
+                function format(d) {
+                    // `d` is the original data object for the row
+                    if (!d.ligneCommandesNavigation) {
+
+                        return;
+                    }
+                    var commentaire = d.comment;
+                    commentaire = commentaire ? ` <div class="col-12 px-0 my-1 text-black text-center"><label class="mb-3 text-black fw-bold" style="font-size:11px;font-weight:bold">Commentaire: </label><p style="font-size:11px;" class="fw-bold ">${commentaire}</p></div>` : "";
+
+                    let table = $(`<table cellpadding="5" class="childtable table table-bordered bg-gray" cellspacing="0" border="0" style="padding-left:50px;background-color:#c6dcf5;width:80%">
+                                                                            <thead>
+
+                                                                            <th scope="col" class="font-weight-bold text-left">Article</th>
+                                                                            <th scope="col" class="font-weight-bold text-left">Quantité</th>
+                                                                            <th scope="col" class="font-weight-bold text-left">Prix Total</th>
+
+                                                                            </thead> </table>`);
+                    table.DataTable({
+                        data: d.ligneCommandesNavigation,
+                        responsive: false,
+                        destroy: true,
+                        columns: [
+                            {
+
+                                data: "articleNavigation",
+                                width: '10%',
+                                defaultContent: "",
+                                render: function (data, type, row) {
+                                    return data ? data.title : "";
+                                }
+                            }, {
+
+                                data: "quantite",
+                                width: '10%',
+                                defaultContent: "",
+
+                            },
+                            {
+
+                                data: "prixTotal",
+                                width: '10%',
+                                defaultContent: "",
+
+                            }
+
+                        ]
+                    });
+                    var div = $(`<div class="" style="background-color:#c6dcf5;"></div>`)
+                    div.append(commentaire)
+                    div.append(table)
+                    return div;
+                }
+
+                $('#tbCommandes tbody').on('click', ".btnDelivery", function () {
+
+                    var commandId = $(this).data("commandid");
+                    if (!commandId || commandId <= 0) return;
+                    var successHandler = (response) => {
+                        if (response) {
+                            if (response.success) {
+
+
+                                $(this).replaceWith(`<span class="badge badge-success"> livré</span>`);
+
+
+                            }
+                        }
+                    }
+                    ajaxManager("POST", "/Commande/Delivery", successHandler, errorHandler, { id: commandId });
+                });
+
+
+                $('#tbCommandes tbody').on('click', '.dt-custom-control.custom', function () {
+
+                    try {
+
+
+
+                        var tr = $(this).closest('tr');
+                        var trChild = $(this).closest('tr.child');
+
+                        var hasSecondChild = false;
+                        var row;
+                        if (trChild.length > 0) {
+                            //console.log("trChild ", trChild)
+                            //trChild = $(this).closest('tr.child');
+                            var tr = $(trChild[0]).prev('tr.dt-hasChild.parent');
+                            hasSecondChild = true;
+                            row = table.row(tr);
+                        } else {
+                            row = table.row(tr);
+
+                        }
+
+                        console.log("row = ", row)
+                        var rowData = row.data();
+                        if (row != undefined && row != null) {
+
+                            if (!hasSecondChild) {
+                                if (row.child.isShown()) {
+                                    // This row is already open - close it
+                                    row.child.hide();
+                                    tr.removeClass('dt-hasChild shown');
+                                    $(this).find('span.dt-custom-control-plus').removeClass("haschild");
+                                }
+                                else {
+                                    $(this).find('span.dt-custom-control-plus').addClass("haschild");
+
+
+                                    // Open this row
+
+                                    row.child(format(rowData)).show();
+                                    tr.addClass('dt-hasChild shown');
+                                }
+                            } else {
+
+                                if (trChild.hasClass("second-child")) {
+                                    trChild.find("table").remove();
+                                    trChild.removeClass("second-child")
+                                } else {
+                                    console.log("append", rowData)
+                                    trChild.find("td.child").append(format(rowData));
+                                    trChild.addClass("second-child")
+                                }
+                            }
+
+
+                        }
+
+
+
+
+
+
+                    } catch (e) {
+                        console.log(e)
+                    }
+
+
+
+
+                });
+
+            } else {
+
+                ToastR(res.message, res.status, 15);
+        }
+                                }
+
+
+
+                            }
+
+
+
+        var errorHandler = (err) => {
+            try {
+                $('#tbCommandes').dataTable().fnDestroy();
+                $('#tbCommandes').DataTable().clear().draw();
+            }
+            catch {
+
+            }
+            ToastR("Une erreur a été rencontré", "error", 15);
+        }
+
+
+        ajaxManager('GET', '/Commande/GetAllCommandes', successHandler, errorHandler, dataRequest);
+                        }
+
+        $(function () {
+
+            loadData();
+
+
+            $("#btnFilter").off().on("click",
+                function () {
+
+                    var startDate = $("#startDate").val();
+
+                    var endDate = $("#endDate").val();
+
+                    if (!startDate) {
+                        ToastR("Veuillez indiquer la date de début", "error", 5);
+                        return;
+                    }
+                    if (!endDate) {
+                        ToastR("Veuillez indiquer la date de fin", "error", 5);
+                        return;
+                    }
+                    startDate = moment(startDate);
+                    endDate = moment(endDate);
+                    var dateDiff = monthDiff(startDate, endDate);
+                    if (dateDiff < 0) {
+                        ToastR("La date de fin doit être supérieure à la date de début.", "error", 5);
+                        return;
+                    }
+
+                    if (dateDiff > 3) {
+                        ToastR("La différence entre la date de fin et la date de début doit être inférieure ou égale à 3 mois.", "error", 5);
+                        return;
+                    }
+
+
+                    var data = {
+
+                        startDate: $("#startDate").val(),
+                        endDate: $("#endDate").val()
+                    }
+                    console.log(data)
+                    loadData(data);
+
+                }
+
+            );
+
+
+        });
+
+
+        function DeliveryCallback(btn, data) {
+
+
+
+            $(btn).replaceWith(`<span class="badge badge-success"> livrée</span>`);
+
+        }
+        function getDataForm(id) {
+
+            var formData = new FormData();
+            formData.append("motif", $("#genericModal").find("#motif").val());
+            formData.append("commandId", id);
+
+
+            return formData;
+
+        }
+        function updateStatusCell(btn, data) {
+
+            var td = $(btn).closest('td');
+
+            console.log("td = ", td)
+            console.log("data = ", data);
+            if (data) {
+                td.html(`<span class="badge badge-danger">rejetée</span>`);
+                //  td.html(`${data.solde} F CFA`);
+            }
+
+        }
+
+        function rejectFormValid() {
+
+            var val = $("#genericModal").find("#motif").val();
+
+            if (!val) {
+
+                ToastR("Veuillez renseigner le motif du rejet!", "error", 10);
+                return "return";
+            }
+        }
+
+        var rejetSuccessHandler = (res) => {
+            if (res) {
+                let status = res.success ? "success" : "error"
+                ToastR(res.message, status, 15);
+            }
+
+        }
+    </script>
+            }

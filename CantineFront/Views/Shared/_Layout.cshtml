@@ -1,0 +1,1550 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+@*<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CantineFront</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/CantineFront.styles.css" asp-append-version="true" />
+</head>*@
+@using CantineBack.Models.Enums
+@inject IHttpContextAccessor Accessor
+@{
+
+    var CartBadgeCount = Accessor.HttpContext?.Session.GetInt32("CartBadgeCount") ?? 0;
+    bool logged = Convert.ToBoolean(Accessor.HttpContext?.Session.GetString("Logged") ?? "false");
+    bool isGerant = Convert.ToBoolean(Accessor.HttpContext?.Session.GetString("IsGerant") ?? "false");
+    bool isAdmin = Convert.ToBoolean(Accessor.HttpContext?.Session.GetString("IsAdmin") ?? "false");
+    string userQRCode = Accessor.HttpContext?.Session.GetString("UserQRCode");
+    string isVisible = CartBadgeCount <= 0 ? "none" : "normal";
+}
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="images/favicon.png" type="">
+
+    <title> Cafetaria </title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
+
+    <!--owl slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="~/lib/OwlCarousel2/assets/owl.carousel.css" />
+    <!-- nice select  -->
+    <link rel="stylesheet" href="~/lib/jquery-nice-select/css/nice-select.min.css" />
+    <!-- toast r -->
+    <link href="~/lib/toastr.js/toastr.css" rel="stylesheet" />
+    <!-- font awesome style -->
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="~/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="~/css/responsive.css" rel="stylesheet" />
+    <!--MY Custom styles  -->
+    <link href="~/css/waitMe.min.css" rel="stylesheet" />
+    <link href="~/css/notific.css" rel="stylesheet" />
+    <!--MY Custom styles  -->
+    <!--Begin Datatable js  -->
+
+    <link href="~/lib/datatables/css/datatables.bootstrap4.min.css" rel="stylesheet" />
+
+    <link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/jquery.datatables_themeroller.min.css" rel="stylesheet" />
+    <link href="~/lib/datatables/datatables.net-responsive-bs/responsive.bootstrap.min.css" rel="stylesheet" />
+   <link href="~/datatables.net-select-dt/css/select.datatables.min.css" rel="stylesheet" />
+
+    <link href="~/datatables.net-buttons-bs/buttons.bootstrap.min.css" rel="stylesheet" />
+    <!--End Datatable js -->
+    <!--Begin Print js -->
+    <link href="~/print-js/print.min.css" rel="stylesheet" />
+
+    <!--End Print js -->
+
+
+    <style>
+        /*CENTRER LE CHECKBOX CHECKED*/
+        table.dataTable > tbody > tr > td.select-checkbox:before, table.dataTable > tbody > tr > th.select-checkbox:before {
+            margin-top: 0px !important;
+        }
+
+        table.dataTable thead .sorting,
+        table.dataTable thead .sorting_asc,
+        table.dataTable thead .sorting_desc {
+            background: none;
+        }
+
+        table.dataTable {
+            width: 100%;
+        }
+        /*
+                .fixed-bottom {
+                    position: relative;
+
+                }*/
+
+        label.error.fail-alert {
+            margin-top: 2px;
+            /* border: 2px solid red;
+                            border-radius: 4px;
+                            line-height: 1;
+                            padding: 2px 0 6px 6px;*/
+            background: #ffe6eb;
+            font-size: 10px;
+            color: red;
+        }
+
+        input.valid.success-alert {
+            border: 2px solid #4CAF50;
+            color: green;
+        }
+
+        .modalspinner {
+            display: none;
+            position: absolute;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba( 255, 255, 255, .8 ) url('/images/dpw_icon_load.gif') 50% 50% no-repeat;
+        }
+        /* When the body has the loading class, we turn
+                        the scrollbar off with overflow:hidden */
+        body.loading .modalspinner {
+            overflow: hidden;
+        }
+        /* Anytime the body has the loading class, our
+                        modal element will be visible */
+        body.loading .modalspinner {
+            display: block;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+
+        .zoom {
+            background-color: transparent;
+            transition: transform .2s; /* Animation */
+        }
+
+            .zoom:hover {
+                transform: scale(2); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+            }
+
+        .carousel-control-prev, .carousel-control-next {
+            background-color: transparent;
+            border: none;
+        }
+
+        .slider_section .carousel {
+            height: 100px;
+        }
+
+        .slider_section .carousel-indicators {
+            position: absolute;
+        }
+
+        label.error.fail-alert {
+            margin-top: 2px;
+            /* border: 2px solid red;
+                                    border-radius: 4px;
+                                    line-height: 1;
+                                    padding: 2px 0 6px 6px;*/
+            background: #ffe6eb;
+            font-size: 10px;
+            color: red;
+        }
+
+        input.valid.success-alert {
+            border: 2px solid #4CAF50;
+            color: green;
+        }
+
+        .pulse {
+            text-align: center;
+            font-family: sans-serif;
+            animation: animate-pulse 3s linear infinite;
+            cursor: pointer
+        }
+
+        .custom_nav-container .navbar-nav {
+            padding-left: 5%;
+        }
+
+        .addToCart:hover {
+            cursor: pointer;
+        }
+
+        @@keyframes animate-pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255,109,74,0.7), 0 0 0 0 rgba(255,109,74,0.7);
+            }
+
+            40% {
+                box-shadow: 0 0 0 30px rgba(255,109,74,0.0), 0 0 0 0 rgba(255,109,74,0.7);
+            }
+
+            80% {
+                box-shadow: 0 0 0 30px rgba(255,109,74,0.0), 0 0 0 20px rgba(255,109,74,0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255,109,74,0.0), 0 0 0 20px rgba(255,109,74,0);
+            }
+        }
+
+        .slider_section {
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            position: relative;
+            padding: 0px 0 20px 0;
+        }
+
+        .layout_padding {
+            padding: 20px 0 20px 0;
+        }
+
+        .float {
+            position: fixed;
+            width: 70px;
+            height: 70px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #ffbe33;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            box-shadow: 2px 2px 3px #999;
+        }
+
+        .float-clear {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            bottom: 80px;
+            right: 5px;
+            background-color: #ffbe33;
+            color: #FFF;
+            border-radius: 35px;
+            text-align: center;
+            box-shadow: 2px 2px 3px #999;
+            margin-top: 50px;
+            background-color: transparent;
+        }
+
+
+        .float-commandcount {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            bottom: 180px;
+            right: 40px;
+            /*     background-color: #0C9;
+                    color: #FFF;
+                    border-radius: 50px;
+                    text-align: center;
+                    box-shadow: 2px 2px 3px #999;*/
+        }
+
+        .my-float {
+            margin-top: 27px;
+        }
+
+        .my-float-count {
+            margin-top: 36px;
+        }
+
+        .my-float-clear {
+            margin-top: 12px;
+        }
+
+        .dropdown-toggle.active {
+            color: #ffbe33 !important;
+        }
+
+        .dropdown-item.active, .dropdown-item:active {
+            color: #fff;
+            text-decoration: none;
+            background-color: #ffbe33;
+        }
+
+        /*     .text-responsive {
+                    font-size: calc(100% - 12 );
+                }*/
+        @@media (min-width: 650px) and (max-width:1200px) {
+            .text-responsive {
+                font-size: 12px !important;
+            }
+        }
+
+        @@media (min-width: 600px) and (max-width:750px) {
+            .text-responsive {
+                font-size: 11px !important;
+            }
+        }
+
+        @@media (max-width:600px) {
+            .text-responsive {
+                font-size: 10px !important;
+            }
+        }
+
+        .fa-stack[data-count]:after {
+            position: absolute;
+            right: 0%;
+            top: 1%;
+            content: attr(data-count);
+            font-size: 30%;
+            padding: .6em;
+            border-radius: 999px;
+            line-height: .75em;
+            color: white;
+            background-color: #ffbe33;
+            background: rgba(255,0,0,.85);
+            text-align: center;
+            min-width: 2em;
+            font-weight: bold;
+        }
+
+        .modal .rating label {
+            font-size: 2vw !important;
+
+        }
+
+        .dataTable .rating label {
+            pointer-events: none !important;
+        }
+        .tablesmalltext{
+            font-size:11px;
+        }
+    </style>
+    <style>
+
+        /*//   .dt-custom-control:before*/
+        table.dataTable.dtr-inline > tbody > tr > td span.dt-custom-control-plus:before, table.dataTable.dtr-inline.collapsed > tbody > tr > th.dt-custom-control:before {
+            /*  top: 40%;
+                            left: 40%;*/
+            height: 1em;
+            width: 1em;
+            /* margin-top: -9px;*/
+
+            position: relative;
+            color: white;
+            border: 0.15em solid white;
+            border-radius: 1em;
+            box-shadow: 0 0 0.2em #444;
+            box-sizing: content-box;
+            text-align: center;
+            text-indent: 0 !important;
+            font-family: "Courier New",Courier,monospace;
+            /*line-height: 1em;*/
+            content: "+";
+            background-color: #31b131;
+        }
+
+        table.dataTable.dtr-inline > tbody > tr > td span.dt-custom-control-plus.haschild:before, table.dataTable > tbody > tr.second-child > td span.dt-custom-control-plus:before {
+            content: "-";
+            background-color: #d33333;
+        }
+
+        table.dataTable thead > tr >  th {
+            font-size: 0.8em !important;
+        }
+        tr table.childtable tr td, table.childtable thead tr th {
+            background-color: #c6dcf5 !important;
+        }
+    </style>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body >
+    <div id="idBody">
+        <div class="hero_area">
+
+            <div class="bg-box">
+                <img src="~/images/hero-bg.jpg" alt="">
+            </div>
+            <partial name="_Header" />
+
+
+            @RenderSection("slide",false);
+
+
+        </div>
+
+        <div class="">
+
+            @RenderBody()
+            @{
+
+                string urlBooking = logged ? (isGerant ? "/Home/BookShop" : "/Home/Book") : "/Home/BookShop";
+            }
+
+            @if (logged && isGerant)
+            {
+
+                <a href="/Commande/Index" class="float-commandcount">
+                    <span class="fa-stack fa-3x" data-count="0" id="pendingCommandCount">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-bell fa-stack-1x fa-inverse"></i>
+                    </span>
+                    @*<i class="fa fa-bell my-float-count">11</i>*@
+                </a>
+            }
+
+
+            <a  href="#" class="float" id="cartBadgeFloat" style="display:@isVisible">
+            
+                <i class="fa fa-shopping-cart my-float"></i>
+                <span class="badge badge-danger" id="cartBadgeFloatCount">@CartBadgeCount</span>
+                <span style="left:-50px;top:-50px;width:120px;font-size:14px;position:relative;color:red;font-weight:bold">Cliquez ici</span>
+            </a>
+            <a href="#!" class="float-clear bg-danger" id="cartBadgeFloatClear" style="display:@isVisible;">
+
+                <i class="fa fa-trash text-white my-float-clear  "></i>
+               
+            </a>
+
+        </div>
+
+        <div class="modal fade .bd-example-modal-sm" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center" id="exampleModalLongTitle">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <input type="hidden" id="userid" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary  mr-auto" data-dismiss="modal">Non</button>
+                        <button type="button" id="btnConfirmation" class="btn btn-primary float-lg-right" data-dismiss="modal">Oui</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade .bd-example-modal-sm" id="genericModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered " role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="genericModalTitle"> Créer un utilisateur</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body " id="genericModalBody">
+
+
+
+
+                        <form action="" class="row" id="form">
+                        </form>
+
+
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" id="btnCancel" class="btn btn-secondary  mr-auto" data-dismiss="modal">Annuler</button>
+                        <button type="button" id="btnValidate" class="btn btn-primary float-lg-right">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade .bd-example-modal-sm" id="generateReportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="genericModalTitle"> Générer un rapport de vente</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body " id="genericModalBody">
+
+
+
+
+                        <form action="" class="row" id="form">
+
+
+                            <div class="col-md-12 col-sm-12 row">
+                                <div class="form-group col-md-6 ">
+                                    <label for="startDate">Date de début</label>
+                                    <input max="@ViewBag.MaxDate" value="@ViewBag.StartDate" data-format="yyyy-MM-dd" name="FromDate" id="fromDate" type="datetime-local" class="form-control" placeholder="">
+
+                                </div>
+                                <div class="form-group col-md-6 ">
+                                    <label for="endDate">Date de fin</label>
+                                    <input max="@ViewBag.MaxDate" value="@ViewBag.EndDate" name="ToDate" id="toDate" type="datetime-local" class="form-control" placeholder="">
+
+                                </div>
+                              
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">  Filter par ?</label><br />
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="UseDateTimeFilter" id="useDateTimeFilter1" value="true" checked>
+                                    <label class="form-check-label" for="exampleRadios1">
+                                        Date et Heure
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline  mx-2">
+                                    <input class="form-check-input" type="radio" name="UseDateTimeFilter" id="useDateTimeFilter2" value="false">
+                                    <label class="form-check-label" for="exampleRadios2">
+                                        Date
+                                    </label>
+                                </div>
+
+                            </div>
+                        
+                            <div class="col-md-12 my-2">
+                                <label class="form-label">  Sélectionnez les lignes à ajouter sur le rapport?</label>
+                                <br />
+                                @foreach (var name in Enum.GetNames(typeof(PaymentMethodsEnum)))
+                                {
+                                    Console.WriteLine(name);
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="@name" id="PaymentMethods_@name" name="PaymentMethods">
+                                        <label class="form-check-label" for="PaymentMethods_@name">
+                                            @name
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                          
+                        </form>
+
+
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" id="btnCancel" class="btn btn-secondary  mr-auto" data-dismiss="modal">Annuler</button>
+                        <button type="button" id="btnValidate" class="btn btn-primary float-lg-right">Générer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+  </div>
+
+
+
+    @*   <partial name="_Footer" />*@
+
+
+
+    <!-- footer section -->
+    <!-- jQery -->
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <!-- popper js -->
+    <script src="~/lib/popper.js/umd/popper.js">
+    </script>
+    <!-- bootstrap js -->
+    <script src="~/js/bootstrap.js"></script>
+    <!-- owl slider -->
+    <script src="~/lib/OwlCarousel2/owl.carousel.min.js">
+    </script>
+    <!-- isotope js -->
+    <script src="~/lib/jquery.isotope/isotope.pkgd.js"></script>
+    <!-- nice select -->
+    <script src="~/lib/jquery-nice-select/js/jquery.nice-select.min.js"></script>
+    <!-- toastr -->
+    <script src="~/lib/toastr.js/toastr.min.js"></script>
+    <!-- custom js -->
+    <script src="~/js/custom.js"></script>
+    <script src="~/js/notific.js"></script>
+    <script src="~/js/waitMe.min.js"></script>
+
+    <!--    JQUERY VALIDATE-->
+    <script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validate/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <!--    JQUERY VALIDATE-->
+    <!-- Google Map -->
+    <!--script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+       </script-->
+    <!-- End Google Map -->
+    <!--BEGIN Fileinput js-->
+    <!-- buffer.min.js and filetype.min.js are necessary in the order listed for advanced mime type parsing and more correct
+    preview. This is a feature available since v5.5.0 and is needed if you want to ensure file mime type is parsed
+    correctly even if the local file's extension is named incorrectly. This will ensure more correct preview of the
+    selected file (note: this will involve a small processing overhead in scanning of file contents locally). If you
+    do not load these scripts then the mime type parsing will largely be derived using the extension in the filename
+    and some basic file content parsing signatures. -->
+    <script src="~/lib/bootstrap-fileinput/js/plugins/buffer.min.js" type="text/javascript"></script>
+    <script src="~/lib/bootstrap-fileinput/js/plugins/filetype.min.js" type="text/javascript"></script>
+
+    <!-- piexif.min.js is needed for auto orienting image files OR when restoring exif data in resized images and when you
+        wish to resize images before upload. This must be loaded before fileinput.min.js -->
+    <script src="~/lib/bootstrap-fileinput/js/plugins/piexif.min.js" type="text/javascript"></script>
+
+    <!-- sortable.min.js is only needed if you wish to sort / rearrange files in initial preview.
+        This must be loaded before fileinput.min.js -->
+    <script src="~/lib/bootstrap-fileinput/js/plugins/sortable.min.js" type="text/javascript"></script>
+
+    <!-- bootstrap.bundle.min.js below is needed if you wish to zoom and preview file content in a detail modal
+        dialog. bootstrap 5.x or 4.x is supported. You can also use the bootstrap js 3.3.x versions. -->
+    <!--script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script-->
+    <!-- the main fileinput plugin script JS file -->
+    <script src="~/lib/bootstrap-fileinput/js/fileinput.min.js"></script>
+
+    <!-- following theme script is needed to use the Font Awesome 5.x theme (`fa5`). Uncomment if needed. -->
+    <script src="~/lib/bootstrap-fileinput/themes/fa5/theme.min.js"></script>
+    <!-- optionally if you need translation for your language then include the locale file as mentioned below (replace LANG.js with your language locale) -->
+    <script src="~/lib/bootstrap-fileinput/js/locales/fr.js"></script>
+    <!--END Fileinput js-->
+    <!--Begin moment js -->
+    <script src="~/moment.js/moment.min.js"></script>
+    <script src="~/moment.js/moment-with-locales.min.js"></script>
+
+    <!--End moment js -->
+    <!--Begin Datatable js  -->
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.datatables.min.js"></script>
+
+    <script src="~/lib/datatables/js/datatables.bootstrap4.min.js"></script>
+
+    <script src="~/lib/datatables/datatables-responsive/datatables.responsive.min.js"></script>
+    <script src="~/datatables.net-select/datatables.select.min.js"></script>
+    <script src="~/lib/datatables/datatables.net-responsive-bs/responsive.bootstrap.min.js"></script>
+    <script src="~/datatables.net-datetime/js/datatables.datetime.js"></script>
+    <script src="~/datatables.net-plugins/sorting/datetime-moment.js"></script>
+    <script src="~/datatables-buttons/js/datatables.buttons.min.js"></script>
+    <script src="~/datatables.net-buttons-bs/buttons.bootstrap.min.js"></script>
+    <script src="~/datatables-buttons/js/buttons.html5.min.js"></script>
+
+    <!--End Datatable js  -->
+    <script src="~/js/custom-scripts/scripts.js"></script>
+    <!--SIGNAL R  -->
+    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+
+    <!--QR CODE GENERATOR-->
+    <script src="~/jquery.qrcode/jquery.qrcode.min.js"></script>
+    <script src="~/qrcodejs/qrcode.min.js"></script>
+
+
+    <!--Begin Print js -->
+
+    <script src="~/print-js/print.min.js"></script>
+    <!--End Print js -->
+
+
+
+    <script src="~/js/custom-scripts/commandchat.js"></script>
+    <script src="~/js/custom-scripts/command.js"></script>
+    <script>
+        var elem = document.getElementById("idBody");
+        function openFullscreen() {
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else 
+            if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }
+        }
+        const isAdmin = "@isAdmin.ToString().ToLower()" == "true";
+        const isGerant = "@isGerant.ToString().ToLower()" == "true";
+        const isLogged = "@logged.ToString().ToLower()" == "true";
+        function monthDiff(d1, d2) {
+            return d2.diff(d1, 'months', true);
+        }
+        try {
+            // Add hidden class if item hidden
+            var itemReveal = Isotope.Item.prototype.reveal;
+            Isotope.Item.prototype.reveal = function () {
+                itemReveal.apply(this, arguments);
+                $(this.element).removeClass('isotope-hidden');
+            };
+            var itemHide = Isotope.Item.prototype.hide;
+            Isotope.Item.prototype.hide = function () {
+                itemHide.apply(this, arguments);
+                $(this.element).addClass('isotope-hidden');
+            };
+
+        } catch {
+
+        }
+        var errorSimpleHandler = (err) => {
+            endLoadingById("body")
+            ToastR("Une erreur a été rencontré.", "error", 20);
+        }
+
+
+
+        function getTimeDiff(elementId, dt1) {
+            //console.log("dt1 "+dt1)
+            const dateObject = new Date();
+
+            let dateNow = dateObject.toUTCString();
+
+            //console.log(date);
+
+            var dt1 = new Date(dt1);
+            var dt2 = new Date(dateNow);
+            var totalSeconds = Math.floor((dt2 - dt1) / 1000);
+            totalSeconds = totalSeconds > 0 ? totalSeconds:0;
+            var hours = Math.abs(Math.floor(totalSeconds / (60 * 60)));
+            var minutes = Math.abs(Math.floor((totalSeconds % (60 * 60)) / 60));
+            var seconds =Math.abs(  Math.floor(totalSeconds % 60));
+            $(elementId).text(`${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`);
+            return hours;
+        }
+        function setTimers(listItem) {
+
+            listItem.forEach((it) => {
+
+                if (it.date) {
+                    var hour = getTimeDiff(`#time${it.id}`, it.date);
+
+                    var dt = new Date(it.date);
+                    var totalMinutes = Math.floor(((new Date()) - dt) / (1000 * 60));
+                    if (totalMinutes >= 2) {
+                        $(`#item${it.id}`).removeClass("pulse");
+                    }
+                }
+
+
+
+
+            });
+        }
+      
+
+        $(function () {
+
+            $("#cartBadgeFloat").on("click", function (
+            ) {
+                if (isLogged) {
+                    if (!isGerant) {
+                        window.location = window.location.origin + "/Home/Book";
+                    } else {
+                        window.location = window.location.origin + "/Home/BookShop";
+                    }
+                } else {
+                    ToastR("Merci de vous connecter", "warning", 10)
+                }
+
+            });
+            $("#cartButton").on("click", function (
+            ){
+                if(isLogged){
+                    if(!isGerant){
+                        window.location = window.location.origin + "/Home/Book";
+                    }else{
+                        window.location = window.location.origin + "/Home/BookShop";
+                    }
+                }else{
+                    ToastR("Merci de vous connecter","warning",10)
+                }
+
+            });
+            //(document.getElementById("monQrCode").removeAttribute("title")
+            //td.querySelector("#qrCode" + rowData.id).className = "zoom"
+
+            if ("@logged.ToString().ToLower()" == "true") {
+
+
+                if ("@isGerant.ToString().ToLower()" == "false") {
+                    ajaxManager("GET", "/User/GetUserSolde", function (res) { if (res) if (res.statusCode == 200) { $("#soldeNav").html(` Solde : <span class=" bold" style="color:orange;" >${res.data} F CFA</span>`) } }, function () { console.log("Erreur :Get Solde ") })
+                    ajaxManager("GET", "/User/GetUserQrCode", function (res) { if (res) if (res.data) {
+
+                        try {
+                                if (document.getElementById("monQrCode")) {
+                                    var qrcode = new QRCode(document.getElementById("monQrCode"), {
+                                        text: res.data,
+                                        width: 200,
+                                        height: 200,
+                                        colorDark: "#000000",
+                                        colorLight: "#ffffff",
+                                        correctLevel: QRCode.CorrectLevel.H
+                                    });
+
+                                    document.getElementById("monQrCode").removeAttribute("title")
+                                    setTimeout(function () {
+
+                                        try {
+                                            $("#monQrCode").show();
+                                            document.getElementById("monQrCode").href = document.getElementById("monQrCode").querySelector("img").src;
+                                            document.getElementById("monQrCode").querySelector("img").style.display = "none"
+                                            document.getElementById("monQrCode").download = "MonQRCode.png";
+                                        }
+                                        catch {
+
+                                        }
+
+                                    }, 1000);
+
+                                }
+
+                        }
+                        catch{
+
+                        }
+                     
+                    
+                    } }, function () { console.log("Erreur :Get Solde ") })
+                }
+
+            }
+            if ("@logged.ToString().ToLower()" == "true") {
+                if ("@isGerant.ToString().ToLower()" == "true" || "@isAdmin.ToString().ToLower()" == "true") {
+                ajaxManager("GET", "/Commande/GetPendingCommandsCount", function (res) { if (res) if (res.data && res.statusCode == 200) { $("#pendingCommandCount").attr("data-count", res.data) } }, function () { console.log("Erreur :Get Solde ") })
+
+                setInterval(function(){
+                    ajaxManager("GET", "/Commande/GetPendingCommandsCount", function (res) { if (res) if (res.data && res.statusCode == 200) { $("#pendingCommandCount").attr("data-count", res.data) } }, function () { console.log("Erreur :Get Solde ") })
+
+                },15000);
+                }
+            }
+
+       
+            
+
+            $(document).on({
+                //ajaxStart: function (e) {
+                //    console.log(e)
+                //    startLoadingById("body"); },
+                ajaxStop: function () {
+
+                    endLoadingById("body");
+                }
+            });
+
+            $(document).ajaxSend(function (evt, req, set) {
+                var url = set.url .toString().toLowerCase();
+
+               // console.log("<h1>URL :" + set.url + "</h1>");
+                if (!url.includes('/home/addarticle') && !url.includes('/home/addarticle') && !url.includes('/home/index') && !url.includes('/article/getarticleimage')
+                    && !url.includes("/commande/getpendingcommands")
+                    && !url.includes("/commande/getpendingcommandscount")
+                ) {
+                   
+                    startLoadingById("body");
+                }
+            });
+
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": 0,
+                "extendedTimeOut": 0,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "tapToDismiss": true
+            }
+
+            if (jQuery.validator !== undefined)
+                jQuery.extend(jQuery.validator.messages, {
+                    required: "Ce champ est obligatoire.",
+                    remote: "Please fix this field.",
+                    email: "Veuillez saisir une adresse électronique valide.",
+                    url: "Veuillez entrer une URL valide.",
+                    date: "Veuillez entrer une date valide.",
+                    dateISO: "Please enter a valid date (ISO).",
+                    number: "Veuillez entrer un nombre valide.",
+                    digits: "Veuillez saisir uniquement des chiffres.",
+                    creditcard: "Please enter a valid credit card number.",
+                    equalTo: "Please enter the same value again.",
+                    accept: "Please enter a value with a valid extension.",
+                    maxlength: jQuery.validator.format("Veuillez saisir au plus {0} caractères."),
+                    minlength: jQuery.validator.format("Veuillez saisir au moins {0} caractères."),
+                    rangelength: jQuery.validator.format("Please enter a value between {0} and {1} characters long."),
+                    range: jQuery.validator.format("Please enter a value between {0} and {1}."),
+                    max: jQuery.validator.format("Veuillez entrer une valeur inférieure ou égale à {0}."),
+                    min: jQuery.validator.format("Veuillez entrer une valeur supérieure ou égale à {0}.")
+                });
+            $.each($('.navbar-nav').find('.nav-link'), function () {
+
+                //console.log(window.location.pathname + "==" + $(this).attr('href'))
+                let ok = false;
+                if ($(this).attr('href') != null && $(this).attr('href') != undefined)
+                    ok = $(this).attr('href').toUpperCase() == window.location.pathname.toUpperCase();
+
+                $(this).toggleClass('active', ok);
+
+                $(this).css("color", ok ? "#FFBE33" : "white")
+            });
+            $.each($('.nav-item.dropdown').find('.dropdown-item'), function () {
+
+                //console.log(window.location.pathname + "==" + $(this).attr('href'))
+                let ok = false;
+                if ($(this).attr('href') != null && $(this).attr('href') != undefined)
+                    ok = $(this).attr('href').toUpperCase() == window.location.pathname.toUpperCase();
+
+                $(this).toggleClass('active', ok);
+                if (ok) {
+                    $('.nav-item.dropdown').find(".nav-link.dropdown-toggle").toggleClass('active', true)
+                }
+                // $(this).css("color", ok ? "#FFBE33" : "white")
+            });
+
+
+            //console.log(window.location.href);
+            var href = window.location.href;
+            //if(href.co)
+            $("body").addClass("sub_page");
+
+            // ToastR("bonjour", "success", 10, "toast-top-right mt-5")
+
+            $('#confirmModal').on('hidden.bs.modal', function (event) {
+                modal.unbind("click.ConfirmModal");
+            });
+            $('#confirmModal').on('shown.bs.modal', function (event) {
+                let button = $(event.relatedTarget) // Button that triggered the modal
+                let url = button.data('url'); // Extract info from data-* attributes
+                let method = button.data('method'); // Extract info from data-* attributes
+                let callback = button.data('callback'); // Extract info from data-* attributes
+                var methods = ["POST", "GET", "PUT", "DELETE", "PATCH"]
+                if (methods.indexOf(method) < 0) {
+                    console.log("UNKNOW Method = " + method)
+                    return;
+                }
+                const message = button.data('message');
+                let modal = $(this);
+                modal.find("#btnConfirmation").unbind("click.ConfirmModal").bind('click.ConfirmModal', function (e) {
+                    try {
+                        run_waitMe('roundBounce');
+                        ajaxManager(method, url, successHandler, errorHandler);
+                    } catch (e) {
+                        console.log("error ")
+                    }
+                    finally {
+                        $('#body_container').waitMe('hide');
+
+                    }
+
+                });
+
+                var successHandler = (data) => {
+
+                    if (data == undefined || data == null || data == "")
+                        ToastR("Une erreur a été rencontrée", "error", 10);
+                    else {
+                        console.log(data)
+                        if (data.success) {
+                            try {
+                                //console.log("callback ", callback)
+                                if (callback) {
+                                    //console.log("callback ", callback)
+                                    //eval(callback(button.closest('td')));
+                                    window[callback](button, data.data);
+                                }
+                                if(method=='DELETE'){
+                                    var table = $(".table").DataTable();
+                                    table
+                                        .row($(button).parents('tr'))
+                                        .remove()
+                                        .draw();
+
+                                }
+         
+
+                            } catch (e) {
+                                console.log("Exception " + e)
+                            }
+                            ToastR(data.message, "success", 10);
+
+                        }
+
+                        else {
+                            if (data.message != undefined && data.message.trim() != "")
+                                ToastR(data.message, "error", 10);
+
+                        }
+
+                    }
+
+                };
+
+                var errorHandler = (err) => {
+
+                    ToastR("La suppréssion a échoué", "error", 10);
+                };
+                modal.find('.modal-body').html(`${message}`);
+
+
+
+            });
+
+            $('#form').validate({
+                feedbackIcons: {
+                    valid: 'fa fa-check',
+                    invalid: 'fa fa-remove',
+                    validating: 'fa fa-refresh'
+                },
+                errorClass: "error fail-alert",
+                validClass: "valid success-alert"
+
+            });
+            $('#generateReportModal').off('hidden.bs.modal').on('hidden.bs.modal', function (event) {
+                const modal = $(this)
+             
+                modal.find('#fromDate').val("");
+                modal.find('#toDate').val("");
+            
+            });
+            $('#generateReportModal').off('shown.bs.modal').on('shown.bs.modal', function (event) {
+
+                const modal = $(this)
+
+                const button = $(event.relatedTarget) // Button that triggered the modal;
+
+                        modal.off("click", "#useDateTimeFilter1, #useDateTimeFilter2").on("click", "#useDateTimeFilter1, #useDateTimeFilter2", function () {
+                    console.log("eeee "  )
+
+                    if ($("#useDateTimeFilter1").is(":checked") ) {
+                        modal.find("#fromDate").val("");
+                        modal.find("#fromDate").prop("type","datetime-local");
+                        modal.find("#toDate").val("");
+                        modal.find("#toDate").prop("type","datetime-local");
+                    } else if($("#useDateTimeFilter2").is(":checked")){
+                        modal.find("#fromDate").val("");
+                        modal.find("#fromDate").prop("type", "date");
+                        modal.find("#toDate").val("");
+                        modal.find("#toDate").prop("type", "date");
+                    }
+
+                })
+
+                var successGetReportPrintHandler = (res) => {
+                    console.log("res  ",res)
+                    if (res.success && res.data) {
+
+                        try {
+
+
+                            $('#documentPartial').load(`/Commande/InvoicePartial`, res.data, function () {
+                                endLoadingById("body")
+
+                                printJS({
+                                    printable: 'invoice-box',
+                                    type: 'html',
+                                    font_size: '',
+                                    text_align: "",
+                                    header: '',
+                                    css: '../../css/invoice-box.css'
+                                });
+                            });
+
+
+
+                        }
+                        catch (e) {
+                            console.log(e)
+                            ToastR("Une erreur a été rencontrée lors de l'immpression de la facture", "error", 10);
+
+                        }
+
+
+                    }
+                }
+
+                modal.find('#btnValidate').unbind("click.GenerateReport").bind('click.GenerateReport', function () {
+                  
+                    var form = modal.find("#form");
+                    if (form.length > 0) {
+                        form = form[0];
+
+                        var postData = new FormData(form);
+                     console.log(serializeObject(form))
+                        postData.forEach(function (value, key) {
+                            //object[key] = value;
+                            console.log(key,value)
+                        });
+
+                        var fromDate = modal.find('#fromDate').val();
+                        var toDate = modal.find('#toDate').val();
+                        if(!fromDate){
+                            ToastR("La date de début est obligatoire.", "error", 10);
+                            return;
+                        }
+                        if (!toDate) {
+                            ToastR("La date de fin est obligatoire.", "error", 10);
+                            return;
+                        }
+                        var paymentMethods = postData.getAll("PaymentMethods");
+                        console.log("Payment Methods ", paymentMethods);
+
+                        if(!paymentMethods || paymentMethods.length==0){
+                            ToastR("Veuillez sélectionner au moins un moyens de paiement.", "error", 10);
+                            return;
+                        }
+                        $.ajax({
+                            type: "POST",
+                            url: "/Commande/GenerateReport",
+                            crossDomain: false,
+                            data: postData,
+                            dataType: "json",
+                            contentType: "multipart/form-data",
+                            processData: false,
+                            contentType: false,
+                            headers: {
+                                "Accept": "application/json"
+                            },
+                            success: successGetReportPrintHandler,
+                            error: errorSimpleHandler
+                        });
+
+                    
+                    }
+
+
+                    
+
+
+
+                
+                });
+
+
+            });
+            $('#genericModal').off('hidden.bs.modal').on('hidden.bs.modal', function (event) {
+
+                const modal = $(this);
+
+                modal.find("#genericModalTitle").html("Titre");
+
+                modal.find(".modal-body").html("");
+
+                modal.find("#btnValidate").text("Valider");
+
+                modal.find("#btnCancel").text("Annuler");
+                modal.find('#btnValidate').prop("disabled", false);
+                modal.find('#btnValidate').unbind("click.SaveGenericModal");
+
+
+
+            });
+
+
+
+            $('#genericModal').off('shown.bs.modal').on('shown.bs.modal', function (event) {
+
+                const modal = $(this)
+
+                const button = $(event.relatedTarget) // Button that triggered the modal
+                const url = button.data('url'); // Extract info from data-* attributes
+                const modalTitle = button.data('modaltitle'); // Extract info from data-* attributes
+                const btnValidateText = button.data('btnvalidatetext'); // Extract info from data-* attributes
+                const btnCancelText = button.data('btncanceltext'); // Extract info from data-* attributes
+                const modalBody = button.data('modalbody');
+
+                const method = button.data('method'); // Extract info from data-* attributes
+
+                const methods = ["POST", "GET", "PUT", "DELETE", "PATCH"]
+                if (methods.indexOf(method) < 0) {
+                    console.log("UNKNOW Method = " + method)
+                    return;
+                }
+                const refresh = button.data('refresh'); // Extract info from data-* attributes
+                const forward = button.data('forward'); // Extract info from data-* attributes
+                const getdata = button.data('getdata'); // Extract info from data-* attributes
+                const callback = button.data('callback'); // Extract info from data-* attributes
+                const successHandler = button.data('successhandler'); // Extract info from data-* attributes
+                const errorHandler = button.data('errorhandler'); // Extract info from data-* attributes
+
+                if (!url) {
+                    modal.find('#btnValidate').hide()
+                    modal.find('#btnCancel').hide()
+                }else{
+                    modal.find('#btnValidate').show()
+                    modal.find('#btnCancel').show()
+                }
+
+                if (modalTitle) {
+                    modal.find("#genericModalTitle").html(modalTitle);
+                }
+                if (modalBody) {
+                    modal.find(".modal-body").html(modalBody);
+                }
+                if (btnValidateText) {
+                    modal.find("#btnValidate").text(btnValidateText);
+                }
+                if (btnCancelText) {
+                    modal.find("#btnCancel").text(btnCancelText);
+                }
+
+                modal.find('#btnValidate').prop("disabled", false);
+                modal.find('#btnValidate').unbind("click.SaveGenericModal").bind('click.SaveGenericModal', function () {
+
+                modal.find('#btnValidate').prop("disabled",true);
+
+                    var formData = {};
+                 
+
+                    if (getdata) {
+                        formData = eval(getdata)
+                        console.log("formdata ", formData.get("montant"))
+                        console.log("formdata ", formData.get("userId"))
+                    }
+                    if (forward) {
+                        var forwardValue = eval(forward)
+                        console.log("forwardValue ", forwardValue)
+                        if (forwardValue == "return") {
+                            endLoadingById("body")
+                            modal.find('#btnValidate').prop("disabled", false);
+                            //$('#genericModal').modal('hide');
+                            return;
+                        }
+
+                    }
+
+                    console.log(url)
+                    if (url.toLowerCase() == "/commande/reject") {
+                        startLoadingById("body");
+                    }
+
+                    $.ajax({
+                        type: method,
+                        url: url,
+                        crossDomain: false,
+                        data: formData,
+                        dataType: "json",
+                        contentType: "multipart/form-data",
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            "Accept": "application/json"
+                        },
+                        success: function (res) {
+                            $('#genericModal').modal('hide');
+                            endLoadingById("body")
+                            if (successHandler) {
+                                window[successHandler](res);
+                                if (callback) {
+                                    window[callback](button, res.object);
+                                }
+                            }
+
+                        },
+                        error: function (err) {
+                            endLoadingById("body")
+                            if (errorHandler) {
+                                window[errorHandler](err);
+                            }
+                            //messageToast(err.message, err.status, 15)
+                        }
+
+
+                    });
+
+
+
+                })
+            });
+
+
+
+        })
+
+
+        const charpSvgIcon = `
+                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456,029 456,029;" xml:space="preserve">
+                                                                <g>
+                                                                <g>
+                                                                <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
+                                                 c29.184,0,53.248-23.552,53.248-53.248C398.336,362.926,374.784,338.862,345.6,338.862z" />
+                                                  </g>
+                                                </g>
+                                                                <g>
+                                                                <g>
+                                                                <path d="M439.296,84.91c-1.024,0-2.56-0.512-4.096-0.512H112.64l-5.12-34.304C104.448,27.566,84.992,10.67,61.952,10.67H20.48
+                                                 C9.216,10.67,0,19.886,0,31.15c0,11.264,9.216,20.48,20.48,20.48h41.472c2.56,0,4.608,2.048,5.12,4.608l31.744,216.064
+                                                 c4.096,27.136,27.648,47.616,55.296,47.616h212.992c26.624,0,49.664-18.944,55.296-45.056l33.28-166.4
+                                                 C457.728,97.71,450.56,86.958,439.296,84.91z" />
+                                                  </g>
+                                                </g>
+                                                                <g>
+                                                                <g>
+                                                                <path d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
+                                                 c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
+                                                  </g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                                                <g>
+                                                </g>
+                                              </svg>
+                `;
+        var handleSuccess = (data, redirectroute) => {
+            endLoadingById("body");
+            if (data == undefined || data == null || data == "")
+                ToastR("Une erreur a été rencontrée", "error", 10);
+            else {
+                console.log(data)
+                console.log("redirect = " + $(this).data("redirectroute"))
+                //
+                if (data.success) {
+
+                    ToastR(data.message, "success", 10);
+                    if (redirectroute) {
+                        setTimeout(function () {
+                            window.location = window.location.origin + redirectroute;
+                        }, 3000);
+
+                    }
+
+                }
+
+                else {
+                    if (data.message != undefined && data.message.trim() != "")
+                        ToastR(data.message, "error", 10);
+                    if (data.errors != undefined && data.errors != null) {
+
+                        for (var elementId in data.errors) {
+                            var errorMessages = data.errors[elementId];
+                            let length = errorMessages.length;
+                            for (var i = 0; i < length; i++) {
+                                $(`#${elementId}-error${i}`).remove();
+                                $(`#${elementId}`).css("margin-bottom", "10px");
+                                if ($(`#${elementId}`).is('select')) {
+
+                                    $(`.sumo_${elementId}`).after(`<label id="${elementId}-error${i}" class="error fail-alert" for="${elementId}">${errorMessages[i]}</label>`);
+                                    if ($(`#${elementId}`).next().hasClass("nice-select")) {
+                                        console.log("Vreai")
+                                        $(`#${elementId}`).next().after(`<label id="${elementId}-error${i}" class="error fail-alert" for="${elementId}">${errorMessages[i]}</label>`);
+                                    }
+                                }
+                                else
+                                    $(`#${elementId}`).after(`<label id="${elementId}-error${i}" class="error fail-alert" for="${elementId}">${errorMessages[i]}</label>`);
+
+                            }
+
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+
+        var errorHandler = (err) => {
+            endLoadingById("body");
+
+            ToastR("Une erreur inattendue a été rencontrée", "error", 15);
+        }
+
+        $("#btnCreate").on("click", function () {
+
+            var redirectroute = $(this).data("redirectroute");
+            var url = $(this).data("url");
+            console.log("redirect = " + redirectroute)
+            console.log("url = " + url)
+            if (!$('#form').valid()) return;
+            try {
+
+
+          
+
+                form = document.getElementById('form');
+                //let postData = serializeObject(form);
+                let postData = new FormData(form);
+                let isInterimEmployeeCheckbox = document.getElementById("isInterimEmployee");
+                if (isInterimEmployeeCheckbox != null && isInterimEmployeeCheckbox != undefined) {
+
+                    postData.set("IsInterimEmployee", isInterimEmployeeCheckbox.checked);
+                }
+
+                let useActiveDirectoryAuthCheckbox = document.getElementById("useActiveDirectoryAuth");
+                if (useActiveDirectoryAuthCheckbox != null && useActiveDirectoryAuthCheckbox != undefined) {
+
+                    postData.set("UseActiveDirectoryAuth", useActiveDirectoryAuthCheckbox.checked);
+                }
+
+                let controlStockQuantityCheckbox = document.getElementById("controlStockQuantity");
+                if (controlStockQuantityCheckbox != null && controlStockQuantityCheckbox != undefined) {
+
+                    postData.set("ControlStockQuantity", controlStockQuantityCheckbox.checked);
+                }
+
+
+                //   startLoadingById("body");
+
+                if (!url) {
+                    ToastR("Invalid URL", "error", 15);
+                    return;
+                }
+                var successHandler = (data) => {
+                    handleSuccess(data, redirectroute)
+                };
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    crossDomain: false,
+                    data: postData,
+                    dataType: "json",
+                    contentType: "multipart/form-data",
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        "Accept": "application/json"
+                    },
+                    success: successHandler,
+                    error: errorHandler
+                });
+
+            } catch (e) {
+                console.log("Error : " + e);
+            }
+            finally {
+
+
+
+            }
+
+        }
+
+        );
+
+        $("#btnUpdate").on("click", function () {
+
+            var redirectroute = $(this).data("redirectroute");
+            var url = $(this).data("url");
+            console.log("redirect = " + redirectroute)
+            console.log("url = " + url)
+            if (!$('#form').valid()) return;
+            try {
+
+                //run_waitMe('img');
+                //   startLoadingById("body");
+
+
+                form = document.getElementById('form');
+                //let postData = serializeObject(form);
+                let postData = new FormData(form);
+                let actifCheckbox = document.getElementById("actif");
+                if (actifCheckbox != null && actifCheckbox != undefined) {
+
+                    postData.set("Actif", actifCheckbox.checked);
+                }
+
+                let isOnMenuCheckbox = document.getElementById("isArticleOnMenu");
+                if (isOnMenuCheckbox != null && isOnMenuCheckbox != undefined) {
+
+                    postData.set("IsArticleOnMenu", isOnMenuCheckbox.checked);
+                }          
+                let isApprovedCheckbox = document.getElementById("isApproved");
+                if (isApprovedCheckbox != null && isApprovedCheckbox != undefined) {
+
+                    postData.set("IsApproved", isApprovedCheckbox.checked);
+                }
+
+
+                let isInterimEmployeeCheckbox = document.getElementById("isInterimEmployee");
+                if (isInterimEmployeeCheckbox != null && isInterimEmployeeCheckbox != undefined) {
+
+                    postData.set("IsInterimEmployee", isInterimEmployeeCheckbox.checked);
+                }
+
+                let useActiveDirectoryAuthCheckbox = document.getElementById("useActiveDirectoryAuth");
+                if (useActiveDirectoryAuthCheckbox != null && useActiveDirectoryAuthCheckbox != undefined) {
+
+                    postData.set("UseActiveDirectoryAuth", useActiveDirectoryAuthCheckbox.checked);
+                }
+                let controlStockQuantityCheckbox = document.getElementById("controlStockQuantity");
+                if (controlStockQuantityCheckbox != null && controlStockQuantityCheckbox != undefined) {
+
+                    postData.set("ControlStockQuantity", controlStockQuantityCheckbox.checked);
+                }
+                if (!url) {
+                    ToastR("Invalid URL", "error", 15);
+                    return;
+                }
+
+                var successHandler = (data) => {
+                    handleSuccess(data, redirectroute)
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    crossDomain: false,
+                    data: postData,
+                    dataType: "json",
+                    contentType: "multipart/form-data",
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        "Accept": "application/json"
+                    },
+                    success: successHandler,
+                    error: errorHandler
+                });
+
+            } catch (e) {
+                console.log("Error : " + e);
+            }
+            finally {
+
+
+
+            }
+
+        }
+
+        );
+    </script>
+    <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

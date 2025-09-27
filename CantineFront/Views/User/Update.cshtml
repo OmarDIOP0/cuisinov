@@ -1,0 +1,251 @@
+﻿@model  CantineFront.ViewModels.UserViewModel
+@section Styles{
+
+
+
+    <!-- alternatively you can use the font awesome icon library if using with `fas` theme (or Bootstrap 4.x) by uncommenting below. -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
+    <!-- the fileinput plugin styling CSS file -->
+    <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+
+    <!-- if using RTL (Right-To-Left) orientation, load the RTL CSS file after fileinput.css by uncommenting below -->
+    <!-- link href="~/lib/bootstrap-fileinput/css/fileinput-rtl.min.css" media="all" rel="stylesheet" type="text/css" /-->
+}
+@{
+    string actif = (Model.User?.Actif ?? false) ? "checked" : "";
+
+    string isInterimEmployee = (Model.User?.IsInterimEmployee ?? false) ? "checked" : "";
+    // string useActiveDirectoryAuth = (Model.User?.UseActiveDirectoryAuth ?? false) ? "checked" : "";
+}
+<!-- book section -->
+<section class="book_section layout_padding">
+    <div class="container">
+        <div class="heading_container">
+            <h2>
+                Modifier utilisateur
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form_container">
+                    <form action="" class="row " id="form">
+                        <input type="hidden" name="Id" value="@Model.User.Id"/>
+                        <input type="hidden" name="Solde" value="@Model.User.Solde" />
+                        <input type="hidden" name="Guid" value="@Model.User.Guid" />
+                        <input type="hidden" name="QrCode" value="@Model.User.QrCode" />
+
+                        <div class="col-md-4 ">
+
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="isInterimEmployee" @isInterimEmployee>
+                                <label class="form-check-label" for="isInterimEmployee">Est Intérimaire</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-8">
+
+
+                            @* <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="useActiveDirectoryAuth" @useActiveDirectoryAuth>
+                                <label class="form-check-label" for="useActiveDirectoryAuth">Uiliser l'authentifaction avec les Identfiants Windows</label>
+                            </div> *@
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Prénom</label>
+                            <input type="text" class="form-control" placeholder="" name="Prenom" id="Prenom" value="@Model.User.Prenom" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Nom</label>
+                            <input type="text" class="form-control" placeholder="" name="Nom" id="Nom" value="@Model.User.Nom" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Login</label>
+                            <input type="text" class="form-control" placeholder="" name="Login" id="Login" value="@Model.User.Login" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Matricule</label>
+                            <input type="text" class="form-control" placeholder="" name="Matricule" id="Matricule" value="@Model.User.Matricule" />
+                        </div>
+                        <div class="col-8">
+                            <label class="form-label">Email</label>
+                            <input type="text" class="form-control" placeholder="" name="Email" id="Email" value="@Model.User.Email" />
+                        </div>
+                        <div class="col-8">
+                            <label class="form-label">Téléphone</label>
+                            <input type="text" class="form-control" placeholder="" name="Telephone" id="Telephone" value="@Model.User.Telephone" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Département</label>
+                            <select class="form-control nice-select wide" name="DepartmentId" id="DepartmentId">
+                                <option value="" disabled >
+                                    Sélectionnez le département?
+                                </option>
+                                @if (Model.Departments != null)
+                                {
+                                    foreach (var item in Model.Departments)
+                                    {
+
+                                        bool selecteed = item.Id == Model.User.DepartmentId;
+                                        <option selected="@selecteed" value="@item.Id">@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Profil</label>
+                            <select class="form-control nice-select wide" name="Profile" id="Profile" >
+                                <option value="" disabled >
+                                    Sélectionnez le profil?
+                                </option>
+                                @{
+                                    var s1 = Model.User.Profile == "USER";
+                                    var s2 = Model.User.Profile == "GERANT";
+                                    var s3 = Model.User.Profile == "ADMIN";
+                                }
+                               
+                                <option selected="@s1" value="USER">USER</option>
+                                <option selected="@s2" value="GERANT">GERANT</option>
+                                <option selected="@s3" value="ADMIN">ADMIN</option>
+                               
+                            </select>
+                        </div>
+                        <div class="col-6 ">
+
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="actif" @actif>
+                                <label class="form-check-label" for="actif">Actif</label>
+                            </div>
+                            
+                        </div>
+                        <div class="btn_box d-flex justify-content-between  col-12">
+                            <button class="custom-btn" id="btnUpdate" type="button" data-redirectroute="/User/List" data-url="/User/UpdateUser">
+                                Enregistrer
+                            </button>
+                            <button class="custom-btn" style="background-color:#007bff !important;border-color:#007bff !important;color:#fff !important" type="button" onclick="history.back()">
+                                Retour
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 card  ">
+
+                <div class="  row d-flex justify-content-center">
+
+                    <p class="col-12 text-center bg-danger text-white my-2">
+                        Liste des commandes en attente
+                    </p>
+                    <div class=" col-md-11 row " id="messagesList">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end book section -->
+@section Scripts{
+
+    <script>
+        $(function () {
+
+
+            GetPendingCommandes();
+        })
+
+        //$("#btnUpdate").on("click", function () {
+
+
+        //    //if (!$('#ssrForm').valid()) return;
+        //    try {
+
+        //        //run_waitMe('img');
+        //        startLoadingById("body");
+
+
+        //        form = document.getElementById('form');
+        //        //let postData = serializeObject(form);
+        //        let postData = new FormData(form);
+
+        //        //var successHandler = (res) => {
+        //        //    endLoadingById("body");
+
+
+        //        //}
+        //        var successHandler = (data) => {
+        //            endLoadingById("body");
+        //            if (data == undefined || data == null || data == "")
+        //                ToastR("Une erreur a été rencontrée", "error", 10);
+        //            else {
+        //                console.log(data)
+        //                if (data.success) {
+        //                    window.location = window.location.origin + '/User/List';
+        //                    ToastR(data.message, "success", 10);
+
+        //                }
+
+        //                else {
+        //                    if (data.message != undefined && data.message.trim() != "")
+        //                        ToastR(data.message, "error", 10);
+        //                    if (data.errors != undefined && data.errors != null) {
+
+        //                        for (var elementId in data.errors) {
+        //                            var errorMessages = data.errors[elementId];
+        //                            let length = errorMessages.length;
+        //                            for (var i = 0; i < length; i++) {
+        //                                if ($(`#${elementId}`).is('select')) {
+        //                                    $(`.sumo_${elementId}`).after(`<label id="${elementId}-error${i}" class="error fail-alert" for="Intitule">${errorMessages[i]}</label>`);
+
+        //                                }
+        //                                else
+        //                                    $(`#${elementId}`).after(`<label id="${elementId}-error${i}" class="error fail-alert" for="Intitule">${errorMessages[i]}</label>`);
+
+        //                            }
+
+        //                        }
+        //                    }
+        //                }
+
+        //            }
+
+        //        };
+        //        var errorHandler = (err) => {
+        //            endLoadingById("body");
+
+        //            ToastR("Une erreur inattendue a été rencontrée", "error", 15);
+        //        }
+
+
+
+        //        $.ajax({
+        //            type: "POST",
+        //            url: "/User/UpdateUser",
+        //            crossDomain: false,
+        //            data: postData,
+        //            dataType: "json",
+        //            contentType: "multipart/form-data",
+        //            processData: false,
+        //            contentType: false,
+        //            headers: {
+        //                "Accept": "application/json"
+        //            },
+        //            success: successHandler,
+        //            error: errorHandler
+        //        });
+
+        //    } catch (e) {
+        //        console.log("Error : " + e);
+        //    }
+        //    finally {
+
+
+
+        //    }
+
+        //}
+
+        //);
+
+    </script>
+
+                    }

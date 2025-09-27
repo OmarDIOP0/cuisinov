@@ -1,0 +1,1211 @@
+﻿<div class="p-2 container-fluid px-5 ">
+
+
+    <div class="row d-flex justify-content-between m-2 ">
+        <a class="col-md-2 btn btn-primary mb-1 " id="generateAllQrCode" href="#!"
+           data-method="PUT"
+           data-message=" Voulez-vous regénerer tous les Codes QR"
+           data-url="/User/GenerateAllQrCode" data-toggle="modal"
+           data-target="#confirmModal"><i class="fa fa-cogs"></i> Générer les Codes QR</a>
+        <a class="col-md-2 offset-md-1 btn btn-primary" id="sendAllQrCode" href="#!"
+           data-method="PUT"
+           data-message=" Voulez-vous envoyer à chaque employé son QR CODE?"
+           data-url="/User/SendAllQrCode" data-toggle="modal"
+           data-target="#confirmModal"><i class="fa fa-cogs"></i> Envoyer les Codes QR</a>
+        <button type="button" data-method="PUT"
+                data-modaltitle="Rechargement multiple "
+                data-successhandler="rechargementMultipleSuccessHandler"
+                data-errorhandler="errorHandler"
+                data-callback="false"
+                data-forward="rechargeMultiComptesFormValid()"
+                data-getdata="getDataForm()"
+                data-modalbody="<h6>Montant</b><br><br><input class='form-control' name='montant' id='montant' type='number' ></h6>"
+                data-url="/User/RechargerMultipleCompte" data-toggle="modal"
+                data-target="#genericModal" rel="tooltip"
+                class=" col-md-2  offset-md-1 btn btn-success mb-1 " data-original-title="" title="">
+            <i class="fa-money  fa"></i> Recharger les comptes
+        </button>
+        <button type="button" data-method="PUT"
+                data-modaltitle="Réinitialiser mot de passe"
+                data-successhandler="resetMultipleSuccessHandler"
+                data-errorhandler="errorHandler"
+                data-callback="false"
+                data-forward="resetPwdFormValid()"
+                data-getdata="getDataResetMultiForm()"
+                data-modalbody="Voulez vous réinitialiser les mots de passes des comptes sélectionnés?"
+                data-url="/User/ResetPasswordMultiAccounts" data-toggle="modal"
+                data-target="#genericModal" rel="tooltip"
+                class="col-md-2  offset-md-1 btn btn-primary mb-1 " data-original-title="" title="">
+            <i class="fa-cogs fa"></i> Réinitiliser mot de passe
+        </button>
+
+
+
+        <a class="btn btn-primary mb-1 " href="/User/Create"><i class="fa fa-plus"></i> Ajouter</a>
+    </div>
+
+
+    <div id="qrCode"></div>
+    <table class="table" id="tbUsers">
+        <thead>
+            <tr>
+                @*    <th scope="col"></th>*@
+                <th scope="col"><input id="selectallCheckbox" type="checkbox" class="select-all" /></th>
+                <th scope="col">QR Code</th>
+                <th scope="col">Mat.</th>
+                <th scope="col">Prenom</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Login</th>
+                <th scope="col">Password</th>
+                <th scope="col">Authe Type</th>
+                <th scope="col">Email</th>
+                <th scope="col">Téléphone</th>
+                <th scope="col">Profil</th>
+                <th scope="col">Département</th>
+                <th scope="col">Solde</th>
+
+                <th scope="col">Actions</th>
+                <th scope="col">Plus</th>
+            </tr>
+        </thead>
+
+    </table>
+</div>
+<div class="modal fade" id="documentPartial">
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript">
+        function updateSoldeCell(btn, data) {
+
+            var td = $(btn).closest('td');
+
+            console.log("td = ", td)
+            console.log("data = ", data);
+            if (data) {
+                $("#solde_" + data.id).html(`<span id="solde_${data.id}"><b>${data.solde} F CFA</b></span>`);
+                //  td.html(`${data.solde} F CFA`);
+            }
+
+        }
+        function rechargeCompteFormValid() {
+   
+            var val = $("#genericModal").find("#montant").val();
+
+            if (!val) {
+
+                ToastR("Montant invalide!", "error", 10);
+                return "return";
+            }
+        }
+        function rechargeMultiComptesFormValid() {
+            //var table = $('#tbUsers').DataTable();
+            //var rows = table.rows('.selected').data().toArray();
+
+            //let userIds = rows.map((row) => {
+
+            //    return row.id;
+
+            //});
+            //if (userIds.length <= 0) {
+
+            //    ToastR("Veuillez sélectionner au moins une ligne!", "warning", 10);
+            //    return "return";
+            //}
+
+            var val = $("#genericModal").find("#montant").val();
+
+            if (!val) {
+
+                ToastR("Montant invalide!", "error", 10);
+                return "return";
+            }
+        }
+        function resetPwdFormValid() {
+            var table = $('#tbUsers').DataTable();
+            var rows = table.rows('.selected').data().toArray();
+     
+            let userIds = rows.map((row) => {
+
+                return row.id;
+
+            });
+            if (userIds.length<=0) {
+
+                ToastR("Veuillez sélectionner au moins une ligne!", "error", 10);
+                return "return";
+            }
+        }
+        function format(d) {
+            // `d` is the original data object for the row
+            if (!d) {
+
+                return;
+            }
+            var date = "";
+            if (d.lastRechargeDate == null) {
+                date = "";
+            } else {
+                date = moment(d.lastRechargeDate).format("DD/MM/YYYY HH:mm");
+            }
+
+
+            let table = $(`<table cellpadding="5" class="childtable table table-bordered bg-gray" cellspacing="0" border="0" style="padding-left:50px;background-color:#c6dcf5;width:80%">
+                                                                            <thead>
+
+
+
+                                                                            <th scope="col" class="font-weight-bold text-left">Date de  dernière recharge</th>
+                                                                            <th scope="col" class="font-weight-bold text-left">Montant</th>
+
+                                                                            </thead>
+                                                                                      <tbody>
+                                                                                      <tr>
+                                                                                                              <td>${date}</td>
+                                                                                                      <td>${d.lastRechargeAmount ? d.lastRechargeAmount : ""}</td>
+                                                                                      </tr>
+                                                                                    </tbody>
+                                                                            </table>`);
+
+            return table;
+        }
+        $(function () {
+            //   $("#tbUsers").DataTable();
+            var successHandler = function (res) {
+                //console.log(JSON.stringify(res))
+                if (res) {
+
+                    if (res.success) {
+                        ToastR(res.message, res.status, 15);
+
+                       var table= $('#tbUsers').DataTable({
+                            "lengthMenu": [[25, 50, 100, 150, 200, 300, 500, -1], [25, 50, 100, 150, 200, 300, 500, "Tous"]],
+                 
+                            data: res.data,
+                            responsive: true,
+                            destroy: true,
+                            select: {
+                                style: 'multi',
+                                selector: 'td:first-child.select-checkbox'
+                            },
+                            "columnDefs": [{
+                                "targets": 1,
+                                "createdCell": function (td, cellData, rowData, row, col) {
+
+                                    //console.log(td)
+                                    //console.log(cellData)
+
+                                    if (cellData) {
+                                        if (cellData == null) {
+                                            return "";
+                                        }
+
+                                        var qrcode = new QRCode(td.querySelector("#qrCode" + rowData.id), {
+                                            text: cellData,
+                                            width: 60,
+                                            height: 60,
+                                            colorDark: "#000000",
+                                            colorLight: "#ffffff",
+                                            correctLevel: QRCode.CorrectLevel.H
+                                        });
+                                        td.querySelector("#qrCode" + rowData.id).removeAttribute("title")
+                                        td.querySelector("#qrCode" + rowData.id).className = "zoom"
+                                        //setTimeout(() => {
+
+                                        //    var dataURL = document.getElementById("qrCode" + row.id).toDataURL();
+                                        //    console.log("dataURL ", dataURL)
+                                        //    $("#qrCode" + row.id).html(dataURL)
+                                        //}, 500);
+
+                                    }
+                                }
+                            }, {
+                                orderable: false,
+                                className: 'select-checkbox',
+                                targets: 0
+                            }
+                                //, {
+                                //orderable: false,
+                                //className: 'tbSsr select-checkbox',
+                                //targets: 0,
+                                //"createdCell": function (td, cellData, rowData, row, col) {
+
+                                //    $(row).addClass("selectable-execute");
+
+
+
+                                //}
+                            //}
+
+
+                            ],
+                            columns: [
+                                {
+                                    width: '0%',
+                                    data: null,
+                              
+                                    defaultContent: '',
+                                },
+                                {
+                                    width: '8%',
+                                    data: "qrCode",
+                                    defaultContent: '',
+                                    className: "tablesmalltext",
+
+                                    render: function (data, type, row) {
+
+                                        if (data == null) {
+                                            return "";
+                                        }
+
+
+                                        return `<div id="qrCode${row.id}"></div>`
+                                    }
+                                },
+                                {
+                                    width: '5%',
+                                    data: 'matricule',
+                                    className: "tablesmalltext",
+                                    defaultContent: '',
+                                },
+                                {
+                                    width: '10%',
+                                    data: 'prenom',
+                                    className: "tablesmalltext",
+                                    defaultContent: '',
+                                },
+                                {
+                                    width: '10%',
+                                    data: 'nom',
+                                    className: "tablesmalltext",
+                                    defaultContent: '',
+                                },
+                                {
+                                    width: '6%',
+                                    data: 'login',
+                                    defaultContent: '', className: "tablesmalltext"
+                                },  
+                                {
+                                    width: '6%',
+                                    data: 'password',
+                                    defaultContent: '', className: "tablesmalltext",
+                                    render: function (data, type, row) {
+                                        if (row.useActiveDirectoryAuth!=true){
+
+                                            return ` <a href="#" class="link-primary btn-toggle-menu"   data-method="PATCH"
+                                                                                                                                         data-message=" Voulez-vous réinitialiser le mot de passe?</b>"
+                                                                                                                                                data-url="/User/RenitializePassword/${row.id}" data-toggle="modal"
+                                                                                                                                                data-callback="false"
+
+                                                                                                                                                data-target="#confirmModal" rel="tooltip"> Réinitialiser</a>`;
+                                        }
+                                        return '';
+                                    }
+                                },
+                                {
+                                    width: '6%',
+                                    data: null,
+                                    defaultContent: '', className: "tablesmalltext",
+                                    render: function (data, type, row) {
+                                        if (row.profile =="GERANT") {
+                                            return `<span class="badge badge-primary">Username & Password</span>`;
+                                        }
+                                        if (row.useActiveDirectoryAuth == true || row.useActiveDirectoryAuth == null) {
+                                            return `<span class="badge badge-primary">AD</span>`;
+                                        }
+                                      else{
+                                            return `<span class="badge badge-primary">Username & Password</span>`;
+                                      }
+                                    }
+                                },
+                                {
+                                    width: '10%',
+                                    data: 'email',
+                                    className: "tablesmalltext",
+                                    defaultContent: '',
+                                },
+                                {
+                                    width: '6%',
+                                    data: 'telephone',
+                                    defaultContent: '',
+                                    className: "tablesmalltext",
+                                },
+                                {
+                                    width: '6%',
+                                    data: 'profile',
+                                    defaultContent: '',
+                                    className: "tablesmalltext",
+                                },
+                                {
+                                    width: '10%',
+                                    data: 'department',
+                                    className: "tablesmalltext",
+                                    defaultContent: '',
+                                    render: function (data, type, row) {
+                                        return data ? data.name : "";
+                                    }
+                                },
+                                {
+                                    width: '10%',
+                                    data: 'solde',
+                                    className: "tablesmalltext",
+                                    defaultContent: '',
+                                    render: function (data, type, row) {
+                                        return data >= 0 ? `<span id="solde_${row.id}">${data} F CFA</span>` : `<span id="solde_${row.id}"/>`;
+                                    }
+                                },
+                                {
+
+                                    data: null,
+                                    width: '20%',
+                                    defaultContent: "",
+                                    className: "tablesmalltext",
+                                    render: function (data, type, row) {
+
+                                        var btnEdit = `          <a class="btn btn-primary m-2 btn-sm" href="/User/Update/${row.id}"><span class='fa fa-edit'></span></a>`;
+                                        var btnSendQrCode = ``;
+                                        var btnDelete = `
+                                                                                        <button type="button" data-method="DELETE"
+                                                                                                        data-message=" Voulez-vous vraiment supprimer l'utilisateur <b>${row.prenom + " " + row.nom}</b>"
+                                                                                                        data-url="/User/DeleteUser/${row.id}" data-toggle="modal"
+                                                                                                data-target="#confirmModal" rel="tooltip"
+                                                                                                class="btn btn-danger m-2 btn-sm" data-original-title="" title="">
+                                                                                            <span class="fa-remove  fa"></span>
+                                                                                        </button>`;
+                                        var btnRecharger = "";
+                                        var btnPrint = '';
+                                        if (row.profile != "GERANT") {
+                                            btnRecharger = `
+                                                                                                        <button type="button" data-method="PUT"
+                                                                                                                 data-modaltitle="Rechargement compte"
+                                                                                                                         data-successhandler="rechargementSuccessHandler"
+                                                                                                                         data-errorhandler="errorHandler"
+                                                                                                                         data-callback="updateSoldeCell"
+                                                                                                                         data-forward="rechargeCompteFormValid()"
+                                                                                                                 data-getdata="getDataSoldeForm(${row.id})"
+                                                                                                                                                                data-modalbody=" <h6>Recharger le compte de <b>${row.prenom}  ${row.nom} Mat: ${row.matricule} </b><br><br><input class='form-control' name='montant' id='montant' type='number' ></h6>"
+                                                                                                                                data-url="/User/RechargerCompte" data-toggle="modal"
+                                                                                                                        data-target="#genericModal" rel="tooltip"
+                                                                                                                class="btn btn-success m-2 btn-sm" data-original-title="" title="">
+                                                                                                            <span class="fa-money  fa"></span>
+                                                                                                        </button>`;
+                                            btnPrint = `<a class=" m-2 printQrCode" href="#!" data-matricule="${row.matricule}"  data-fullname="${row.prenom + " " + row.nom}" data-printable="qrCode${row.id}"><span class='fa fa-print'> Imprimer QR Code</span></a>`
+                                             btnSendQrCode = `
+                                                                                                        <button type="button" data-method="PUT"
+                                                                                                                        data-message=" Voulez-vous envoyer à <b>${row.prenom + " " + row.nom}</b> son QR Code par mail?"
+                                                                                                                     data-url="/User/SendUserQrCode/${row.id}" data-toggle="modal"
+                                                                                                                data-target="#confirmModal" rel="tooltip"
+                                                                                                                class="btn btn-primary m-2 btn-sm" data-original-title="" title="">
+                                                                                                                    <span class="fa fa-envelope "></span>
+                                                                                                        </button>`;
+
+                                        }
+
+                                        return btnEdit + btnDelete + btnRecharger + btnPrint + btnSendQrCode;
+                                    }
+                                }
+                                ,
+                                {
+
+                                    data: null,
+                                    width: '10%',
+                                    defaultContent: "",
+                                    className: "dt-custom-control custom px-2",
+                                    render: function (data, type, row, meta) {
+                                        if (type === 'export') {
+
+                                            return data;
+                                        }
+                                        return `<span class="dt-custom-control-plus"></span> <a></a> `;
+
+
+                                    }
+                                }
+                            ],
+                            "language": {
+                                "zeroRecords": "Aucune donnée n'est disponible",
+                                "lengthMenu": "Afficher _MENU_ éléments",
+                                "info": "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+                                "search": "Rechercher : ",
+                                "oPaginate": {
+                                    "sFirst": "Premier",
+                                    "sLast": "Dernier",
+                                    "sNext": "Suivant",
+                                    "sPrevious": "Précédent"
+                                },
+                            },
+                            initComplete: function (settings, json) {
+
+                                console.log("json ", settings.data);
+                                var table = $('#tbUsers').DataTable();
+                                table.on("click", "#selectallCheckbox", function () {
+                                    if ($("#selectallCheckbox").hasClass("selected")) {
+                                        table.rows().deselect();
+                                        $("#selectallCheckbox").removeClass("selected");
+                                    } else {
+                                        table.rows().select();
+                                        $("#selectallCheckbox").addClass("selected");
+                                    }
+
+                                });
+                                $('#tbUsers').on("click", ".printQrCode", function () {
+                                    //onclick="printJS({printable:'qrCode${row.id}',type: 'html',css: 'img{ width:"100px";height:"100px"}'})"
+                                    var printable = $(this).data("printable");
+                                    var fullname = $(this).data("fullname");
+                                    var matricule = $(this).data("matricule");
+
+                                    if (printable) {
+                                        var qrCodeDiv = document.getElementById(printable);
+                                        if (qrCodeDiv) {
+                                            var image = qrCodeDiv.querySelector("img");
+                                            if (image) {
+                                                var imageSource = image.src;
+                                                if (imageSource) {
+
+                                                    printJS({
+                                                        printable: imageSource,
+                                                        type: 'image',
+                                                        header: '',
+                                                        header: `<h3 class="" style="text-align:center;margin-bottom:25px">${fullname}<br/><br/>${matricule}</h3>`,
+                                                        footer: `<h3 class="" style="margin-top: 25px;text-align:center">${matricule}</h3>`,
+                                                        imageStyle: "width:50%;margin-bottom:20px;margin-left:25%;margin-right: 25%;",
+
+                                                        css: '../../css/qrcode-print.css'
+                                                    });
+                                                }
+                                            }
+
+                                        }
+
+                                    }
+
+
+
+                                });
+
+
+
+                                $('#tbUsers thead tr').clone(true).appendTo('#tbUsers thead');
+                                $('#tbUsers thead tr:eq(1) th').off('click').removeClass("sorting sorting_asc").each(function (i) {
+                                    var title = $(this).text().trim();
+
+
+                                    if (i == 2 || i == 5 || i == 8) {
+                                        var $options = [];
+                                        if (i == 2)
+                                            $options = $("#PeriodiciteHidden > option").clone();
+                                        else if (i == 5)
+                                            $options = `<option selected />
+                                       <option value="A_FAIRE">à faire</option>
+                                     <option value="EN_COURS">en cours</option>
+                      <option value="TERMINE">réalisé</option>`;
+                                        else $options = `<option selected />
+                                       <option value="validé">validé</option>
+                                     <option value="rejeté">rejeté</option>`;
+                                        //$('#secondSelectId').append($options);
+                                        var select = $(`<select type="text" class="form-control custom-sumoselect"  ></select>`).on('change', function () {
+                                            var val = $.fn.dataTable.util.escapeRegex(
+                                                $(this).val()
+
+                                            );
+
+                                            table
+                                                .column(i)
+                                                .search(this.value)
+                                                .draw();
+
+                                        });
+                                        select.append($options)
+                                        $(this).html(select);
+                                        //select.SumoSelect({
+                                        //    search: true,
+                                        //    placeholder: 'Selectionnez',
+                                        //    searchText: 'Saisissez ici.',
+                                        //    noMatch: 'Pas de correspondance pour "{0}"'
+
+                                        //});
+                                    }
+
+                                    else if (i == 0 || i == 7 || i == 9) {
+                                        $(this).html('');
+                                    }
+                                    else {
+                                        var searchinput = $('<input class="form-control" type="text" placeholder="' + title + '" />');
+
+                                        if (i == 3 || i == 4) {
+                                            searchinput.attr("placeholder", "DD-MM-YYYY");
+                                        }
+                                        $(this).html(searchinput);
+                                        $('input', this).on('keyup change', function () {
+                                            if (table.column(i).search() !== this.value) {
+                                                table
+                                                    .column(i)
+                                                    .search(this.value)
+                                                    .draw();
+                                            }
+                                        });
+                                    }
+                                });
+
+                            }
+                        });
+
+
+
+
+
+                        $('#tbUsers tbody').on('click', '.dt-custom-control.custom', function () {
+
+                            try {
+
+
+
+                                var tr = $(this).closest('tr');
+                                var trChild = $(this).closest('tr.child');
+
+                                var hasSecondChild = false;
+                                var row;
+                                if (trChild.length > 0) {
+                                    //console.log("trChild ", trChild)
+                                    //trChild = $(this).closest('tr.child');
+                                    var tr = $(trChild[0]).prev('tr.dt-hasChild.parent');
+                                    hasSecondChild = true;
+                                    row = table.row(tr);
+                                } else {
+                                    row = table.row(tr);
+
+                                }
+
+                                console.log("row = ", row)
+                                var rowData = row.data();
+                                if (row != undefined && row != null) {
+
+                                    if (!hasSecondChild) {
+                                        if (row.child.isShown()) {
+                                            // This row is already open - close it
+                                            row.child.hide();
+                                            tr.removeClass('dt-hasChild shown');
+                                            $(this).find('span.dt-custom-control-plus').removeClass("haschild");
+                                        }
+                                        else {
+                                            $(this).find('span.dt-custom-control-plus').addClass("haschild");
+
+
+                                            // Open this row
+
+                                            row.child(format(rowData)).show();
+                                            tr.addClass('dt-hasChild shown');
+                                        }
+                                    } else {
+
+                                        if (trChild.hasClass("second-child")) {
+                                            trChild.find("table").remove();
+                                            trChild.removeClass("second-child")
+                                        } else {
+                                            console.log("append", rowData)
+                                            trChild.find("td.child").append(format(rowData));
+                                            trChild.addClass("second-child")
+                                        }
+                                    }
+
+
+                                }
+
+
+
+
+
+
+                            } catch (e) {
+                                console.log(e)
+                            }
+
+
+
+
+                        });
+                    } else {
+
+                        ToastR(res.message, res.status, 15);
+                    }
+                }
+            }
+
+            var errorHandler = (err) => {
+
+                ToastR("Une erreur a été rencontré", "error", 15);
+            }
+
+            var table = $('#tbUsers').DataTable({
+                "lengthMenu": [[25, 50, 100, 150, 200, 300, 500, -1], [25, 50, 100, 150, 200, 300,500, "Tous"]],
+                ajax: {
+                    url: "/User/GetUsersServerSide",
+                    type: "POST",
+                },
+                "searchDelay": 5000,
+                processing: true,
+                serverSide: true,
+                filter: true,
+
+                //data: res.data,
+                responsive: true,
+                destroy: true,
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child.select-checkbox'
+                },
+                "columnDefs": [{
+                    "targets": 1,
+                    "createdCell": function (td, cellData, rowData, row, col) {
+
+                        //console.log(td)
+                        //console.log(cellData)
+
+                        if (cellData) {
+                            if (cellData == null) {
+                                return "";
+                            }
+
+                            var qrcode = new QRCode(td.querySelector("#qrCode" + rowData.id), {
+                                text: cellData,
+                                width: 60,
+                                height: 60,
+                                colorDark: "#000000",
+                                colorLight: "#ffffff",
+                                correctLevel: QRCode.CorrectLevel.H
+                            });
+                            td.querySelector("#qrCode" + rowData.id).removeAttribute("title")
+                            td.querySelector("#qrCode" + rowData.id).className = "zoom"
+                            //setTimeout(() => {
+
+                            //    var dataURL = document.getElementById("qrCode" + row.id).toDataURL();
+                            //    console.log("dataURL ", dataURL)
+                            //    $("#qrCode" + row.id).html(dataURL)
+                            //}, 500);
+
+                        }
+                    }
+                }, {
+                    orderable: false,
+                    className: 'select-checkbox',
+                    targets: 0
+                }
+                    //, {
+                    //orderable: false,
+                    //className: 'tbSsr select-checkbox',
+                    //targets: 0,
+                    //"createdCell": function (td, cellData, rowData, row, col) {
+
+                    //    $(row).addClass("selectable-execute");
+
+
+
+                    //}
+                    //}
+
+
+                ],
+                columns: [
+                    {
+                        width: '0%',
+                        data: null,
+
+                        defaultContent: '',
+                    },
+                    {
+                        width: '8%',
+                        data: "qrCode",
+                        defaultContent: '',
+                        className: "tablesmalltext",
+
+                        render: function (data, type, row) {
+
+                            if (data == null) {
+                                return "";
+                            }
+
+
+                            return `<div id="qrCode${row.id}"></div>`
+                        }
+                    },
+                    {
+                        width: '5%',
+                        data: 'matricule',
+                        className: "tablesmalltext",
+                        defaultContent: '',
+                    },
+                    {
+                        width: '10%',
+                        data: 'prenom',
+                        className: "tablesmalltext",
+                        defaultContent: '',
+                    },
+                    {
+                        width: '10%',
+                        data: 'nom',
+                        className: "tablesmalltext",
+                        defaultContent: '',
+                    },
+                    {
+                        width: '6%',
+                        data: 'login',
+                        defaultContent: '', className: "tablesmalltext"
+                    },
+                    {
+                        width: '6%',
+                        data: 'password',
+                        defaultContent: '', className: "tablesmalltext",
+                        render: function (data, type, row) {
+                            if (row.useActiveDirectoryAuth != true) {
+
+                                return ` <a href="#" class="link-primary btn-toggle-menu"   data-method="PATCH"
+                                                                                                                                                 data-message=" Voulez-vous réinitialiser le mot de passe?</b>"
+                                                                                                                                                        data-url="/User/RenitializePassword/${row.id}" data-toggle="modal"
+                                                                                                                                                        data-callback="false"
+
+                                                                                                                                                        data-target="#confirmModal" rel="tooltip"> Réinitialiser</a>`;
+                            }
+                            return '';
+                        }
+                    },
+                    {
+                        width: '6%',
+                        data: null,
+                        defaultContent: '', className: "tablesmalltext",
+                        render: function (data, type, row) {
+                            if (row.profile == "GERANT") {
+                                return `<span class="badge badge-primary">Username & Password</span>`;
+                            }
+                            if (row.useActiveDirectoryAuth == true || row.useActiveDirectoryAuth == null) {
+                                return `<span class="badge badge-primary">AD</span>`;
+                            }
+                            else {
+                                return `<span class="badge badge-primary">Username & Password</span>`;
+                            }
+                        }
+                    },
+                    {
+                        width: '10%',
+                        data: 'email',
+                        className: "tablesmalltext",
+                        defaultContent: '',
+                    },
+                    {
+                        width: '6%',
+                        data: 'telephone',
+                        defaultContent: '',
+                        className: "tablesmalltext",
+                    },
+                    {
+                        width: '6%',
+                        data: 'profile',
+                        defaultContent: '',
+                        className: "tablesmalltext",
+                    },
+                    {
+                        width: '10%',
+                        data: 'department',
+                        className: "tablesmalltext",
+                        defaultContent: '',
+                        render: function (data, type, row) {
+                            return data ? data.name : "";
+                        }
+                    },
+                    {
+                        width: '10%',
+                        data: 'solde',
+                        className: "tablesmalltext",
+                        defaultContent: '',
+                        render: function (data, type, row) {
+                            return data >= 0 ? `<span id="solde_${row.id}">${data} F CFA</span>` : `<span id="solde_${row.id}"/>`;
+                        }
+                    },
+                    {
+
+                        data: null,
+                        width: '20%',
+                        defaultContent: "",
+                        className: "tablesmalltext",
+                        render: function (data, type, row) {
+
+
+                            var btnEdit = `          <a class="btn btn-primary m-2 btn-sm" href="/User/Update/${row.id}"><span class='fa fa-edit'></span></a>`;
+                            var btnDelete = `
+                                                                                <button type="button" data-method="DELETE"
+                                                                                                data-message=" Voulez-vous vraiment supprimer l'utilisateur <b>${row.prenom + " " + row.nom}</b>"
+                                                                                                data-url="/User/DeleteUser/${row.id}" data-toggle="modal"
+                                                                                        data-target="#confirmModal" rel="tooltip"
+                                                                                        class="btn btn-danger m-2 btn-sm" data-original-title="" title="">
+                                                                                    <span class="fa-remove  fa"></span>
+                                                                                </button>`;
+                            var btnRecharger ="";
+                            var btnPrint ='';
+                            var btnSendQrCode = '';
+                            if(row.profile!="GERANT"){
+                                btnRecharger = `
+                                                                                                <button type="button" data-method="PUT"
+                                                                                                         data-modaltitle="Rechargement compte"
+                                                                                                                 data-successhandler="rechargementSuccessHandler"
+                                                                                                                 data-errorhandler="errorHandler"
+                                                                                                                 data-callback="updateSoldeCell"
+                                                                                                                 data-forward="rechargeCompteFormValid()"
+                                                                                                         data-getdata="getDataSoldeForm(${row.id})"
+                                                                                                                                                        data-modalbody=" <h6>Recharger le compte de <b>${row.prenom}  ${row.nom} Mat: ${row.matricule} </b><br><br><input class='form-control' name='montant' id='montant' type='number' ></h6>"
+                                                                                                                        data-url="/User/RechargerCompte" data-toggle="modal"
+                                                                                                                data-target="#genericModal" rel="tooltip"
+                                                                                                        class="btn btn-success m-2 btn-sm" data-original-title="" title="">
+                                                                                                    <span class="fa-money  fa"></span>
+                                                                                                </button>`;
+                                btnPrint = `<a class=" m-2 printQrCode" href="#!" data-matricule="${row.matricule}"  data-fullname="${row.prenom + " " + row.nom}" data-printable="qrCode${row.id}"><span class='fa fa-print'> Imprimer QR Code</span></a>`
+                                btnSendQrCode = `
+                                                                                                                <button type="button" data-method="PUT"
+                                                                                                                                data-message=" Voulez-vous envoyer à <b>${row.prenom + " " + row.nom}</b> son QR Code par mail?"
+                                                                                                                             data-url="/User/SendUserQrCode/${row.id}" data-toggle="modal"
+                                                                                                                        data-target="#confirmModal" rel="tooltip"
+                                                                                                                        class="btn btn-primary m-2 btn-sm" data-original-title="" title="">
+                                                                                                                            <span class="fa fa-envelope "></span>
+                                                                                                                </button>`;
+                                                                                            
+                                                                                            }
+
+                            return btnEdit + btnDelete + btnRecharger + btnPrint + btnSendQrCode;
+                        }
+                    }
+                    ,
+                    {
+
+                        data: null,
+                        width: '10%',
+                        defaultContent: "",
+                        className: "dt-custom-control custom px-2",
+                        render: function (data, type, row, meta) {
+                            if (type === 'export') {
+
+                                return data;
+                            }
+                            if (row.profile != "GERANT") {
+                            return `<span class="dt-custom-control-plus"></span> <a></a> `;
+                            }
+                            return '';
+
+                        }
+                    }
+                ],
+                "language": {
+                    "zeroRecords": "Aucune donnée n'est disponible",
+                    "lengthMenu": "Afficher _MENU_ éléments",
+                    "info": "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+                    "search": "Rechercher : ",
+                    "oPaginate": {
+                        "sFirst": "Premier",
+                        "sLast": "Dernier",
+                        "sNext": "Suivant",
+                        "sPrevious": "Précédent"
+                    },
+                },
+                initComplete: function (settings, json) {
+
+                    console.log("json ", settings.data);
+                    var table = $('#tbUsers').DataTable();
+                    table.on("click", "#selectallCheckbox", function () {
+                        if ($("#selectallCheckbox").hasClass("selected")) {
+                            table.rows().deselect();
+                            $("#selectallCheckbox").removeClass("selected");
+                        } else {
+                            table.rows().select();
+                            $("#selectallCheckbox").addClass("selected");
+                        }
+
+                    });
+                    $('#tbUsers').on("click", ".printQrCode", function () {
+                        //onclick="printJS({printable:'qrCode${row.id}',type: 'html',css: 'img{ width:"100px";height:"100px"}'})"
+                        var printable = $(this).data("printable");
+                        var fullname = $(this).data("fullname");
+                        var matricule = $(this).data("matricule");
+
+                        if (printable) {
+                            var qrCodeDiv = document.getElementById(printable);
+                            if (qrCodeDiv) {
+                                var image = qrCodeDiv.querySelector("img");
+                                if (image) {
+                                    var imageSource = image.src;
+                                    if (imageSource) {
+
+                                        printJS({
+                                            printable: imageSource,
+                                            type: 'image',
+                                            header: '',
+                                            header: `<h3 class="" style="text-align:center;margin-bottom:25px">${fullname}<br/><br/>${matricule}</h3>`,
+                                            footer: `<h3 class="" style="margin-top: 25px;text-align:center">${matricule}</h3>`,
+                                            imageStyle: "width:50%;margin-bottom:20px;margin-left:25%;margin-right: 25%;",
+
+                                            css: '../../css/qrcode-print.css'
+                                        });
+                                    }
+                                }
+
+                            }
+
+                        }
+
+
+
+                    });
+
+
+                    $('#tbUsers tbody').off('click', '.dt-custom-control.custom').on('click', '.dt-custom-control.custom', function () {
+
+                        try {
+
+
+
+                            var tr = $(this).closest('tr');
+                            var trChild = $(this).closest('tr.child');
+
+                            var hasSecondChild = false;
+                            var row;
+                            if (trChild.length > 0) {
+                                //console.log("trChild ", trChild)
+                                //trChild = $(this).closest('tr.child');
+                                var tr = $(trChild[0]).prev('tr.dt-hasChild.parent');
+                                hasSecondChild = true;
+                                row = table.row(tr);
+                            } else {
+                                row = table.row(tr);
+
+                            }
+
+                            console.log("row = ", row)
+                            var rowData = row.data();
+                            if (row != undefined && row != null) {
+
+                                if (!hasSecondChild) {
+                                    if (row.child.isShown()) {
+                                        // This row is already open - close it
+                                        row.child.hide();
+                                        tr.removeClass('dt-hasChild shown');
+                                        $(this).find('span.dt-custom-control-plus').removeClass("haschild");
+                                    }
+                                    else {
+                                        $(this).find('span.dt-custom-control-plus').addClass("haschild");
+
+
+                                        // Open this row
+
+                                        row.child(format(rowData)).show();
+                                        tr.addClass('dt-hasChild shown');
+                                    }
+                                } else {
+
+                                    if (trChild.hasClass("second-child")) {
+                                        trChild.find("table").remove();
+                                        trChild.removeClass("second-child")
+                                    } else {
+                                        console.log("append", rowData)
+                                        trChild.find("td.child").append(format(rowData));
+                                        trChild.addClass("second-child")
+                                    }
+                                }
+
+
+                            }
+
+
+
+
+
+
+                        } catch (e) {
+                            console.log(e)
+                        }
+
+
+
+
+                    });
+
+                    //$('#tbUsers thead tr').clone(true).appendTo('#tbUsers thead');
+                    //$('#tbUsers thead tr:eq(1) th').off('click').removeClass("sorting sorting_asc").each(function (i) {
+                    //    var title = $(this).text().trim();
+
+
+                    //    if (i == 2 || i == 5 || i == 8) {
+                    //        var $options = [];
+                    //        if (i == 2)
+                    //            $options = $("#PeriodiciteHidden > option").clone();
+                    //        else if (i == 5)
+                    //            $options = `<option selected />
+                    //                           <option value="A_FAIRE">à faire</option>
+                    //                         <option value="EN_COURS">en cours</option>
+                    //          <option value="TERMINE">réalisé</option>`;
+                    //        else $options = `<option selected />
+                    //                           <option value="validé">validé</option>
+                    //                         <option value="rejeté">rejeté</option>`;
+                    //        //$('#secondSelectId').append($options);
+                    //        var select = $(`<select type="text" class="form-control custom-sumoselect"  ></select>`).on('change', function () {
+                    //            var val = $.fn.dataTable.util.escapeRegex(
+                    //                $(this).val()
+
+                    //            );
+
+                    //            table
+                    //                .column(i)
+                    //                .search(this.value)
+                    //                .draw();
+
+                    //        });
+                    //        select.append($options)
+                    //        $(this).html(select);
+                    //        //select.SumoSelect({
+                    //        //    search: true,
+                    //        //    placeholder: 'Selectionnez',
+                    //        //    searchText: 'Saisissez ici.',
+                    //        //    noMatch: 'Pas de correspondance pour "{0}"'
+
+                    //        //});
+                    //    }
+
+                    //    else if (i == 0 || i == 7 || i == 9) {
+                    //        $(this).html('');
+                    //    }
+                    //    else {
+                    //        var searchinput = $('<input class="form-control" type="text" placeholder="' + title + '" />');
+
+                    //        if (i == 3 || i == 4) {
+                    //            searchinput.attr("placeholder", "DD-MM-YYYY");
+                    //        }
+                    //        $(this).html(searchinput);
+                    //        $('input', this).on('keyup change', function () {
+                    //            if (table.column(i).search() !== this.value) {
+                    //                table
+                    //                    .column(i)
+                    //                    .search(this.value)
+                    //                    .draw();
+                    //            }
+                    //        });
+                    //    }
+                    //});
+
+                }
+            });
+
+
+
+         //   ajaxManager('GET', '/User/GetUsers', successHandler, errorHandler);
+
+
+
+            //$("#generateAllQrCode").off().on("click", function () {
+            //    var successHandler = function (res) {
+            //    console.log(res)
+            //        if (res) {
+
+            //            if (res.success) {
+            //                ToastR(res.message, "success", 15);
+            //            }else{
+            //                ToastR(res.message, "error", 15);
+            //            }
+            //        }
+            //    }
+
+
+            //    ajaxManager('PUT', '/User/GenerateAllQrCode', successHandler, errorHandler);
+
+
+            //});
+        });
+        var rechargementMultipleSuccessHandler = (res) => {
+
+          //  console.log("res ",res)
+            if (res.success) {
+                ToastR(res.message, "success", 15);
+                setTimeout(function (){
+                    location.reload();
+                },2000)
+              
+            }else{
+                ToastR(res.message, "error", 15);
+            }
+
+        }
+        var resetMultipleSuccessHandler = (res) => {
+
+            //  console.log("res ",res)
+            if (res.success) {
+                ToastR(res.message, "success", 15);
+            } else {
+                ToastR(res.message, "error", 15);
+            }
+
+        }
+        function getDataForm() {
+            var table = $('#tbUsers').DataTable();
+            var rows = table.rows('.selected').data().toArray();
+            console.log(rows)
+
+            let userIds = rows.map((row) => {
+
+                return row.id;
+
+            });
+
+       
+
+       
+            console.log("userIds =", userIds)
+                var formData = new FormData();
+                formData.append("montant", $("#genericModal").find("#montant").val());
+            var len = userIds.length;
+            for (i = 0; i < len; i++) {
+                formData.append("userIds", userIds[i]);
+            }
+
+                return formData;
+          
+        }
+        function getDataResetMultiForm() {
+            var table = $('#tbUsers').DataTable();
+            var rows = table.rows('.selected').data().toArray();
+            console.log(rows)
+
+            let userIds = rows.map((row) => {
+
+                return row.id;
+
+            });
+
+
+
+
+            console.log("userIds =", userIds)
+            var formData = new FormData();
+
+            var len = userIds.length;
+            for (i = 0; i < len; i++) {
+                formData.append("userIds", userIds[i]);
+            }
+
+            return formData;
+
+        }
+
+
+        var rechargementSuccessHandler = (res) => {
+            if (res) {
+                let status = res.success ? "success" : "error"
+                ToastR(res.message, status, 15);
+            }
+
+        }
+        function getDataSoldeForm(userId) {
+            if (userId > 0) {
+
+                var formData = new FormData();
+                formData.append("montant", $("#genericModal").find("#montant").val());
+                formData.append("userId", userId);
+                return formData;
+            }
+        }
+    </script>
+            }

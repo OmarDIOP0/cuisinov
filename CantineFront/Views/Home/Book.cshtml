@@ -1,0 +1,528 @@
+﻿@using AutoMapper;
+@using CantineBack.Models
+@using CantineFront.Helpers;
+@using Newtonsoft.Json;
+@using CantineFront.Static;
+@inject IHttpContextAccessor Accessor
+@inject IMapper mapper;
+@{
+
+    var articlesInCart = Accessor.HttpContext?.Session.GetListObjectFromSession<Article>("ArticlesCart") ?? new List<Article>();
+    var username = Accessor.HttpContext?.Session.GetString("Username");
+    var userId = Accessor.HttpContext?.Session.GetInt32("UserId");
+    var emplacements = Accessor.HttpContext?.Session.GetListObjectFromSession<Emplacement>("Emplacements") ?? new List<Emplacement>();
+    var paymentMethods = Accessor.HttpContext?.Session.GetListObjectFromSession<PaymentMethod>("PaymentMethods") ?? new List<PaymentMethod>();
+    IDictionary<int, int> articlePrixDict = new Dictionary<int, int>();
+    var selectedArticles = articlesInCart.GroupBy(d => d.Id)
+                              .Select(
+                                  g =>
+                                  {
+
+                                      var a = new ArticleBooking
+                                              {
+                                                  Id = g.Key,
+                                                  Quantite = g.Sum(s => 1),
+                                              };
+                                      a = mapper.Map<ArticleBooking>(g.First());
+                                      a.Quantite = g.Sum(s => 1);
+                                      articlePrixDict[a.Id] = a.PrixDeVente;
+                                      return a;
+                                  }
+
+                              ).ToList();
+    int montantTotal = 0;
+    if (selectedArticles != null)
+    {
+        foreach (var item in selectedArticles)
+        {
+            montantTotal += item.PrixDeVente * item.Quantite;
+        }
+
+    }
+
+
+    var articlePrixDictJSON = JsonConvert.SerializeObject(articlePrixDict);
+}
+@section Styles{
+
+
+    <style>
+
+        .btn-link .btn-link:hover {
+            background-color: transparent;
+        }
+
+        input[type=number] {
+            min-width: 50px;
+        }
+    </style>
+}
+<!-- book section -->
+<section class="book_section layout_padding">
+    <div class="container">
+        @*<div class="heading_container">
+        <h2>
+        Book A Table
+        </h2>
+        </div>*@
+
+        <div class="">
+            <form action="" id="formBooking">
+
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12">
+                        <div class="card card-registration card-registration-2" style="border-radius: 15px;min-height:500px">
+                            <div class="card-body p-0">
+                                <div class="row g-0">
+                                    <div class="col-lg-8">
+                                        <div class="p-5">
+                                            <div class="d-flex justify-content-between align-items-center mb-5">
+                                                <h1 class="fw-bold mb-0 text-black">Panier de commande</h1>
+                                                <h6 class="mb-0 text-muted"><span id="selectedArticlesCount">@selectedArticles.Count</span> article(s)</h6>
+                                            </div>
+
+                                            @foreach (var item in selectedArticles)
+                                            {
+                                                <hr class="my-4" id="line_@item.Id">
+
+                                                <div class="row mb-4 d-flex justify-content-between align-items-center" id="row_@item.Id">
+                                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                                        <img src="data:image/png;base64,@item.Image" id="imageArticle_@item.Id" class="zoom rounded-circle" width="50" height="50" onerror="this.src='/images/default.png';">
+                                                        @* <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
+                                                    class="img-fluid rounded-3" alt="Cotton T-shirt">*@
+                                                    </div>
+                                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                                        <h6 class="text-muted">@item.Categorie?.Name</h6>
+                                                        <h6 class="text-black mb-0">@item.Title</h6>
+                                                    </div>
+                                                    <div class="col-md-3 col-lg-2 col-xl-2 d-flex">
+                                                        <button class="btn btn-link px-2 text-muted" type="button"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown();updateTotalPrice()">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+
+                                                        <input id="quantite_@item.Id" min="0" name="Quantite" value="@item.Quantite" type="number" onchange="updateTotalPrice()"
+                                                               class="form-control form-control-sm" />
+
+                                                        <button class="btn btn-link px-2 text-muted" type="button"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp();updateTotalPrice()">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-md-4 col-lg-3 col-xl-3 ">
+                                                        <h7 class="mb-0  " style="font-size:0.8rem">@item.Quantite * @item.PrixDeVente = <span id="prixTotal_@item.Id">@(item.Quantite * item.PrixDeVente)</span> XOF</h7>
+                                                    </div>
+                                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                                        <a href="#!" class="text-muted deleteArticleCart" data-articleid="@item.Id"><i class="fa fa-times"></i></a>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            <div class="col-12 ">
+                                                <label class="mb-3">Commentaire </label>
+                                                <textarea class="form-control   wide" name="Comment" id="Comment"></textarea>
+                                                 
+                                               
+                                            </div>
+
+
+                                            <hr class="my-4">
+
+                                            <div class="pt-5">
+                                                <h6 class="mb-0">
+                                                    <a href="/Home/Menu" class="text-body">
+                                                        <i class="fa fa-arrow-left me-2"></i>Retour à la boutique
+                                                    </a>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 bg-grey">
+                                        <div class="p-5">
+                                            <h3 class="fw-bold mb-5 mt-2 pt-1">Résumé</h3>
+                                            <hr class="my-4">
+
+                                            <div class="mb-4 pb-2 ">
+                                                <label class="mb-3">Emplacement</label>
+                                                <select class="form-control   wide" required name="EmplacementId" id="EmplacementId">
+                                                    <option selected />
+                                                    @foreach (var emp in emplacements)
+                                                    {
+                                                        if (CantineFront.Static.AppSettings.ShopID != emp.Id)
+                                                        {
+                                                            if (emp.Actif)
+                                                            {
+                                                                <option value="@emp.Id">@emp.Name!.ToUpper()</option>
+                                                            }
+
+                                                        }
+
+                                                    }
+                                                </select>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between mb-5 text-warning">
+                                                <h5 class="text-uppercase ">Solde</h5>
+                                                <h5 id="solde">  XOF</h5>
+                                            </div>
+                                            <span class="text-danger " id="messageSolde" style=""></span>
+                                            <div class="mb-4 pb-2 ">
+                                                <label class="mb-3">Méthode de paiement</label>
+                                                <select class="form-control   wide" required name="PaymentMethodId" id="PaymentMethodId">
+                                                    @*    <option value="1">CASH</option>selected='@pm.Code=="QRCODE"'
+                                                    <option value="2" selected>CODE QR</option>*@
+                                                    @foreach (var pm in paymentMethods)
+                                                    {
+                                                        if (pm.Code == "QRCODE")
+                                                        {
+                                                            <option selected data-code="@pm.Code" value="@pm.Id">@pm.Name</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option data-code="@pm.Code" value="@pm.Id">@pm.Name</option>
+                                                        }
+
+
+                                                    }
+                                                </select>
+                                            </div>
+                                            <hr class="my-4">
+                                            <div class="d-flex justify-content-between mb-5">
+                                                <h5 class="text-uppercase">Prix Total</h5>
+                                                <h5 id="totalPrice"> @montantTotal XOF</h5>
+                                            </div>
+
+                                            <button type="button" class="btn btn-dark btn-block btn-lg" id="btnCommand" style="font-size:14px"
+                                                    data-mdb-ripple-color="dark">
+                                                Commander
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </form>
+        </div>
+
+
+    </div>
+</section>
+<!-- end book section -->
+@section Scripts {
+
+
+
+    <script>
+        const UserId = @userId;
+        let checkSolde = true;
+        $("#formBooking").validate({
+            rules: {
+                "EmplacementId": { required: true },
+                "Quantite": { required: true, min: 1 },
+            },
+            messages: {
+                "Quantite": { min: "La quantité doit être supérieure ou égale à 1." },
+            },
+            feedbackIcons: {
+                valid: 'fa fa-check',
+                invalid: 'fa fa-remove',
+                validating: 'fa fa-refresh'
+            },
+            errorClass: "error fail-alert",
+            validClass: "valid success-alert",
+            errorPlacement: function (error, element) {
+                var placement = $(element).data('error');
+                if ($(element).attr("name") == "Quantite") {
+
+                    error.insertAfter(element.closest("[id^='row_']"));
+                }
+
+                else if (placement) {
+
+                    console.log(placement.classNames)
+                    $(placement).append(error)
+                } else {
+                    error.insertAfter(element);
+                }
+            }
+        })
+        console.clear();
+        const ARTICLES_PRIX_DICT = JSON.parse('@Html.Raw(articlePrixDictJSON)');
+        console.log(ARTICLES_PRIX_DICT);
+        const CommandeADistance = true;
+        let UserSolde = 0;
+        function updateTotalPrice(showMessage = false) {
+
+            var totalPrice = 0;
+            for (const [id, price] of Object.entries(ARTICLES_PRIX_DICT)) {
+                //   console.log(key, value);
+                var $quantite = $("#quantite_" + id)
+                var q = $quantite.length > 0 ? $quantite.val() : 0
+                totalPrice += q * price;
+                $("#prixTotal_" + id).text(q * price);
+            }
+
+
+
+            $("#totalPrice").text(`${totalPrice} XOF`);
+
+            if (!checkSolde) {
+                $("#btnCommand").prop("disabled", false);
+                $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
+                $("#messageSolde").text("");
+            } else {
+                if (totalPrice > UserSolde) {
+                    $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
+                    if (showMessage) {
+                        ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
+
+                    }
+                    $("#messageSolde").text("Solde insuffisant.");
+                    $("#btnCommand").prop("disabled", true);
+                } else {
+                    $("#btnCommand").prop("disabled", false);
+                    $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
+                    $("#messageSolde").text("");
+                }
+            }
+
+            return totalPrice;
+
+
+        }
+
+
+        $(function () {
+             const ARTICLES_IDS = Object.keys(ARTICLES_PRIX_DICT)
+            var len = ARTICLES_IDS.length;
+            try {
+
+            }
+            catch {
+
+
+            }
+
+            loadImageSuccessHandler = (res) => {
+                // console.log("images = ",res.id)
+                if (res != null) {
+                    var imageId = res.id
+                    $(`#imageArticle_${imageId}`).attr("src", `data:image/png;base64,${res.image}`);
+                }
+
+            }
+            function doSetTimeout(i) {
+                var id = ARTICLES_IDS[i]
+                setTimeout(function () {
+                    console.log("images = ", id)
+                    ajaxManager('GET', '/Article/GetArticleImage?id=' + id, loadImageSuccessHandler, (err) => { });
+                }, 10);
+            }
+
+            for (var i = 0; i < len; i++) {
+
+                doSetTimeout(i);
+            }
+
+            $("#PaymentMethodId").on("change", function () {
+
+                checkSolde = $(this).find("option:selected").data("code") == "QRCODE";
+                console.log("checkSolde = ", checkSolde)
+                if (!checkSolde) {
+                    $("#btnCommand").prop("disabled", false);
+                    $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
+                    $("#messageSolde").text("");
+                } else {
+                    updateTotalPrice();
+
+                }
+
+            });
+
+
+            $(".deleteArticleCart").off("click").on("click", function () {
+                var id = $(this).data("articleid")
+                if (id > 0) {
+                    var successHandler = (data) => {
+
+                        if (data == undefined || data == null || data == "")
+                            ToastR("Une erreur a été rencontrée", "error", 10);
+                        else {
+
+                            if (data.success) {
+                                delete ARTICLES_PRIX_DICT[id]
+                                $("#row_" + id).remove();
+                                $("#line_" + id).remove();
+                                $("#cartBadge").text(data.object);
+                                $("#cartBadge").show();
+                                $("#cartBadgeFloat").show();
+                                $("#cartBadgeFloatClear").show();
+                                $("#cartBadgeFloatCount").text(data.object)
+
+                                updateTotalPrice();
+                                // ToastR(data.message, "success", 10, "toast-bottom-right");
+                                console.log(ARTICLES_PRIX_DICT)
+                                $("#selectedArticlesCount").text(Object.keys(ARTICLES_PRIX_DICT).length)
+                            }
+
+                            else {
+
+                                ToastR(data.message, "error", 10);
+
+                            }
+
+                        }
+
+                    };
+                    var errorHandler = (err) => {
+
+                        ToastR("La suppréssion a échoué", "error", 10);
+                    };
+
+                    ajaxManager("DELETE", "/Home/DeleteArticleCart", successHandler, errorHandler, { id: id })
+                }
+            }
+            );
+            $("#btnCommand").off().on("click", function (e) {
+                var btn = $(this);
+                if ($("#formBooking").valid()) {
+                    btn.prop("disabled", true);
+                    var postData = {
+
+                        EmplacementId: $("#EmplacementId").val(),
+                        PaymentMethodId: $("#PaymentMethodId").val(),
+                    }
+
+
+                    var lignesCommandes = [];
+                    for (const [id, price] of Object.entries(ARTICLES_PRIX_DICT)) {
+
+                        var $quantite = $("#quantite_" + id)
+                        var q = $quantite.length > 0 ? $quantite.val() : 0;
+                        lignesCommandes.push({ ArticleId: id, Quantite: q, PrixTotal: q * price })
+
+                    }
+                    if (lignesCommandes.length == 0) {
+                        ToastR("Aucune ligne de commande n'est trouvée", "error", 5);
+                        btn.prop("disabled", false);
+                        return;
+                    }
+                    postData["LigneCommands"] = lignesCommandes;
+                    postData["CommandeADistance"] = true;
+                    postData["UserId"] = UserId;
+                    postData["Comment"] = $.trim($("#Comment").val());
+                    console.log(postData);
+
+
+                    try {
+                        var successHandler = (data) => {
+                            console.log("res= " + JSON.stringify(data));
+
+                            endLoadingById("body");
+                            if (data == undefined || data == null || data == "")
+                                ToastR("Une erreur a été rencontrée", "error", 10);
+                            else {
+
+                                if (data.success) {
+                                    sendDataCommand("@username", JSON.stringify(data.object))
+                                    $("#cartBadge").hide();
+                                    $("#cartBadgeFloat").hide();
+                                    $("#cartBadgeFloatClear").hide();
+                                    $("#cartBadge").text("0");
+                                    $("#cartBadgeFloatCount").text("0");
+                                    ToastR(data.message, "success", 10);
+                                    setTimeout(function () {
+                                        window.location = window.location.origin + "/Home/Menu";
+                                    }, 3000);
+                                }
+
+                                else {
+                                    btn.prop("disabled", false);
+                                    ToastR(data.message, "error", 10);
+                                }
+
+                            }
+
+                        };
+                        var errorHandler = (err) => {
+                            btn.prop("disabled", false);
+                            ToastR("Une erreur inattendue a été rencontrée", "error", 15);
+                        }
+
+                        ajaxManager("POST", "/Commande/CreateCommande", successHandler, errorHandler, postData);
+
+
+                    } catch (e) {
+                        console.log("Error : " + e);
+                    }
+                    finally {
+
+
+
+                    }
+
+                }
+
+            });
+
+
+
+
+
+
+
+            var successHandler = (res) => {
+
+                if (!res.success) {
+
+                    if (!res.data) {
+                        ToastR("Utisateur introuvable", "error", 10);
+                    }
+
+                }
+
+                else {
+
+                    var user = res.data;
+
+                    var totalPrice = @montantTotal;
+                    if (user) {
+                        $("#userId").val(user.id);
+                        $("#solde").text(`${user.solde} XOF`);
+                        $("#soldeRestant").val(user.solde);
+                        UserSolde = user.solde;
+
+                    } else {
+                        return;
+                    }
+                    if (totalPrice > user.solde) {
+                        $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
+                        ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
+                        $("#messageSolde").text("Solde insuffisant.");
+                    } else {
+                        $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
+                        $("#messageSolde").text("");
+                    }
+                }
+
+            };
+            var errorHandler = (err) => {
+
+                ToastR("La suppréssion a échoué", "error", 10);
+            };
+
+            ajaxManager("GET", "/User/GetCurrentUser", successHandler, errorHandler, {})
+
+        })
+
+
+    </script>
+                        }

@@ -1,0 +1,281 @@
+﻿@*
+@section bgBox{
+    <div class="bg-box">
+        <img src="~/images/hero-bg.jpg" alt="">
+    </div>
+} *@
+<!-- food section -->
+@section slide{
+    <partial name="_SlideSection" />
+}
+<section class="food_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h4>
+                Articles disponibles
+            </h4>
+        </div>
+
+        <ul id="filterList" class="filters_menu">
+            <li class="active" data-filter="*">Toutes les catégories</li>
+
+        </ul>
+
+
+        <div class="filters-content">
+            <div class="col-12">
+                <label class="form-label">Rechercher</label>
+                <input type="text" class="form-control" placeholder="" id="searchText" />
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="center my-3 justify-content-center align-self-center" id="noItemsAlert" style="display:none">Aucun article disponible pour cette catégorie</div>
+            </div>
+
+            <div id="gridArticles" class="row grid">
+            </div>
+        </div>
+        <div class="btn-box" style="display:none">
+            <a href="">
+                Voir plus
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- end food section -->
+@section    Scripts{
+
+
+    <script>
+        const ARTICLES_IDS = []
+        $(function () {
+            try {
+                //   openFullscreen();
+            } catch {
+
+
+            }
+
+
+            $("#searchText").on("input", function () {
+                var value = $(this).val()
+                $(".grid").isotope({
+                    // filter element with numbers greater than 50
+                    filter: function () {
+                        // _this_ is the item element. Get text of element's .number
+                        var articleTitle = $(this).find('.articleName').text();
+                        articleTitle = articleTitle ? articleTitle : "";
+                        value = value.toLowerCase();
+                        // return true to show, false to hide
+                        return articleTitle.toLowerCase().includes(value)
+                    }
+                })
+            });
+            var errorHandler = (err) => {
+
+                ToastR("Une erreur a été rencontré", "error", 15);
+            }
+            var successCategoryHandler = function (res) {
+                // console.log(JSON.stringify(res))
+                if (res) {
+
+                    if (res.success && res.data) {
+                        //  ToastR(res.message, res.status, 15);
+                        var len = res.data.length;
+                        res.data.forEach((item, index) => {
+                            //   console.log("item = ",item)
+
+                            if (item.actif) {
+                                $("#filterList").append(`<li data-filter=".category_${item.id}">${item.name}</li>`);
+                                var active = index == 0 ? "active" : '';
+                                $("#sildeCarouselInner").append(`     <div class="carousel-item ${active}">
+                                                                                        <div class="container ">
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-7 col-lg-6 ">
+                                                                                                    <div class="detail-box">
+                                                                                                        <h4>
+                                                                                                                   ${item.name}
+                                                                                                        </h4>
+
+                                                                                                        <div class="btn-box">
+                                                                                                                    <a href="/Home/Index?categorieId=${item.id}" class="btn1">
+                                                                                                                Commander
+                                                                                                            </a>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>`);
+                            }
+
+
+
+                            if (index == len - 1) {
+
+
+
+                                ajaxManager('GET', '/Article/GetMenu', successArticleHandler, errorHandler);
+                            }
+                        })
+
+                    }
+                }
+            }
+            var successArticleHandler = function (res) {
+                // console.log(JSON.stringify(res))
+                if (res) {
+
+                    if (res.success && res.data) {
+
+                        var len = res.data.length;
+                        if (len > 1) {
+                            $(".btn-box").show()
+                            $("#noItemsAlert").hide();
+                        } else {
+
+                            $("#noItemsAlert").show();
+
+                        }
+                        $("#gridArticles").html("");
+                        res.data.forEach((item, index) => {
+                            ARTICLES_IDS.push(item.id)
+
+
+                            if (item.actif) {
+
+                                var description = "";
+                                if (item.description) {
+                                    description = item.description.length > 50 ? (item.description.substring(0, 50) + "...") : item.description;
+                                }
+                                var itemCart = { ...item }
+                                // delete itemCart.image;
+                                itemCart = JSON.stringify(itemCart);
+                                $("#gridArticles").append(`
+
+                                                        <div class="col-sm-6 col-lg-3 all addToCart category_${item.categorieId}"  data-itemcart='${itemCart}' >
+                                            <div class="box">
+                                                    <div>
+                                                            <div class="img-box">
+                                                                                                <img onerror="this.src='/images/default.png';" src="/images/default.png" id="imageArticle_${item.id}">
+                                                            </div>
+                                                            <div class="detail-box">
+                                                                    <h6 class="articleName">
+                                                                        ${item.title}
+                                                                    </h6>
+                                                                    <p style="font-size:12px;height:30px">
+                                                                                        ${description}
+                                                                    </p>
+                                                                    <div class="options">
+                                                                        <h6>
+                                                                            ${item.prixDeVente} XOF
+                                                                        </h6>
+                                                                                  <a href="#!" class="" data-itemcart='${itemCart}' >
+                                                                                                ${charpSvgIcon}
+                                                                                        </a>
+                                                                    </div>
+                                                            </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+
+                                            `);
+                            }
+
+                            if (index == len - 1) {
+
+
+                                initAddArticleToCartClick();
+                              //  console.log("len = ", len)
+
+                                try {
+                                    // Add hidden class if item hidden
+                                    var itemReveal = Isotope.Item.prototype.reveal;
+                                    Isotope.Item.prototype.reveal = function () {
+                                        itemReveal.apply(this, arguments);
+                                        $(this.element).removeClass('isotope-hidden');
+                                    };
+                                    var itemHide = Isotope.Item.prototype.hide;
+                                    Isotope.Item.prototype.hide = function () {
+                                        itemHide.apply(this, arguments);
+                                        $(this.element).addClass('isotope-hidden');
+                                    };
+
+                                } catch {
+
+                                }
+
+                                $('.filters_menu li').click(function () {
+                                    $('.filters_menu li').removeClass('active');
+                                    $(this).addClass('active');
+
+                                    var data = $(this).attr('data-filter');
+                                    $grid.isotope({
+                                        filter: data
+                                    })
+                                });
+
+                                var $grid = $(".grid").isotope({
+                                    itemSelector: ".all",
+                                    percentPosition: false,
+                                    masonry: {
+                                        columnWidth: ".all"
+                                    }
+                                });
+                                $grid.isotope('on', 'layoutComplete', function () {
+                                    var numItems = $grid.find('.all:not(.isotope-hidden)').length;
+                                    if (numItems == 0) {
+                                        $("#noItemsAlert").show();
+
+                                    } else {
+
+                                        $("#noItemsAlert").hide();
+                                    }
+                                });
+                                try {
+                                    loadImageSuccessHandler = (res) => {
+                                        // console.log("images = ",res.id)
+                                        if (res != null) {
+                                            var imageId = res.id
+                                            $(`#imageArticle_${imageId}`).attr("src", `data:image/png;base64,${res.image}`);
+                                        }
+
+                                    }
+                                    function doSetTimeout(i) {
+                                        var id = ARTICLES_IDS[i]
+                                        setTimeout(function () {
+                                         //   console.log("images = ", id)
+                                            ajaxManager('GET', '/Article/GetArticleImage?id=' + id, loadImageSuccessHandler, (err) => { });
+                                        }, 10);
+                                    }
+
+                                    for (var i = 0; i < len; i++) {
+
+                                        doSetTimeout(i);
+                                    }
+                                }
+                                catch{
+
+
+                                }
+                     
+
+                            }
+
+                        })
+
+
+
+
+                    }
+                }
+            }
+            ajaxManager('GET', '/Categorie/GetCategories', successCategoryHandler, errorHandler);
+
+
+
+
+        });
+    </script>
+
+                                        }

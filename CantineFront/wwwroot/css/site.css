@@ -1,0 +1,45 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/*//   .dt-custom-control:before*/
+tr > td span.dt-custom-control-plus:before, table.dataTable.dtr-inline.collapsed > tbody > tr > th.dt-custom-control:before {
+    top: 40%;
+    left: 40%;
+    height: 1em;
+    width: 1em;
+    /* margin-top: -9px;*/
+
+    position: relative;
+    color: white;
+    border: 0.15em solid white;
+    border-radius: 1em;
+    box-shadow: 0 0 0.2em #444;
+    box-sizing: content-box;
+    text-align: center;
+    text-indent: 0 !important;
+    font-family: "Courier New",Courier,monospace;
+    line-height: 1em;
+    content: "+";
+    background-color: #31b131;
+}
+
+tr > td span.dt-custom-control-plus.haschild:before, table.dataTable > tbody > tr.second-child > td span.dt-custom-control-plus:before {
+    content: "-";
+    background-color: #d33333;
+}

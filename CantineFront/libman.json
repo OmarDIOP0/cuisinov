@@ -1,0 +1,287 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootstrap-fileinput@5.5.2",
+      "destination": "wwwroot/lib/bootstrap-fileinput/",
+      "files": [
+        "js/locales/ar.js",
+        "js/locales/ar.min.js",
+        "css/fileinput-rtl.min.css",
+        "css/fileinput-rtl.css",
+        "css/fileinput.css",
+        "css/fileinput.min.css",
+        "img/loading-sm.gif",
+        "img/loading.gif",
+        "js/plugins/buffer.min.js",
+        "js/plugins/buffer.js",
+        "js/locales/zh.min.js",
+        "js/locales/zh.js",
+        "js/locales/zh-TW.min.js",
+        "js/locales/zh-TW.js",
+        "js/locales/vi.min.js",
+        "js/locales/vi.js",
+        "js/locales/uz.min.js",
+        "js/locales/uz.js",
+        "js/locales/uz-Cy.min.js",
+        "js/locales/uz-Cy.js",
+        "js/locales/uk.min.js",
+        "js/locales/uk.js",
+        "js/locales/tr.min.js",
+        "js/locales/tr.js",
+        "js/locales/th.min.js",
+        "js/locales/th.js",
+        "js/locales/sv.min.js",
+        "js/locales/sv.js",
+        "js/locales/sr-latn.min.js",
+        "js/locales/sr-latn.js",
+        "js/locales/sl.min.js",
+        "js/locales/sl.js",
+        "js/locales/sk.min.js",
+        "js/locales/sk.js",
+        "js/locales/ru.min.js",
+        "js/locales/ru.js",
+        "js/locales/ro.min.js",
+        "js/locales/ro.js",
+        "js/locales/pt.min.js",
+        "js/locales/pt.js",
+        "js/locales/pt-BR.min.js",
+        "js/locales/pt-BR.js",
+        "js/locales/pl.min.js",
+        "js/locales/pl.js",
+        "js/locales/no.min.js",
+        "js/locales/no.js",
+        "js/locales/nl.min.js",
+        "js/locales/nl.js",
+        "js/locales/lv.min.js",
+        "js/locales/lv.js",
+        "js/locales/lt.min.js",
+        "js/locales/lt.js",
+        "js/locales/kz.min.js",
+        "js/locales/kz.js",
+        "js/locales/kr.min.js",
+        "js/locales/kr.js",
+        "js/locales/ka.min.js",
+        "js/locales/ka.js",
+        "js/locales/ja.min.js",
+        "js/locales/ja.js",
+        "js/locales/it.min.js",
+        "js/locales/it.js",
+        "js/locales/id.min.js",
+        "js/locales/id.js",
+        "js/locales/hu.min.js",
+        "js/locales/hu.js",
+        "js/locales/he.min.js",
+        "js/locales/he.js",
+        "js/locales/gl.min.js",
+        "js/locales/gl.js",
+        "js/locales/fr.min.js",
+        "js/locales/fr.js",
+        "js/locales/fi.min.js",
+        "js/locales/fi.js",
+        "js/locales/fa.min.js",
+        "js/locales/fa.js",
+        "js/locales/et.min.js",
+        "js/locales/et.js",
+        "js/locales/es.min.js",
+        "js/locales/es.js",
+        "js/locales/el.min.js",
+        "js/locales/el.js",
+        "js/locales/de.min.js",
+        "js/locales/de.js",
+        "js/locales/da.min.js",
+        "js/locales/da.js",
+        "js/locales/cs.min.js",
+        "js/locales/cs.js",
+        "js/locales/cr.min.js",
+        "js/locales/cr.js",
+        "js/locales/ca.min.js",
+        "js/locales/ca.js",
+        "js/locales/bg.min.js",
+        "js/locales/bg.js",
+        "js/locales/az.min.js",
+        "js/locales/az.js",
+        "js/plugins/filetype.js",
+        "js/plugins/filetype.min.js",
+        "js/plugins/piexif.js",
+        "js/plugins/piexif.min.js",
+        "js/plugins/sortable.js",
+        "js/plugins/sortable.min.js",
+        "js/fileinput.js",
+        "js/fileinput.min.js",
+        "themes/bs5/theme.js",
+        "themes/bs5/theme.min.js",
+        "themes/explorer/theme.css",
+        "themes/explorer/theme.js",
+        "themes/explorer/theme.min.css",
+        "themes/explorer/theme.min.js",
+        "themes/explorer-fa4/theme.css",
+        "themes/explorer-fa4/theme.js",
+        "themes/explorer-fa4/theme.min.css",
+        "themes/explorer-fa4/theme.min.js",
+        "themes/explorer-fa5/theme.css",
+        "themes/explorer-fa5/theme.js",
+        "themes/explorer-fa5/theme.min.css",
+        "themes/explorer-fa5/theme.min.js",
+        "themes/explorer-fa6/theme.css",
+        "themes/explorer-fa6/theme.js",
+        "themes/explorer-fa6/theme.min.css",
+        "themes/explorer-fa6/theme.min.js",
+        "themes/fa4/theme.js",
+        "themes/fa4/theme.min.js",
+        "themes/fa5/theme.js",
+        "themes/fa5/theme.min.js",
+        "themes/fa6/theme.js",
+        "themes/fa6/theme.min.js",
+        "themes/gly/theme.js",
+        "themes/gly/theme.min.js"
+      ]
+    },
+    {
+      "library": "jquery-nice-select@1.1.0",
+      "destination": "wwwroot/lib/jquery-nice-select/"
+    },
+    {
+      "library": "popper.js@1.16.0",
+      "destination": "wwwroot/lib/popper.js/"
+    },
+    {
+      "library": "OwlCarousel2@2.3.4",
+      "destination": "wwwroot/lib/OwlCarousel2/",
+      "files": [
+        "owl.carousel.min.js",
+        "assets/ajax-loader.gif",
+        "assets/owl.carousel.css",
+        "assets/owl.carousel.min.css",
+        "assets/owl.theme.default.css",
+        "assets/owl.theme.default.min.css",
+        "assets/owl.theme.green.css",
+        "assets/owl.theme.green.min.css",
+        "assets/owl.video.play.png"
+      ]
+    },
+    {
+      "library": "jquery.isotope@3.0.6",
+      "destination": "wwwroot/lib/jquery.isotope/",
+      "files": [
+        "isotope.pkgd.min.js",
+        "isotope.pkgd.js"
+      ]
+    },
+    {
+      "library": "toastr.js@2.1.4",
+      "destination": "wwwroot/lib/toastr.js/"
+    },
+    {
+      "library": "datatables@1.10.21",
+      "destination": "wwwroot/lib/datatables/"
+    },
+    {
+      "library": "jquery-validate@1.19.5",
+      "destination": "wwwroot/lib/jquery-validate/",
+      "files": [
+        "jquery.validate.min.js",
+        "additional-methods.js",
+        "additional-methods.min.js",
+        "jquery-validation-sri.json",
+        "jquery.validate.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "@microsoft/signalr@latest",
+      "destination": "wwwroot/lib/signalr/",
+      "files": [
+        "dist/browser/signalr.js",
+        "dist/browser/signalr.min.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "datatables.net-responsive-bs@2.5.0",
+      "destination": "wwwroot/datatables.net-responsive-bs/",
+      "files": [
+        "js/responsive.bootstrap.js",
+        "js/responsive.bootstrap.min.js",
+        "css/responsive.bootstrap.min.css",
+        "css/responsive.bootstrap.css"
+      ]
+    },
+    {
+      "library": "datatables-responsive@2.5.0",
+      "destination": "wwwroot/datatables-responsive/"
+    },
+    {
+      "library": "jquery.qrcode@1.0",
+      "destination": "wwwroot/jquery.qrcode/"
+    },
+    {
+      "library": "qrcodejs@1.0.0",
+      "destination": "wwwroot/qrcodejs/"
+    },
+    {
+      "library": "moment.js@2.29.4",
+      "destination": "wwwroot/moment.js/",
+      "files": [
+        "moment.min.js",
+        "moment.min.js.map",
+        "moment.js",
+        "moment-with-locales.min.js.map",
+        "moment-with-locales.min.js",
+        "moment-with-locales.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "datatables.net-datetime@1.5.0",
+      "destination": "wwwroot/datatables.net-datetime/",
+      "files": [
+        "js/dataTables.dateTime.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "datatables.net-plugins@1.13.6",
+      "destination": "wwwroot/datatables.net-plugins/",
+      "files": [
+        "sorting/date-dd-MMM-yyyy.js",
+        "sorting/datetime-moment.js",
+        "sorting/datetime-us.js"
+      ]
+    },
+    {
+      "library": "datatables.net-select@1.7.0",
+      "destination": "wwwroot/datatables.net-select/",
+      "files": [
+        "dataTables.select.min.js",
+        "dataTables.select.js"
+      ]
+    },
+    {
+      "library": "datatables-buttons@2.4.2",
+      "destination": "wwwroot/datatables-buttons/"
+    },
+    {
+      "library": "datatables.net-buttons-bs@2.4.2",
+      "destination": "wwwroot/datatables.net-buttons-bs/"
+    },
+    {
+      "library": "datatables.net-select-bs4@1.7.0",
+      "destination": "wwwroot/datatables.net-select-bs4/"
+    },
+    {
+      "library": "print-js@1.6.0",
+      "destination": "wwwroot/print-js/"
+    },
+    {
+      "library": "jszip@3.10.1",
+      "destination": "wwwroot/jszip/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "datatables.net-select-dt@1.7.0",
+      "destination": "wwwroot/datatables.net-select-dt/"
+    }
+  ]
+}
