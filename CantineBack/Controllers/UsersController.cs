@@ -55,61 +55,56 @@ namespace CantineBack.Controllers
         // POST: api/Users
         [Authorize(Policy = IdentityData.AdminUserPolicyName)]
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult> PostUser([FromBody] User user)
         {
-            user.Actif = true;
             if (_context.Users == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Users'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Users' est null.");
             }
 
-            var userExist = await _context.Users.Where(u => u.Login == user.Login).FirstOrDefaultAsync();
-            if (userExist != null)
+            user.Profile = string.IsNullOrWhiteSpace(user.Profile) ? "USER" : user.Profile.ToUpper().Trim();
+
+            // Vérifier unicité du login
+            var existing = await _context.Users.FirstOrDefaultAsync(u => u.Login == user.Login);
+            if (existing != null)
             {
                 return Problem("Ce nom d'utilisateur existe déjà.");
             }
-            string password = String.Empty;
+
+            // Mettre les valeurs par défaut
+            user.Actif = true;
             user.Guid = Guid.NewGuid().ToString();
 
-            if (user.Profile == "GERANT" && user.Profile != "GERANT")
+            // Si l'admin n'a pas fourni de mot de passe, on le génère avec le format ROLE_YYYY
+            bool passwordWasGenerated = false;
+            string plainPassword;
+            if (string.IsNullOrWhiteSpace(user.Password))
             {
-                user.ResetPassword = true;
-                password = Common.GetRandomAlphanumericString(8);
-                user.Password = BCrypt.Net.BCrypt.HashPassword(password);
+                plainPassword = GeneratePassword(user.Profile);
+                passwordWasGenerated = true;
             }
             else
             {
-                user.ResetPassword = false;
+                plainPassword = user.Password;
             }
 
-            if (user.Profile != "GERANT" && String.IsNullOrWhiteSpace(user.Matricule))
-            {
+            user.Password = BCrypt.Net.BCrypt.HashPassword(plainPassword);
 
-                return Problem("Le matricule de l'utilisateur est obligatoire.");
-            }
-            if (!String.IsNullOrWhiteSpace(user.Matricule))
-            {
-                int matNumber = Convert.ToInt32(Regex.Match(user.Matricule, @"\d+").Value);
-                int modulo = matNumber % 2;
-                user.QrCode = DPWorldEncryption.SecurityManager.EncryptAES($"{user.Matricule}{modulo}");
+            user.ResetPassword = passwordWasGenerated;
 
-            }
-
+   
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            if (user.ResetPassword ?? false)
+            return CreatedAtAction("GetUser", new { id = user.Id }, new
             {
-
-                var message = String.Format("Username:{0} | Password: {1}", user.Login, password);
-
-                SmsManager.SendSMS(user.Telephone, Common.CreateAccountMessage);
-                SmsManager.SendSMS(user.Telephone, message);
-            }
-
-
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+                Message = "Utilisateur créé avec succès.",
+                Username = user.Login,
+                Password = plainPassword,
+                ForceResetPassword = user.ResetPassword
+            });
         }
+
 
         [AllowAnonymous]
         [HttpPost("Register")]
@@ -910,7 +905,12 @@ namespace CantineBack.Controllers
         }
 
 
-
+        private string GeneratePassword(string profile)
+        {
+            string prefix = profile.ToUpper().Replace(" ", "");
+            string uniquePart = Guid.NewGuid().ToString("N").Substring(0, 6).ToUpper();
+            return $"{prefix}_{uniquePart}";
+        }
 
 
         //[AllowAnonymous]
