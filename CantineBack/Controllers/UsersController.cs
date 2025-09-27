@@ -322,92 +322,63 @@ namespace CantineBack.Controllers
         // PUT: api/Users/5
         [HttpPut("{id}")]
         [Authorize(Policy = IdentityData.AdminUserPolicyName)]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, [FromBody] User user)
         {
             if (id != user.Id)
-            {
-                return BadRequest();
-            }
-            var userExist = await _context.Users.Where(u => u.Login == user.Login && u.Id != id).FirstOrDefaultAsync();
+                return BadRequest("L'identifiant de l'utilisateur ne correspond pas.");
+
+            // Vérifier si le login existe déjà pour un autre utilisateur
+            var userExist = await _context.Users
+                .FirstOrDefaultAsync(u => u.Login == user.Login && u.Id != id);
+
             if (userExist != null)
-            {
-
                 return Problem("Ce nom d'utilisateur existe déjà.");
-            }
-            var userBD = await _context.Users.AsNoTracking().FirstAsync(u => u.Id == id);
-            //if (user.Profile == "GERANT")
-            //{
-            //    user.UseActiveDirectoryAuth = false;
-            //}
-            if (user.Profile != "GERANT" && String.IsNullOrWhiteSpace(user.Matricule))
+
+            // Récupérer l'utilisateur depuis la base
+            var userBD = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (userBD == null)
+                return NotFound("Utilisateur introuvable.");
+
+            // Mise à jour des champs autorisés
+            userBD.Login = user.Login;
+            userBD.Nom = user.Nom;
+            userBD.Prenom = user.Prenom;
+            userBD.Telephone = user.Telephone;
+            userBD.Email = user.Email;
+            userBD.Profile = user.Profile?.ToUpper().Trim() ?? userBD.Profile;
+            userBD.Actif = user.Actif;
+            userBD.Bureau = user.Bureau;
+            userBD.Matricule = user.Matricule;
+
+            // Si l'admin veut réinitialiser le mot de passe
+            if (user.ResetPassword == true)
             {
+                string plainPassword = GeneratePassword(userBD.Profile);
+                userBD.Password = BCrypt.Net.BCrypt.HashPassword(plainPassword);
+                userBD.ResetPassword = true;
 
-                return Problem("Le matricule de l'utilisateur est obligatoire.");
+                // Ici tu pourrais renvoyer le mot de passe en clair à l’admin
+                return Ok(new
+                {
+                    Message = "Utilisateur mis à jour et mot de passe réinitialisé.",
+                    Username = userBD.Login,
+                    Password = plainPassword
+                });
             }
-            string password = String.Empty;
-
-            //if (userBD.UseActiveDirectoryAuth != user.UseActiveDirectoryAuth)
-            //{
-
-            //    if (!(user.UseActiveDirectoryAuth ?? false))
-            //    {
-            //        user.UseActiveDirectoryAuth = false;
-
-                    user.ResetPassword = true;
-                    password = Common.GetRandomAlphanumericString(8);
-                    user.Password = BCrypt.Net.BCrypt.HashPassword(password);
-            //    }
-            //}
-
-            if (!String.IsNullOrWhiteSpace(user.Matricule))
-            {
-                user.Matricule = user.Matricule.Trim();
-                int matNumber = Convert.ToInt32(Regex.Match(user.Matricule, @"\d+").Value);
-                int modulo = matNumber % 2;
-                user.QrCode = DPWorldEncryption.SecurityManager.EncryptAES($"{user.Matricule}{modulo}");
-                // user.QrCode = DPWorldEncryption.SecurityManager.EncryptAES(JsonConvert.SerializeObject(new QrCodeStaff { Matricule = user.Matricule!, Departement = user.Department?.Name ?? String.Empty, FullName = $"{user.Prenom} {user.Nom}" }));
-
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            if (String.IsNullOrWhiteSpace(password))
-            {
-                _context.Entry(user).Property(u => u.Password).IsModified = false;
-                _context.Entry(user).Property(u => u.ResetPassword).IsModified = false;
-            }
-
-
 
             try
             {
                 await _context.SaveChangesAsync();
-
-                if (!String.IsNullOrWhiteSpace(password))
-                {
-
-                    var message = String.Format("Username:{0} | Password: {1}", user.Login, password);
-
-                    SmsManager.SendSMS(user.Telephone, Common.CreateAccountMessage);
-                    SmsManager.SendSMS(user.Telephone, message);
-                }
-
-
+                return Ok(new { Message = "Utilisateur mis à jour avec succès." });
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                    return NotFound("Utilisateur introuvable.");
+                throw;
             }
-
-            return NoContent();
         }
+
         [Authorize]
         [HttpGet("GetSolde/{id}")]
         public async Task<IActionResult> GetSolde(int id)
@@ -719,8 +690,10 @@ namespace CantineBack.Controllers
                     {
                         utilisateur.Password = BCrypt.Net.BCrypt.HashPassword(utilisateurReset.NewPassword);
                         utilisateur.ResetPassword = false;
-
-                        SmsManager.SendSMS(utilisateur.Telephone, Common.PasswordResetMessage);
+                        if(utilisateurReset.NewPassword != utilisateurReset.ConfirmPassword)
+                        {
+                            return BadRequest("Le mot de passe de confirmation ne correspond pas au nouveau mot de passe.");
+                        }
                         _context.Entry(utilisateur).State = EntityState.Modified;
                         await _context.SaveChangesAsync();
                     }
@@ -734,11 +707,6 @@ namespace CantineBack.Controllers
                 {
                     return Problem("Nom d'utilisateur incorrect.");
                 }
-
-
-
-
-
                 return NoContent();
 
             }
@@ -746,10 +714,6 @@ namespace CantineBack.Controllers
             {
                 return Problem("Tous les champs sont obligatoires.");
             }
-
-
-
-
         }
 
 
