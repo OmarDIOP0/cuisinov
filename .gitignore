@@ -1,6 +1,7 @@
 # Build
 bin/
 obj/
+Logs/
 
 # Visual Studio
 .vs/

@@ -13,7 +13,7 @@ namespace CantineBack.Models
         public string Addresse { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public string Code { get; set; }
+        public string? Code { get; set; }
         public bool Actif { get; set; }
 
         public virtual ICollection<Department>? Departments { get; set; } = new HashSet<Department>();

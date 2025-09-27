@@ -233,8 +233,8 @@ namespace CantineBack.Controllers
             });
         }
 
-        [Authorize(Roles = "ADMIN")]
-        [HttpPost("users/{id}/role")]
+        //[Authorize(Roles = "ADMIN")]
+        [HttpPost("SetUserRole/{id}")]
         public async Task<IActionResult> SetUserRole(int id, [FromBody] string role)
         {
             var user = await _context.Users.FindAsync(id);

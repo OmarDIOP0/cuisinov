@@ -24,6 +24,7 @@ C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Debug\net6.
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Debug\net6.0\CantineFront.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Debug\net6.0\CantineFront.RazorAssemblyInfo.cache
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Debug\net6.0\CantineFront.RazorAssemblyInfo.cs
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Debug\net6.0\CantineFront.sourcelink.json
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Debug\net6.0\rjimswa.dswa.cache.json
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Debug\net6.0\rjsmrazor.dswa.cache.json
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Debug\net6.0\rjsmcshtml.dswa.cache.json
