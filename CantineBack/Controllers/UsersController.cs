@@ -258,10 +258,33 @@ namespace CantineBack.Controllers
             {
                 return NotFound();
             }
-            var r = await _context.Users.Include(u => u.Department).ToListAsync();
+            var r = await _context.Users.Include(u => u.Department).Where(p=>p.Profile == "USER").ToListAsync();
             var l = _mapper.Map<IEnumerable<UserReadDto>>(r);
             return Ok(l);
-            // return 
+        }
+        [HttpGet("Gerant")]
+        [Authorize(Policy = IdentityData.AdminUserPolicyName)]
+        public async Task<ActionResult<IEnumerable<User>>> GetGerant()
+        {
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+            var r = await _context.Users.Include(u => u.Department).Where(p => p.Profile == "GERANT").ToListAsync();
+            var l = _mapper.Map<IEnumerable<UserReadDto>>(r);
+            return Ok(l);
+        }
+        [HttpGet("Admin")]
+        [Authorize(Policy = IdentityData.AdminUserPolicyName)]
+        public async Task<ActionResult<IEnumerable<User>>> GetAdmins()
+        {
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+            var r = await _context.Users.Include(u => u.Department).Where(p => p.Profile == "ADMIN").ToListAsync();
+            var l = _mapper.Map<IEnumerable<UserReadDto>>(r);
+            return Ok(l);
         }
 
         // GET: api/Users/5

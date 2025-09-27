@@ -36,7 +36,7 @@ namespace CantineBack.Controllers
             }
             return await _context.Entreprises.Where(e => e.Actif == true).ToListAsync();
         }
-        [HttpGet]
+        [HttpGet("All")]
         [Authorize(Policy = IdentityData.AdminUserPolicyName)]
         public async Task<ActionResult<IEnumerable<Entreprise>>> GetAllEntreprises()
         {

@@ -950,6 +950,26 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CantineBack.Controllers.EntreprisesController",
+    "Method": "GetAllEntreprises",
+    "RelativePath": "api/Entreprises/All",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[CantineBack.Models.Entreprise, CantineBack.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "CantineBack.Controllers.PaymentMethodsController",
     "Method": "GetPaymentMethods",
     "RelativePath": "api/PaymentMethods",
@@ -1195,6 +1215,26 @@
   },
   {
     "ContainingType": "CantineBack.Controllers.UsersController",
+    "Method": "GetAdmins",
+    "RelativePath": "api/Users/Admin",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[CantineBack.Models.User, CantineBack.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CantineBack.Controllers.UsersController",
     "Method": "Authenticate",
     "RelativePath": "api/Users/authenticate",
     "HttpMethod": "POST",
@@ -1233,6 +1273,26 @@
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CantineBack.Controllers.UsersController",
+    "Method": "GetGerant",
+    "RelativePath": "api/Users/Gerant",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[CantineBack.Models.User, CantineBack.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CantineBack.Controllers.UsersController",
