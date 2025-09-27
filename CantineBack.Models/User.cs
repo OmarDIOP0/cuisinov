@@ -27,6 +27,7 @@
         public DateTime? LastRechargeDate { get; set; }
         public int? LastRechargeAmount { get; set; }
         public int? EntrepriseId { get; set; }
+        public string? Bureau { get; set; }
         public virtual Entreprise? Entreprise { get; set; }
         public virtual Department? Department { get; set; }
         public virtual IEnumerable<Commande>? CommandeNavigation { get; set; }

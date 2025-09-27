@@ -8,3 +8,4 @@ C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\DPWorldEncryption.Core\obj\D
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\DPWorldEncryption.Core\obj\Debug\netstandard2.0\DPWorldEncryption.Core.csproj.CoreCompileInputs.cache
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\DPWorldEncryption.Core\obj\Debug\netstandard2.0\DPWorldEncryption.Core.dll
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\DPWorldEncryption.Core\obj\Debug\netstandard2.0\DPWorldEncryption.Core.pdb
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\DPWorldEncryption.Core\obj\Debug\netstandard2.0\DPWorldEncryption.Core.sourcelink.json

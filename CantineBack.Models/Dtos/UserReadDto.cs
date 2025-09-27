@@ -24,6 +24,8 @@ namespace CantineBack.Models.Dtos
         public int? DepartmentId { get; set; }
         public bool Actif { get; set; }
         public bool? IsInterimEmployee { get; set; }
+        public int? EntrepriseId { get; set; }
+        public string? Bureau { get; set; }
         //public bool? UseActiveDirectoryAuth { get; set; }
         public DateTime? LastRechargeDate { get; set; }
         public int? LastRechargeAmount { get; set; }

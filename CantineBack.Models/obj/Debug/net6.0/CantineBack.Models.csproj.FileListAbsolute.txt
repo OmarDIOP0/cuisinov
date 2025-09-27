@@ -9,3 +9,4 @@ C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\obj\Debug
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\obj\Debug\net6.0\refint\CantineBack.Models.dll
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\obj\Debug\net6.0\CantineBack.Models.pdb
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\obj\Debug\net6.0\ref\CantineBack.Models.dll
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack.Models\obj\Debug\net6.0\CantineBack.Models.sourcelink.json

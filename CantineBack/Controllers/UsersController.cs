@@ -52,6 +52,203 @@ namespace CantineBack.Controllers
             _tokenService = tokenService;
         }
 
+        // POST: api/Users
+        [Authorize(Policy = IdentityData.AdminUserPolicyName)]
+        [HttpPost]
+        public async Task<ActionResult<User>> PostUser(User user)
+        {
+            user.Actif = true;
+            if (_context.Users == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Users'  is null.");
+            }
+
+            var userExist = await _context.Users.Where(u => u.Login == user.Login).FirstOrDefaultAsync();
+            if (userExist != null)
+            {
+                return Problem("Ce nom d'utilisateur existe déjà.");
+            }
+            string password = String.Empty;
+            user.Guid = Guid.NewGuid().ToString();
+
+            if (user.Profile == "GERANT" && user.Profile != "GERANT")
+            {
+                user.ResetPassword = true;
+                password = Common.GetRandomAlphanumericString(8);
+                user.Password = BCrypt.Net.BCrypt.HashPassword(password);
+            }
+            else
+            {
+                user.ResetPassword = false;
+            }
+
+            if (user.Profile != "GERANT" && String.IsNullOrWhiteSpace(user.Matricule))
+            {
+
+                return Problem("Le matricule de l'utilisateur est obligatoire.");
+            }
+            if (!String.IsNullOrWhiteSpace(user.Matricule))
+            {
+                int matNumber = Convert.ToInt32(Regex.Match(user.Matricule, @"\d+").Value);
+                int modulo = matNumber % 2;
+                user.QrCode = DPWorldEncryption.SecurityManager.EncryptAES($"{user.Matricule}{modulo}");
+
+            }
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            if (user.ResetPassword ?? false)
+            {
+
+                var message = String.Format("Username:{0} | Password: {1}", user.Login, password);
+
+                SmsManager.SendSMS(user.Telephone, Common.CreateAccountMessage);
+                SmsManager.SendSMS(user.Telephone, message);
+            }
+
+
+            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Register")]
+        public async Task<ActionResult<UserRegisterResponse>> Register(User request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (_context.Users.Any(u => u.Login.ToLower() == request.Login.ToLower()))
+                return BadRequest("Un utilisateur avec ce login existe déjà.");
+
+            if(_context.Users.Any(u => u.Telephone == request.Telephone))
+                return BadRequest("Un utilisateur avec ce numéro de téléphone existe déjà.");
+
+            var user = new User
+            {
+                Login = request.Login,
+                Telephone = request.Telephone,
+                Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                Bureau = request.Bureau,
+                EntrepriseId = request.EntrepriseId,
+                Actif = true,
+                Profile = "USER"
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            var userRead = _mapper.Map<UserReadDto>(user);
+
+            // claims pour JWT
+            var claims = new[]
+            {
+        new Claim(ClaimTypes.Name, userRead.Login!),
+        new Claim(ClaimTypes.NameIdentifier, userRead.Id.ToString()),
+        new Claim(ClaimTypes.Role, userRead.Profile!.ToLower()),
+        new Claim(JwtRegisteredClaimNames.GivenName,$"{userRead.Login} {userRead.Telephone}"),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+    };
+
+            // génération accessToken
+            var res = _tokenService.GenerateAccessToken(claims);
+            string accessToken = res.Item1;
+            DateTime expire = res.Item2;
+
+            // génération refreshToken
+            var refreshToken = _tokenService.GenerateRefreshToken();
+            _ = int.TryParse(_config["Jwt:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
+
+            var userRefreshToken = new RefreshToken
+            {
+                UserName = user.Login,
+                Refresh_Token = refreshToken,
+                Created = DateTime.Now,
+                Expires = DateTime.Now.AddDays(refreshTokenValidityInDays)
+            };
+            _context.RefreshTokens.Add(userRefreshToken);
+            await _context.SaveChangesAsync();
+
+            return Ok(new UserLoginResponse
+            {
+                Token = accessToken,
+                RefreshToken = refreshToken,
+                TokenExpireAt = expire,
+                User = userRead
+            });
+        }
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public async Task<ActionResult<UserLoginResponse>> Authenticate(string username, string password)
+        {
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                return BadRequest("Identifiants manquants.");
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Login.ToLower() == username.ToLower());
+            if (user == null || !user.Actif)
+                return Unauthorized("Utilisateur introuvable ou inactif.");
+
+            // vérification du password hashé
+            bool validPassword = BCrypt.Net.BCrypt.Verify(password, user.Password);
+            if (!validPassword)
+                return Unauthorized("Mot de passe incorrect.");
+
+            var userRead = _mapper.Map<UserReadDto>(user);
+
+            var claims = new[]
+            {
+        new Claim(ClaimTypes.Name, userRead.Login!),
+        new Claim(ClaimTypes.NameIdentifier, userRead.Id.ToString()),
+        new Claim(ClaimTypes.Role, userRead.Profile!.ToLower()),
+        new Claim(JwtRegisteredClaimNames.GivenName,$"{userRead.Prenom} {userRead.Nom}"),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+    };
+
+            var res = _tokenService.GenerateAccessToken(claims);
+            string accessToken = res.Item1;
+            DateTime expire = res.Item2;
+
+            var refreshToken = _tokenService.GenerateRefreshToken();
+            _ = int.TryParse(_config["Jwt:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
+
+            var userRefreshToken = _context.RefreshTokens.FirstOrDefault(rt => rt.UserName == user.Login);
+            if (userRefreshToken == null)
+            {
+                userRefreshToken = new RefreshToken { UserName = user.Login };
+                _context.RefreshTokens.Add(userRefreshToken);
+            }
+
+            userRefreshToken.Refresh_Token = refreshToken;
+            userRefreshToken.Created = DateTime.Now;
+            userRefreshToken.Expires = DateTime.Now.AddDays(refreshTokenValidityInDays);
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new UserLoginResponse
+            {
+                Token = accessToken,
+                RefreshToken = refreshToken,
+                TokenExpireAt = expire,
+                User = userRead
+            });
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpPost("users/{id}/role")]
+        public async Task<IActionResult> SetUserRole(int id, [FromBody] string role)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return NotFound();
+
+            if (role != "ADMIN" && role != "GERANT" && role != "USER")
+                return BadRequest("Rôle invalide");
+
+            user.Profile = role;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = $"Rôle de {user.Login} mis à jour : {role}" });
+        }
+
         // GET: api/Users
         [HttpGet]
         [Authorize(Policy = IdentityData.AdminUserPolicyName)]
@@ -689,197 +886,7 @@ namespace CantineBack.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
-        [Authorize(Policy = IdentityData.AdminUserPolicyName)]
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
-        {
-            user.Actif = true;
-            if (_context.Users == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Users'  is null.");
-            }
 
-            var userExist = await _context.Users.Where(u => u.Login == user.Login).FirstOrDefaultAsync();
-            if (userExist != null)
-            {
-                return Problem("Ce nom d'utilisateur existe déjà.");
-            }
-            string password = String.Empty;
-            user.Guid = Guid.NewGuid().ToString();
-
-            if (user.Profile == "GERANT" && user.Profile != "GERANT")
-            {
-                user.ResetPassword = true;
-                password = Common.GetRandomAlphanumericString(8);
-                user.Password = BCrypt.Net.BCrypt.HashPassword(password);
-            }
-            else
-            {
-                user.ResetPassword = false;
-            }
-
-            if (user.Profile != "GERANT" && String.IsNullOrWhiteSpace(user.Matricule))
-            {
-
-                return Problem("Le matricule de l'utilisateur est obligatoire.");
-            }
-            if (!String.IsNullOrWhiteSpace(user.Matricule))
-            {
-                int matNumber = Convert.ToInt32(Regex.Match(user.Matricule, @"\d+").Value);
-                int modulo = matNumber % 2;
-                user.QrCode = DPWorldEncryption.SecurityManager.EncryptAES($"{user.Matricule}{modulo}");
-
-            }
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            if (user.ResetPassword ?? false)
-            {
-
-                var message = String.Format("Username:{0} | Password: {1}", user.Login, password);
-
-                SmsManager.SendSMS(user.Telephone, Common.CreateAccountMessage);
-                SmsManager.SendSMS(user.Telephone, message);
-            }
-
-
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
-        }
-
-        [AllowAnonymous]
-        [HttpPost("Register")]
-        public async Task<ActionResult<UserRegisterResponse>> Register(User request)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (_context.Users.Any(u => u.Login.ToLower() == request.Login.ToLower()))
-                return BadRequest("Un utilisateur avec ce login existe déjà.");
-
-            var user = new User
-            {
-                Login = request.Login,
-                Telephone = request.Telephone,
-                Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                Actif = true,
-                Profile = "USER" 
-            };
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            var userRead = _mapper.Map<UserReadDto>(user);
-
-            // claims pour JWT
-            var claims = new[]
-            {
-        new Claim(ClaimTypes.Name, userRead.Login!),
-        new Claim(ClaimTypes.NameIdentifier, userRead.Id.ToString()),
-        new Claim(ClaimTypes.Role, userRead.Profile!.ToLower()),
-        new Claim(JwtRegisteredClaimNames.GivenName,$"{userRead.Login} {userRead.Telephone}"),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-    };
-
-            // génération accessToken
-            var res = _tokenService.GenerateAccessToken(claims);
-            string accessToken = res.Item1;
-            DateTime expire = res.Item2;
-
-            // génération refreshToken
-            var refreshToken = _tokenService.GenerateRefreshToken();
-            _ = int.TryParse(_config["Jwt:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
-
-            var userRefreshToken = new RefreshToken
-            {
-                UserName = user.Login,
-                Refresh_Token = refreshToken,
-                Created = DateTime.Now,
-                Expires = DateTime.Now.AddDays(refreshTokenValidityInDays)
-            };
-            _context.RefreshTokens.Add(userRefreshToken);
-            await _context.SaveChangesAsync();
-
-            return Ok(new UserLoginResponse
-            {
-                Token = accessToken,
-                RefreshToken = refreshToken,
-                TokenExpireAt = expire,
-                User = userRead
-            });
-        }
-        [AllowAnonymous]
-        [HttpPost("authenticate")]
-        public async Task<ActionResult<UserLoginResponse>> Authenticate(string username, string password)
-        {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-                return BadRequest("Identifiants manquants.");
-
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Login.ToLower() == username.ToLower());
-            if (user == null || !user.Actif)
-                return Unauthorized("Utilisateur introuvable ou inactif.");
-
-            // vérification du password hashé
-            bool validPassword = BCrypt.Net.BCrypt.Verify(password, user.Password);
-            if (!validPassword)
-                return Unauthorized("Mot de passe incorrect.");
-
-            var userRead = _mapper.Map<UserReadDto>(user);
-
-            var claims = new[]
-            {
-        new Claim(ClaimTypes.Name, userRead.Login!),
-        new Claim(ClaimTypes.NameIdentifier, userRead.Id.ToString()),
-        new Claim(ClaimTypes.Role, userRead.Profile!.ToLower()),
-        new Claim(JwtRegisteredClaimNames.GivenName,$"{userRead.Prenom} {userRead.Nom}"),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-    };
-
-            var res = _tokenService.GenerateAccessToken(claims);
-            string accessToken = res.Item1;
-            DateTime expire = res.Item2;
-
-            var refreshToken = _tokenService.GenerateRefreshToken();
-            _ = int.TryParse(_config["Jwt:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
-
-            var userRefreshToken = _context.RefreshTokens.FirstOrDefault(rt => rt.UserName == user.Login);
-            if (userRefreshToken == null)
-            {
-                userRefreshToken = new RefreshToken { UserName = user.Login };
-                _context.RefreshTokens.Add(userRefreshToken);
-            }
-
-            userRefreshToken.Refresh_Token = refreshToken;
-            userRefreshToken.Created = DateTime.Now;
-            userRefreshToken.Expires = DateTime.Now.AddDays(refreshTokenValidityInDays);
-
-            await _context.SaveChangesAsync();
-
-            return Ok(new UserLoginResponse
-            {
-                Token = accessToken,
-                RefreshToken = refreshToken,
-                TokenExpireAt = expire,
-                User = userRead
-            });
-        }
-
-        [Authorize(Roles = "ADMIN")]
-        [HttpPost("users/{id}/role")]
-        public async Task<IActionResult> SetUserRole(int id, [FromBody] string role)
-        {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null) return NotFound();
-
-            if (role != "ADMIN" && role != "GERANT" && role != "USER")
-                return BadRequest("Rôle invalide");
-
-            user.Profile = role;
-            await _context.SaveChangesAsync();
-
-            return Ok(new { Message = $"Rôle de {user.Login} mis à jour : {role}" });
-        }
 
 
 
