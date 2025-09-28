@@ -3151,7 +3151,8 @@
           },
           "entrepriseId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "entreprise": {
             "$ref": "#/components/schemas/Entreprise"
@@ -3175,6 +3176,11 @@
           },
           "name": {
             "type": "string",
+            "nullable": true
+          },
+          "entrepriseId": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
           "actif": {
