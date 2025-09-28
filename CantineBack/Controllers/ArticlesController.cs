@@ -78,7 +78,6 @@ namespace CantineBack.Controllers
                 //_mapper.ProjectTo < ArticleReadDto >()
                 return await _mapper.ProjectTo<ArticleReadDto>(_context.Articles.Where(a => a.IsArticleOnMenu == true && a.IsApproved).Include(a => a.CategorieNavigation)).ToListAsync();
             //    return Ok(_mapper.Map<IEnumerable<CommandeReadDto>>(r));
-
             }
             else
             {
