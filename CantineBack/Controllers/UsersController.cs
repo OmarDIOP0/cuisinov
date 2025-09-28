@@ -164,7 +164,7 @@ namespace CantineBack.Controllers
             _context.RefreshTokens.Add(userRefreshToken);
             await _context.SaveChangesAsync();
 
-            return Ok(new UserLoginResponse
+            return Ok(new UserRegisterResponse
             {
                 Token = accessToken,
                 RefreshToken = refreshToken,

@@ -112,70 +112,51 @@ namespace CantineBack.Controllers
         // PUT: api/Articles/5
         [HttpPut("{id}")]
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutArticle(int id, Article article)
         {
-            string profilUserAction = User.FindFirstValue(ClaimTypes.Role);
+            string userRole = User.FindFirstValue(ClaimTypes.Role) ?? string.Empty;
             int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId);
 
             if (id != article.Id)
-            {
-                return BadRequest();
-            }
+                return BadRequest("L'identifiant de l'article ne correspond pas.");
 
-            var oldArticle = await _context.Articles.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+            var oldArticle = await _context.Articles
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.Id == id);
+
             if (oldArticle == null)
-            {
-                return NotFound();
-            }
-            if (article.PrixDeVente <= 0)
-            {
-                return Problem("Prix de vente invalide.");
-            }
-            if (article.QuantiteStock < 0)
-            {
-                return Problem("Quantité en stock invalide.");
-            }
-            if (article.PrixDachat.HasValue)
-            {
-                if (article.PrixDachat < 0)
-                {
-                    return Problem("Prix d'achat invalide.");
-                }
-            }
+                return NotFound("Article introuvable.");
 
+            // 🔹 Validation des données
+            if (article.PrixDeVente <= 0)
+                return Problem("Prix de vente invalide.");
+
+            if (article.QuantiteStock < 0)
+                return Problem("Quantité en stock invalide.");
+
+            if (article.PrixDachat.HasValue && article.PrixDachat < 0)
+                return Problem("Prix d'achat invalide.");
+
+            // 🔹 Préparation de la mise à jour
             _context.Entry(article).State = EntityState.Modified;
 
-            if (oldArticle.PrixDeVente != article.PrixDeVente )
+            // 🔹 Gestion de l’approbation si le prix change
+            if (oldArticle.PrixDeVente != article.PrixDeVente)
             {
-                if (profilUserAction != "admin")
+                if (!userRole.Equals("admin", StringComparison.OrdinalIgnoreCase))
                 {
                     article.IsApproved = false;
-                    var userAction = await _context.Users.AsNoTracking().FirstOrDefaultAsync(a => a.Id == userId);
-                    if (userAction != null)
-                    {
-                        SmsManager.SendSMS(userAction.Telephone!, $"Bonjour  Le prix de l'article \"{article.Title} \" a été modifié , Veuillez attendre l'approbation d'un administrateur");
-                   
-                    var usersAdmins = await _context.Users.AsNoTracking().Where(a => a.Profile!.ToLower() == IdentityData.AdminUserClaimName).ToListAsync();
-                    if (usersAdmins?.Any() ?? false)
-                    {
-                        string msg = $"Bonjour  Le prix de l'article \"{article.Title} \" a été modifié par {userAction.Login!}, Merci de l'approuver!";
-                        foreach (var user in usersAdmins)
-                        {
-                            if (Common.EnvironmentMode == "TEST")
-                            {
-                                SmsManager.SendSMS("778002589"!, msg);
-                                break;
-                            }
-                            SmsManager.SendSMS(userAction.Telephone!, msg);
-                        }
-                    }
-                    }
-                }
 
+                    var userAction = await _context.Users
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(u => u.Id == userId);
+                }
             }
             else
             {
-                if (profilUserAction != "admin")
+                // 🔹 Empêche un non-admin de forcer IsApproved
+                if (!userRole.Equals("admin", StringComparison.OrdinalIgnoreCase))
                 {
                     _context.Entry(article).Property(a => a.IsApproved).IsModified = false;
                 }
@@ -188,17 +169,14 @@ namespace CantineBack.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!ArticleExists(id))
-                {
-                    return NotFound();
-                }
+                    return NotFound("Article introuvable.");
                 else
-                {
                     throw;
-                }
             }
 
             return NoContent();
         }
+
         [Route("UpdateStatus/{id}")]
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
         [HttpPut]

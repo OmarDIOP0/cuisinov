@@ -1,0 +1,297 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@section styles{
+
+    <style>
+        /*   @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');*/
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif
+        }
+
+        body {
+            background: #ecf0f3
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .wrapper {
+            max-width: 350px;
+            min-height: 400px;
+            /*margin: 80px auto;*/
+            margin: auto auto;
+            padding: 10px 30px 20px 30px;
+            background-color: #ecf0f3;
+            border-radius: 15px;
+            box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff
+        }
+
+        .logo {
+            width: 100px;
+            margin: auto;
+            margin-top:auto;
+        }
+
+            .logo img {
+                width: 100%;
+                height: 100px;
+                object-fit: cover;
+                /*border-radius: 50%;
+                        box-shadow: 0px 0px 3px #5f5f5f, 0px 0px 0px 5px #ecf0f3, 8px 8px 15px #a7aaa7, -8px -8px 15px #fff*/
+            }
+
+        .wrapper .name {
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 1.3px;
+            padding-left: 10px;
+            color: #555
+        }
+
+        .wrapper .form-field input {
+            width: 100%;
+            display: block;
+            border: none;
+            outline: none;
+            background: none;
+            font-size: 1rem;
+            color: #666;
+            padding: 10px 15px 10px 10px
+        }
+
+        .wrapper .form-field {
+            padding-left: 10px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            box-shadow: inset 8px 8px 8px #cbced1, inset -8px -8px 8px #fff
+        }
+
+            .wrapper .form-field .fas {
+                color: #555
+            }
+
+        .wrapper .btn {
+            box-shadow: none;
+            width: 100%;
+            height: 40px;
+            background-color: #1E1450;
+            color: #fff;
+            border-radius: 25px;
+            box-shadow: 3px 3px 3px #b1b1b1, -3px -3px 3px #fff;
+            letter-spacing: 1.3px
+        }
+
+            .wrapper .btn:hover {
+                background-color: #1E1840;
+            }
+
+        .wrapper a {
+            text-decoration: none;
+            font-size: 0.8rem;
+            color: #03A9F4
+        }
+
+            .wrapper a:hover {
+                color: #039BE5
+            }
+
+        @@media(max-width: 380px) {
+            .wrapper {
+                /*margin: 30px auto;*/
+                margin: auto auto;
+                padding: 40px 15px 15px 15px
+            }
+        }
+
+
+
+        /* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
+        @@media screen and (max-width: 600px) {
+            .wrapper a {
+                font-size: 0.6rem;
+            }
+
+            .wrapper .name {
+                font-size: 0.6rem;
+                letter-spacing: 1px;
+            }
+
+            label, .wrapper .form-field input, .wrapper .btn {
+                font-size: 11px;
+            }
+        }
+
+        @@media screen and (max-width: 300px) {
+            .wrapper a {
+                font-size: 0.5rem;
+            }
+
+            .wrapper .name {
+                font-size: 0.2rem;
+                letter-spacing: 1px;
+            }
+
+            label, .wrapper .form-field input, .wrapper .btn {
+                font-size: 10px;
+            }
+        }
+
+        .book_section .form_container button.custom-btn, .form_container button.custom-btn {
+        
+            font-size: 12px;
+            
+        }
+    </style>
+
+}
+<div class="wrapper mt-3">
+    <div class="logo"> @*<img src="~/Content/Images/DPWorldLogo.png" alt="">*@
+
+        <img src="~/images/dpworldlogo.png" />
+    </div>
+    <div class="text-center mt-1 name"> DP WORLD CAFETARIA </div>
+    <div class="text-center mt-2 name" style="font-size:10px;"> Dakar Terminal </div>
+    <form class="p-3 mt-1 form_container" id="formLogin">
+        <div class="form-group">
+            <label class="ml-1 small">Nom d'utilisateur</label>
+
+            <div id="userIDParent" class="form-field d-flex align-items-center"> <span class="fa fa-user"></span> <input type="text" name="userID" id="userID" onkeyup="this.value = this.value.replace(/ /, '');" placeholder=""> </div>
+           <div id="pwdDiv">
+                <label class="ml-1 small">Mot de passe</label>
+                <div id="pwdParent" class="form-field d-flex align-items-center"> <span class="fa fa-key"></span> <input type="password" name="password" id="password" placeholder=""> </div>
+
+           </div>
+
+            <div id="oldPwdDiv" style="display:none">
+                <label class="ml-1 small">Ancien mot de passe</label>
+                <div class="form-field d-flex align-items-center"> <span class="fa fa-key"></span> <input type="password" name="oldPassword" id="oldPassword" placeholder=""> </div>
+            </div>
+
+            <div id="newPwdDiv" style="display:none">
+                <label class="ml-1 small">Nouveau mot de passe</label>
+                <div class="form-field d-flex align-items-center"> <span class="fa fa-key"></span> <input type="password" name="newPassword" id="newPassword" placeholder=""> </div>
+            </div>
+
+            <div id="confirmPwdDiv" style="display:none">
+                <label class="ml-1 small">Conifrmation mot de passe</label>
+                <div class="form-field d-flex align-items-center"> <span class="fa fa-key"></span> <input type="password" name="confirmPassword" id="confirmPassword" placeholder=""> </div>
+            </div>
+        </div>
+
+
+   
+        <div class="d-flex justify-content-center">
+            <button id="btnSignIn" type="submit" class="custom-btn mt-2 center" style="text-transform:capitalize">Se Connecter</button>
+            <button id="btnResetPwd" type="submit" class="custom-btn mt-2 center" style="display:none;text-transform:capitalize">Modifier mot de passe</button>
+        </div>
+      
+       
+
+    </form>
+
+</div>
+
+
+@section scripts{
+    <script>
+
+        let Reset_Password = false;
+
+        var errorHandler = function (err) {
+            // endLoadingById("#formLogin")
+            ToastR("Nom d'utilisateur ou mot de passe incorrect!", "error", 10)
+        }
+        const signInListener = event => {
+
+            // stop form submission
+            event.preventDefault();
+
+            let userID = $("#userID").val()
+            if (userID == null || userID.trim() == "") {
+
+                ToastR("username is required", "error", 15);
+                return;
+            }
+            let password = $("#password").val()
+            if (password == null || password.trim() == "") {
+
+                ToastR("password is required", "error", 15);
+                return;
+            }
+
+            let successHanlder = function (res) {
+                //  endLoadingById("#formLogin")
+
+
+                if (res != null) {
+                    if (res.success) {
+                        ToastR(res.message, "success", 10);
+
+                        console.log(res);
+
+                        if (res.resetPassword) {
+                            Reset_Password = true;
+                            $("#pwdDiv").hide();
+                            $("#btnSignIn").hide();
+                            $("#oldPwdDiv").show();
+                            $("#newPwdDiv").show();
+                            $("#confirmPwdDiv").show();
+                            $("#btnResetPwd").show();
+                        }else{
+                            location.href = location.origin + "/Home/Menu"
+
+                        }
+                     
+                    } else {
+                        ToastR(res.message, "error", 10);
+                    }
+
+                } else {
+                    ToastR("Failed connection", "error", 10);
+                }
+
+            }
+            try {
+                // startLoadingById("#formLogin")
+
+                if(Reset_Password){
+
+                    var postData = { Login: userID, OldPassword: $("#oldPassword").val(), NewPassword: $("#newPassword").val(), ConfirmPassword: $("#confirmPassword").val() }
+                    ajaxManager("POST", `/Login/ResetPassword`, successHanlder, errorHandler, postData);
+                }else{
+
+                    ajaxManager("GET", `/Login/SignIn?userID=${userID}&password=${password}`, successHanlder, errorHandler);
+                }
+               
+            } catch (e) {
+
+            } finally {
+
+            }
+        }
+
+
+        const form = document.getElementById('formLogin');
+
+        form.addEventListener('submit', signInListener);
+
+
+    </script>
+
+
+
+
+}

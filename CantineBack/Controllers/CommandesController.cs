@@ -390,7 +390,7 @@ namespace CantineBack.Controllers
                 {
                     try
                     {
-                        SmsManager.SendSMS(userPhoneNumber, $"Bonjour {userFullName} votre commande du: {commande.Date?.ToString("dd-MM-yyyy HH:mm")} a ete annulee par le prestataire Motif : {rejectCommand.Reason}");
+                        //SmsManager.SendSMS(userPhoneNumber, $"Bonjour {userFullName} votre commande du: {commande.Date?.ToString("dd-MM-yyyy HH:mm")} a ete annulee par le prestataire Motif : {rejectCommand.Reason}");
                     }
                     catch (Exception ex)
                     {

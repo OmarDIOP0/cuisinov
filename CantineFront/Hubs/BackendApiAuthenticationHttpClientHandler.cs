@@ -29,81 +29,59 @@ namespace CantineFront.Hubs
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            //var expat = await _accessor.HttpContext.GetTokenAsync("expires_at");
-            //var dataExp = DateTime.Parse(expat, null, DateTimeStyles.RoundtripKind);
-            //if ((dataExp - DateTime.Now).TotalMinutes < 10)
-            //{
-            //    //SNIP GETTING A NEW TOKEN IF ITS ABOUT TO EXPIRE
-            //}
-
-            if(_accessor.HttpContext == null) {
-
+            if (_accessor.HttpContext == null)
                 return await base.SendAsync(request, cancellationToken);
-            }
-            var token = _accessor.HttpContext.Session.GetString("access_token");
-            var refresh_token = _accessor.HttpContext.Session.GetString("refresh_token");
-            var expire_at = _accessor.HttpContext.Session.GetCustomObjectFromSession<DateTime?>("expire_at") ?? DateTime.Now;
 
-            if (String.IsNullOrWhiteSpace(token) || (DateTime.Now >= expire_at))
+            var session = _accessor.HttpContext.Session;
+            var token = session.GetString("access_token");
+            var refreshToken = session.GetString("refresh_token");
+            var expireAt = session.GetCustomObjectFromSession<DateTime?>("expire_at") ?? DateTime.Now;
+
+            if (string.IsNullOrWhiteSpace(token) || DateTime.UtcNow >= expireAt.AddSeconds(-30))
             {
-
-                if (!String.IsNullOrWhiteSpace(token) && !String.IsNullOrWhiteSpace(refresh_token))
+                if (!string.IsNullOrWhiteSpace(refreshToken))
                 {
-
-                    var refreshTokenRequest = new RefreshTokenRequest  {
-                        AccessToken = token!,
-                        RefreshToken = refresh_token! };
-
-                    var httpClient=new HttpClient();    
-                    HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiUrlGeneric.RefreshTokenURL, refreshTokenRequest);
-
-                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest || response?.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    var refreshRequest = new RefreshTokenRequest
                     {
-                        //Refresh Token is Expired Or Invalid client request.
-                       
-                        
-                        _accessor.HttpContext.Session.Clear();
+                        AccessToken = token ?? string.Empty,
+                        RefreshToken = refreshToken
+                    };
+
+                    var httpClient = _httpClientFactory.CreateClient();
+                    var response = await httpClient.PostAsJsonAsync(ApiUrlGeneric.RefreshTokenURL, refreshRequest, cancellationToken);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        session.Clear();
                         await _accessor.HttpContext.SignOutAsync();
-
                     }
-                    else
+                    else if (response.IsSuccessStatusCode)
                     {
-
                         try
                         {
-                            var apiResponse = await ApiResultParser<Token>.Parse(response!);
+                            var apiResponse = await ApiResultParser<Token>.Parse(response);
                             if (apiResponse.Data != null)
                             {
-                                _accessor.HttpContext.Session.SetString("access_token", apiResponse.Data.AccessToken);
-                                _accessor.HttpContext.Session.SetString("refresh_token", apiResponse.Data.RefreshToken);
-                                _accessor.HttpContext.Session.SetObjectInSession("expire_at", apiResponse.Data.ExpireAt);
-
+                                token = apiResponse.Data.AccessToken;
+                                session.SetString("access_token", token);
+                                session.SetString("refresh_token", apiResponse.Data.RefreshToken);
+                                session.SetObjectInSession("expire_at", apiResponse.Data.ExpireAt);
                             }
-                            
                         }
-                        catch (Exception ex)
+                        catch
                         {
-                            
-                            _accessor.HttpContext.Session.Clear();
+                            session.Clear();
                             await _accessor.HttpContext.SignOutAsync();
-                            //throw;
                         }
-                        
-                       
                     }
-                   
-
-
                 }
-
-
             }
 
+            if (!string.IsNullOrEmpty(token))
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             return await base.SendAsync(request, cancellationToken);
-            // Use the token to make the call.
-
         }
+
     }
 }
