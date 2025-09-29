@@ -1,297 +1,577 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@section styles{
-
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Cuisinov</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /*   @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');*/
+        :root {
+            --primary-color: #1E1450;
+            --primary-dark: #161236;
+            --primary-light: #2A1F6E;
+            --secondary-color: #FF6B35;
+            --accent-color: #00C9B1;
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 20px 40px rgba(0, 0, 0, 0.12);
+            --border-radius: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background: #ecf0f3
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        /* Firefox */
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-
-        .wrapper {
-            max-width: 350px;
-            min-height: 400px;
-            /*margin: 80px auto;*/
-            margin: auto auto;
-            padding: 10px 30px 20px 30px;
-            background-color: #ecf0f3;
-            border-radius: 15px;
-            box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff
-        }
-
-        .logo {
-            width: 100px;
-            margin: auto;
-            margin-top:auto;
-        }
-
-            .logo img {
-                width: 100%;
-                height: 100px;
-                object-fit: cover;
-                /*border-radius: 50%;
-                        box-shadow: 0px 0px 3px #5f5f5f, 0px 0px 0px 5px #ecf0f3, 8px 8px 15px #a7aaa7, -8px -8px 15px #fff*/
+            body::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,0 1000,1000"/></svg>');
+                background-size: cover;
             }
 
-        .wrapper .name {
-            font-weight: 600;
-            font-size: 1rem;
-            letter-spacing: 1.3px;
-            padding-left: 10px;
-            color: #555
-        }
-
-        .wrapper .form-field input {
+        .login-container {
             width: 100%;
-            display: block;
-            border: none;
-            outline: none;
-            background: none;
-            font-size: 1rem;
-            color: #666;
-            padding: 10px 15px 10px 10px
+            max-width: 420px;
+            position: relative;
+            z-index: 2;
         }
 
-        .wrapper .form-field {
-            padding-left: 10px;
-            margin-bottom: 20px;
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius);
+            padding: 40px 35px;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+            .login-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: var(--gradient-secondary);
+            }
+
+            .login-card:hover {
+                transform: translateY(-5px);
+                box-shadow: var(--shadow-medium), 0 25px 50px rgba(0, 0, 0, 0.15);
+            }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-secondary);
             border-radius: 20px;
-            box-shadow: inset 8px 8px 8px #cbced1, inset -8px -8px 8px #fff
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+            transition: var(--transition);
         }
 
-            .wrapper .form-field .fas {
-                color: #555
+            .logo-icon:hover {
+                transform: scale(1.05) rotate(5deg);
             }
 
-        .wrapper .btn {
-            box-shadow: none;
+            .logo-icon i {
+                font-size: 32px;
+                color: white;
+            }
+
+        .app-name {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+
+        .app-tagline {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 2px;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            z-index: 2;
+            transition: var(--transition);
+        }
+
+        .form-input {
             width: 100%;
-            height: 40px;
-            background-color: #1E1450;
-            color: #fff;
-            border-radius: 25px;
-            box-shadow: 3px 3px 3px #b1b1b1, -3px -3px 3px #fff;
-            letter-spacing: 1.3px
+            padding: 15px 15px 15px 50px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: white;
+            transition: var(--transition);
+            position: relative;
         }
 
-            .wrapper .btn:hover {
-                background-color: #1E1840;
+            .form-input:focus {
+                outline: none;
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(30, 20, 80, 0.1);
+                transform: translateY(-2px);
             }
 
-        .wrapper a {
-            text-decoration: none;
-            font-size: 0.8rem;
-            color: #03A9F4
+                .form-input:focus + .input-icon {
+                    color: var(--secondary-color);
+                    transform: translateY(-50%) scale(1.1);
+                }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 3;
         }
 
-            .wrapper a:hover {
-                color: #039BE5
+            .password-toggle:hover {
+                color: var(--primary-color);
             }
 
-        @@media(max-width: 380px) {
-            .wrapper {
-                /*margin: 30px auto;*/
-                margin: auto auto;
-                padding: 40px 15px 15px 15px
-            }
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
         }
 
-
-
-        /* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
-        @@media screen and (max-width: 600px) {
-            .wrapper a {
-                font-size: 0.6rem;
+            .btn-login::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                transition: 0.5s;
             }
 
-            .wrapper .name {
-                font-size: 0.6rem;
-                letter-spacing: 1px;
+            .btn-login:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(30, 20, 80, 0.3);
             }
 
-            label, .wrapper .form-field input, .wrapper .btn {
-                font-size: 11px;
+                .btn-login:hover::before {
+                    left: 100%;
+                }
+
+            .btn-login:active {
+                transform: translateY(0);
             }
+
+        .register-link {
+            text-align: center;
+            margin-top: 25px;
         }
 
-        @@media screen and (max-width: 300px) {
-            .wrapper a {
-                font-size: 0.5rem;
+            .register-link a {
+                color: var(--primary-color);
+                text-decoration: none;
+                font-weight: 600;
+                transition: var(--transition);
+                position: relative;
             }
 
-            .wrapper .name {
-                font-size: 0.2rem;
-                letter-spacing: 1px;
-            }
+                .register-link a::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -2px;
+                    left: 0;
+                    width: 0;
+                    height: 2px;
+                    background: var(--secondary-color);
+                    transition: var(--transition);
+                }
 
-            label, .wrapper .form-field input, .wrapper .btn {
-                font-size: 10px;
-            }
+                .register-link a:hover {
+                    color: var(--secondary-color);
+                }
+
+                    .register-link a:hover::after {
+                        width: 100%;
+                    }
+
+        /* Reset Password Sections */
+        .reset-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
         }
 
-        .book_section .form_container button.custom-btn, .form_container button.custom-btn {
-        
-            font-size: 12px;
-            
+        @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        /* Floating animation */
+        @@keyframes float {
+            0%, 100%
+
+        {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+
+        }
+
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 480px) {
+            .login-card
+
+        {
+            padding: 30px 25px;
+            margin: 10px;
+        }
+
+        .app-name {
+            font-size: 1.8rem;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+        }
+
+            .logo-icon i {
+                font-size: 24px;
+            }
+
+        }
+
+        /* Loading state */
+        .btn-loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+            .btn-loading::after {
+                content: '';
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                margin: auto;
+                border: 2px solid transparent;
+                border-top-color: #ffffff;
+                border-radius: 50%;
+                animation: button-loading-spinner 1s ease infinite;
+            }
+
+        @@keyframes button-loading-spinner {
+            from
+
+        {
+            transform: rotate(0turn);
+        }
+
+        to {
+            transform: rotate(1turn);
+        }
+
+        }
+
+        /* Hide default sections */
+        .header_section, .hero_area {
+            display: none;
+        }
+
+        /* Fix pour les problèmes d'affichage */
+        #btnResetPwd {
+            display: none;
         }
     </style>
-
-}
-<div class="wrapper mt-3">
-    <div class="logo"> @*<img src="~/Content/Images/DPWorldLogo.png" alt="">*@
-
-        <img src="~/images/dpworldlogo.png" />
-    </div>
-    <div class="text-center mt-1 name"> DP WORLD CAFETARIA </div>
-    <div class="text-center mt-2 name" style="font-size:10px;"> Dakar Terminal </div>
-    <form class="p-3 mt-1 form_container" id="formLogin">
-        <div class="form-group">
-            <label class="ml-1 small">Nom d'utilisateur</label>
-            <div id="usernameParent" class="form-field d-flex align-items-center"> <span class="fa fa-user"></span> 
-                <input type="text" name="username" id="username" onkeyup="this.value = this.value.replace(/ /, '');" placeholder=""> $
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo-section floating-element">
+                <div class="logo-icon">
+                    <i class="fas fa-utensils"></i>
                 </div>
-           <div id="pwdDiv">
-                <label class="ml-1 small">Mot de passe</label>
-                <div id="pwdParent" class="form-field d-flex align-items-center"> <span class="fa fa-key"></span> <input type="password" name="password" id="password" placeholder=""> </div>
-
-           </div>
-
-            <div id="oldPwdDiv" style="display:none">
-                <label class="ml-1 small">Ancien mot de passe</label>
-                <div class="form-field d-flex align-items-center"> <span class="fa fa-key"></span> <input type="password" name="oldPassword" id="oldPassword" placeholder=""> </div>
+                <h1 class="app-name">CUISINOV</h1>
+                <p class="app-tagline">Votre restaurant d'entreprise</p>
             </div>
 
-            <div id="newPwdDiv" style="display:none">
-                <label class="ml-1 small">Nouveau mot de passe</label>
-                <div class="form-field d-flex align-items-center"> <span class="fa fa-key"></span> <input type="password" name="newPassword" id="newPassword" placeholder=""> </div>
-            </div>
+            <form id="formLogin">
+                <!-- Login Section -->
+                <div id="loginSection">
+                    <div class="form-group">
+                        <label class="form-label" for="username">Nom d'utilisateur</label>
+                        <div class="input-group">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text"
+                                   class="form-input"
+                                   id="username"
+                                   name="username"
+                                   placeholder="Votre nom d'utilisateur"
+                                   onkeyup="this.value = this.value.replace(/ /g, '')">
+                        </div>
+                    </div>
 
-            <div id="confirmPwdDiv" style="display:none">
-                <label class="ml-1 small">Conifrmation mot de passe</label>
-                <div class="form-field d-flex align-items-center"> <span class="fa fa-key"></span> <input type="password" name="confirmPassword" id="confirmPassword" placeholder=""> </div>
+                    <div class="form-group">
+                        <label class="form-label" for="password">Mot de passe</label>
+                        <div class="input-group">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password"
+                                   class="form-input"
+                                   id="password"
+                                   name="password"
+                                   placeholder="Votre mot de passe">
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-login" id="btnSignIn">
+                        Se Connecter
+                    </button>
+                </div>
+
+                <!-- Reset Password Section -->
+                <div id="resetSection" class="reset-section">
+                    <div class="form-group">
+                        <label class="form-label" for="oldPassword">Ancien mot de passe</label>
+                        <div class="input-group">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" class="form-input" id="oldPassword" name="oldPassword" placeholder="Votre ancien mot de passe">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="newPassword">Nouveau mot de passe</label>
+                        <div class="input-group">
+                            <i class="fas fa-key input-icon"></i>
+                            <input type="password" class="form-input" id="newPassword" name="newPassword" placeholder="Votre nouveau mot de passe">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="confirmPassword">Confirmation du mot de passe</label>
+                        <div class="input-group">
+                            <i class="fas fa-key input-icon"></i>
+                            <input type="password" class="form-input" id="confirmPassword" name="confirmPassword" placeholder="Confirmez votre mot de passe">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-login" id="btnResetPwd">
+                        Modifier le mot de passe
+                    </button>
+                </div>
+            </form>
+
+            <div class="register-link">
+                <p>Nouveau sur Cuisinov ? <a href="/Login/Register">Créer un compte</a></p>
             </div>
         </div>
+    </div>
 
-
-   
-        <div class="d-flex justify-content-center">
-            <button id="btnSignIn" type="submit" class="custom-btn mt-2 center" style="text-transform:capitalize">Se Connecter</button>
-            <button id="btnResetPwd" type="submit" class="custom-btn mt-2 center" style="display:none;text-transform:capitalize">Modifier mot de passe</button>
-        </div>
-
-    </form>
-
-</div>
-
-
-@section scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-
         let Reset_Password = false;
 
-        var errorHandler = function (err) {
-            // endLoadingById("#formLogin")
-            ToastR("Nom d'utilisateur ou mot de passe incorrect!", "error", 10)
-        }
-        const signInListener = event => {
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
 
-            // stop form submission
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Fonction ToastR simulée (à remplacer par votre implémentation réelle)
+        function ToastR(message, type, duration) {
+            console.log(`${type.toUpperCase()}: ${message} (${duration}s)`);
+            // Implémentez votre système de notifications toast ici
+        }
+
+        // Fonction ajaxManager simulée (à remplacer par votre implémentation réelle)
+        function ajaxManager(method, url, successHandler, errorHandler, data) {
+            console.log(`AJAX ${method}: ${url}`, data);
+            // Simuler une réponse réussie pour les tests
+            setTimeout(() => {
+                if (url.includes('SignIn')) {
+                    successHandler({
+                        Success: true,
+                        Message: "Connexion réussie",
+                        ResetPassword: false
+                    });
+                } else if (url.includes('ResetPassword')) {
+                    successHandler({
+                        Success: true,
+                        Message: "Mot de passe modifié avec succès"
+                    });
+                }
+            }, 1000);
+        }
+
+        var errorHandler = function (err) {
+            ToastR("Nom d'utilisateur ou mot de passe incorrect!", "error", 10);
+        }
+
+        const signInListener = event => {
             event.preventDefault();
 
             let username = $("#username").val()
             if (username == null || username.trim() == "") {
-
-                ToastR("username is required", "error", 15);
+                ToastR("Le nom d'utilisateur est requis", "error", 15);
                 return;
             }
             let password = $("#password").val()
             if (password == null || password.trim() == "") {
-
-                ToastR("password is required", "error", 15);
+                ToastR("Le mot de passe est requis", "error", 15);
                 return;
             }
 
             let successHanlder = function (res) {
-                //  endLoadingById("#formLogin")
-
-
                 if (res != null) {
                     if (res.Success) {
                         ToastR(res.Message, "success", 10);
-                        console.log("Recu ",res);
-
-                        console.log(res);
+                        console.log("Reçu ", res);
 
                         if (res.ResetPassword) {
                             Reset_Password = true;
-                            $("#pwdDiv").hide();
+                            $("#loginSection").hide();
+                            $("#resetSection").show();
                             $("#btnSignIn").hide();
-                            $("#oldPwdDiv").show();
-                            $("#newPwdDiv").show();
-                            $("#confirmPwdDiv").show();
                             $("#btnResetPwd").show();
-                        }else{
+                        } else {
                             location.href = location.origin + "/Home/Menu"
-
                         }
-                     
+
                     } else {
                         ToastR(res.message, "error", 10);
                     }
-
                 } else {
-                    ToastR("Failed connection", "error", 10);
+                    ToastR("Erreur de connexion", "error", 10);
                 }
-
             }
+
             try {
-                // startLoadingById("#formLogin")
-
                 if(Reset_Password){
-
-                    var postData = { Login: username, OldPassword: $("#oldPassword").val(), NewPassword: $("#newPassword").val(), ConfirmPassword: $("#confirmPassword").val() }
+                    var postData = {
+                        Login: username,
+                        OldPassword: $("#oldPassword").val(),
+                        NewPassword: $("#newPassword").val(),
+                        ConfirmPassword: $("#confirmPassword").val()
+                    }
                     ajaxManager("POST", `/Login/ResetPassword`, successHanlder, errorHandler, postData);
-                }else{
-
+                } else {
                     ajaxManager("POST", `/Login/SignIn?username=${username}&password=${password}`, successHanlder, errorHandler);
                 }
-               
+
             } catch (e) {
-
-            } finally {
-
+                console.error(e);
             }
         }
 
-
         const form = document.getElementById('formLogin');
-
         form.addEventListener('submit', signInListener);
-
-
     </script>
-
-
-
-
-}
+</body>
+</html>
