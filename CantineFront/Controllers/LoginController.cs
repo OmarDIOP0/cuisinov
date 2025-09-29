@@ -78,7 +78,7 @@ namespace CantineFront.Controllers
                     {
                         new Claim(ClaimTypes.Name, user.Prenom+ " "+user.Nom),
                         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                        new Claim(ClaimTypes.Role, "USER")
+                        new Claim(ClaimTypes.Role, user.Profile ?? "")
                     };
                     claims.Add(new Claim(ClaimTypes.Role, user.Profile!.ToUpper()));
 

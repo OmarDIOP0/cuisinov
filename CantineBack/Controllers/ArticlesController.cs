@@ -110,7 +110,6 @@ namespace CantineBack.Controllers
         }
 
         // PUT: api/Articles/5
-        [HttpPut("{id}")]
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutArticle(int id, Article article)
