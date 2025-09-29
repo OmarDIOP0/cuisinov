@@ -30,7 +30,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #161236 0%, #1E1450 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -175,10 +175,10 @@
                 transform: translateY(-2px);
             }
 
-                .form-input:focus + .input-icon {
-                    color: var(--secondary-color);
-                    transform: translateY(-50%) scale(1.1);
-                }
+            .form-input:focus + .input-icon {
+                color: var(--secondary-color);
+                transform: translateY(-50%) scale(1.1);
+            }
 
         .password-toggle {
             position: absolute;
@@ -257,12 +257,12 @@
                     left: 0;
                     width: 0;
                     height: 2px;
-                    background: var(--secondary-color);
+                    background: var(--primary-color);
                     transition: var(--transition);
                 }
 
                 .register-link a:hover {
-                    color: var(--secondary-color);
+                    color: var(--primary-color);
                 }
 
                     .register-link a:hover::after {
