@@ -1226,7 +1226,7 @@
   {
     "ContainingType": "CantineBack.Controllers.UsersController",
     "Method": "Authenticate",
-    "RelativePath": "api/Users/authenticate",
+    "RelativePath": "api/Users/Authenticate",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

@@ -21,6 +21,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 ApiUrlGeneric.AppSettings = builder.Configuration.GetRequiredSection("AppSettings").Get<AppSettings>();
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+    });
+
 
 builder.Services.AddTransient<BackendApiAuthenticationHttpClientHandler>();
 
@@ -74,7 +80,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, ConfigureMyCookie>();
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+//builder.Services.AddControllersWithViews();
 
 //Auto Mapper 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

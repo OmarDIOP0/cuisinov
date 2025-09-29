@@ -3,6 +3,7 @@ wwwroot\css\font-awesome.min.css
 wwwroot\css\invoice-box.css
 wwwroot\css\notific.css
 wwwroot\css\qrcode-print.css
+wwwroot\css\register.css
 wwwroot\css\responsive.css
 wwwroot\css\site.css
 wwwroot\css\starrating.css

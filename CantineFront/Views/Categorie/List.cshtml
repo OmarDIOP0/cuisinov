@@ -33,11 +33,11 @@
                 console.log(JSON.stringify(res))
                 if (res) {
 
-                    if (res.success) {
-                        ToastR(res.message, res.status, 15);
+                    if (res.Success) {
+                        ToastR(res.Message, res.Status, 15);
                        
                      $('#tbCategories').DataTable({
-                            data: res.data,
+                            data: res.Data,
                             responsive: true,
                             destroy: true,
                             columns: [
@@ -48,13 +48,13 @@
                                 },
                                 {
                                     width: '60%',
-                                    data: 'name',
+                                    data: 'Name',
                                     defaultContent: '',
                                 },
                                 
                                 {
 
-                                    data: "actif",
+                                    data: "Actif",
                                     width: '7%',
                                     defaultContent: "",
                                     render: function (data, type, row) {
@@ -73,11 +73,11 @@
                                     render: function (data, type, row) {
 
 
-                                        var btnEdit = `          <a class="btn btn-primary m-2" href="/Categorie/Update/${row.id}"><span class='fa fa-edit'></span></a>`;
+                                        var btnEdit = `          <a class="btn btn-primary m-2" href="/Categorie/Update/${row.Id}"><span class='fa fa-edit'></span></a>`;
                                         var btnDelete=`    
                                                 <button type="button" data-method="DELETE"
-                                                                data-message=" Voulez-vous vraiment supprimer le controle <b>${row.name}</b>"
-                                                                data-url="/Categorie/DeleteCategorie/${row.id}" data-toggle="modal"
+                                                                data-message=" Voulez-vous vraiment supprimer le categorie <b>${row.Name}</b>"
+                                                                data-url="/Categorie/DeleteCategorie/${row.Id}" data-toggle="modal"
                                                         data-target="#confirmModal" rel="tooltip"
                                                         class="btn btn-danger m-2" data-original-title="" title="">
                                                     <span class="fa-remove  fa"></span>

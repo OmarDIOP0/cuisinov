@@ -167,8 +167,9 @@
     <form class="p-3 mt-1 form_container" id="formLogin">
         <div class="form-group">
             <label class="ml-1 small">Nom d'utilisateur</label>
-
-            <div id="userIDParent" class="form-field d-flex align-items-center"> <span class="fa fa-user"></span> <input type="text" name="userID" id="userID" onkeyup="this.value = this.value.replace(/ /, '');" placeholder=""> </div>
+            <div id="usernameParent" class="form-field d-flex align-items-center"> <span class="fa fa-user"></span> 
+                <input type="text" name="username" id="username" onkeyup="this.value = this.value.replace(/ /, '');" placeholder=""> $
+                </div>
            <div id="pwdDiv">
                 <label class="ml-1 small">Mot de passe</label>
                 <div id="pwdParent" class="form-field d-flex align-items-center"> <span class="fa fa-key"></span> <input type="password" name="password" id="password" placeholder=""> </div>
@@ -197,8 +198,6 @@
             <button id="btnSignIn" type="submit" class="custom-btn mt-2 center" style="text-transform:capitalize">Se Connecter</button>
             <button id="btnResetPwd" type="submit" class="custom-btn mt-2 center" style="display:none;text-transform:capitalize">Modifier mot de passe</button>
         </div>
-      
-       
 
     </form>
 
@@ -219,8 +218,8 @@
             // stop form submission
             event.preventDefault();
 
-            let userID = $("#userID").val()
-            if (userID == null || userID.trim() == "") {
+            let username = $("#username").val()
+            if (username == null || username.trim() == "") {
 
                 ToastR("username is required", "error", 15);
                 return;
@@ -237,12 +236,13 @@
 
 
                 if (res != null) {
-                    if (res.success) {
-                        ToastR(res.message, "success", 10);
+                    if (res.Success) {
+                        ToastR(res.Message, "success", 10);
+                        console.log("Recu ",res);
 
                         console.log(res);
 
-                        if (res.resetPassword) {
+                        if (res.ResetPassword) {
                             Reset_Password = true;
                             $("#pwdDiv").hide();
                             $("#btnSignIn").hide();
@@ -269,11 +269,11 @@
 
                 if(Reset_Password){
 
-                    var postData = { Login: userID, OldPassword: $("#oldPassword").val(), NewPassword: $("#newPassword").val(), ConfirmPassword: $("#confirmPassword").val() }
+                    var postData = { Login: username, OldPassword: $("#oldPassword").val(), NewPassword: $("#newPassword").val(), ConfirmPassword: $("#confirmPassword").val() }
                     ajaxManager("POST", `/Login/ResetPassword`, successHanlder, errorHandler, postData);
                 }else{
 
-                    ajaxManager("GET", `/Login/SignIn?userID=${userID}&password=${password}`, successHanlder, errorHandler);
+                    ajaxManager("POST", `/Login/SignIn?username=${username}&password=${password}`, successHanlder, errorHandler);
                 }
                
             } catch (e) {

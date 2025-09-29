@@ -48,6 +48,7 @@ namespace CantineFront.Controllers
             {
                 return Json(ModelErrorHandler<User>.ModelStateError(ModelState));
             }
+            
             var url = String.Format(ApiUrlGeneric.RegisterURL);
             var apiResponse = await ApiService<UserRegisterResponse>.CallApiPost(_httpClientFactory, url, userRequest);
 
@@ -125,17 +126,17 @@ namespace CantineFront.Controllers
             }
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
         }
-        [HttpGet]
-        public async Task<JsonResult> SignIn(string userID, string password)
+        [HttpPost]
+        public async Task<JsonResult> SignIn(string username, string password)
         {
 
-            if (!string.IsNullOrWhiteSpace(userID) && !string.IsNullOrWhiteSpace(password))
+            if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
             {
 
                 Tuple<bool, List<string>> res = new Tuple<bool, List<string>>(true, new List<string>());  // LoginManager.AuthenticateUser(userID, password);
                 bool resetPassword = false;
-                var url = String.Format(ApiUrlGeneric.AuthenticateURL, userID, password);
-                var apiResponse = await ApiService<UserLoginResponse>.CallGet(_httpClientFactory, url);
+                var url = String.Format(ApiUrlGeneric.AuthenticateURL, username, password);
+                var apiResponse = await ApiService<UserLoginResponse>.CallApiPost(_httpClientFactory, url,null);
                 bool success = apiResponse.Data?.User != null && !String.IsNullOrWhiteSpace(apiResponse.Data?.Token);
                 if (success)
                 {
@@ -151,7 +152,7 @@ namespace CantineFront.Controllers
                         HttpContext.Session.SetObjectInSession("expire_at", expireAt);
                         HttpContext.Session.SetInt32("UserId", user.Id);
                        
-                        HttpContext.Session.SetString("Username", userID);
+                        HttpContext.Session.SetString("Username", username);
                         HttpContext.Session.SetString("Matricule", user.Matricule??String.Empty);
                         HttpContext.Session.SetString("UserQRCode", System.Web.HttpUtility.JavaScriptStringEncode(user.QrCode ?? String.Empty) );
                         HttpContext.Session.SetInt32("Solde", user.Solde);

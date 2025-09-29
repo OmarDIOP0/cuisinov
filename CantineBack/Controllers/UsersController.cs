@@ -119,6 +119,21 @@ namespace CantineBack.Controllers
             if(_context.Users.Any(u => u.Telephone == request.Telephone))
                 return BadRequest("Un utilisateur avec ce numéro de téléphone existe déjà.");
 
+            if (string.IsNullOrEmpty(request.EntrepriseCode))
+            {
+                return BadRequest(new { Success = false, Message = "Le code entreprise est obligatoire." });
+            }
+            var entreprise = await _context.Entreprises
+                .FirstOrDefaultAsync(e => e.Code == request.EntrepriseCode && e.Actif);
+
+            if (entreprise == null)
+            {
+                return BadRequest(new { Success = false, Message = "Code entreprise invalide." });
+            }
+
+            // Remplacer le Code par l’ID
+            request.EntrepriseId = entreprise.Id;
+
             var user = new User
             {
                 Login = request.Login,
@@ -173,7 +188,7 @@ namespace CantineBack.Controllers
             });
         }
         [AllowAnonymous]
-        [HttpPost("authenticate")]
+        [HttpPost("Authenticate")]
         public async Task<ActionResult<UserLoginResponse>> Authenticate(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
