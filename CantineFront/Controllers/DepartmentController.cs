@@ -93,11 +93,15 @@ namespace CantineFront.Controllers
                 var httpClient = _httpClientFactory.CreateClient("ClearanceApi");
                 HttpResponseMessage response = await httpClient.GetAsync(url);
                 var apiResponse = await ApiResultParser<Department>.Parse(response);
+                var urlEntreprise = ApiUrlGeneric.ReadAllURL<Entreprise>();
+                var apiResponseListEntreprises = await ApiService<Entreprise>.CallGetList(_httpClientFactory, urlEntreprise);
+                ViewBag.Entreprises = apiResponseListEntreprises?.Data;
 
                 var categorie = apiResponse.Data;
                 if (categorie != null)
                 {
                     DepartmentVM.Department = categorie;
+                    DepartmentVM.Entreprises = apiResponseListEntreprises?.Data;
                     return View(DepartmentVM);
                 }
                 else

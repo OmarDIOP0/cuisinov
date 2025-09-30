@@ -10,7 +10,7 @@
         public string Name { get; set; }
         public bool Actif { get; set; }
         public int EntrepriseId { get; set; }
-        public virtual Entreprise? Entreprise { get; set; }
+        public  Entreprise? Entreprise { get; set; }
         public IEnumerable<User>? UsersNavigation { get; set; }
     }
 }
