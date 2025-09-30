@@ -40,14 +40,15 @@
     margin-bottom: 0;
 }
 
-    .table thead th {
-        border-bottom: 2px solid var(--primary-color);
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-        color:black;
-        font-weight: 600;
-        padding: 16px 12px;
-        vertical-align: middle;
-    }
+.table thead th {
+    border-bottom: 2px solid var(--primary-color);
+/*    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);*/
+    color: var(--primary-dark); /* ✅ Texte lisible */
+    font-weight: 600;
+    padding: 16px 12px;
+    vertical-align: middle;
+}
+
 
     .table tbody tr {
         transition: var(--transition);
