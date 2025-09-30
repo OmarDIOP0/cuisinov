@@ -1,71 +1,88 @@
-﻿@model  CantineFront.ViewModels.CategorieViewModel
-@section Styles{
+﻿@model CantineFront.ViewModels.CategorieViewModel
+@section Styles {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
     <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="~/css/createCategorie.css" />
 }
 @{
     string actif = (Model.Categorie?.Actif ?? false) ? "checked" : "";
 }
 <!-- book section -->
-<section class="book_section layout_padding">
-    <div class="container">
-        <div class="heading_container">
-            <h2>
-               Modifier catégorie
-            </h2>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form_container">
-                    <form action="" class="row" id="form">
-                        <input type="hidden" name="Id" value="@Model.Categorie.Id"/>
-                        <div class="col-12">
-                            <label class="form-label">Nom</label>
-                            <input type="text" class="form-control" placeholder="" name="Name" id="Name" value="@Model.Categorie.Name" required />
-                        </div>
-                        <div class="col-6 ">
+<section class="create-section">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="create-card">
+                    <!-- Header -->
+                    <div class="card-header">
+                        <h2><i class="fas fa-edit me-2"></i>Modifier le Département</h2>
+                        <div class="subtitle">Modifiez les informations du département</div>
+                    </div>
 
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="actif" @actif>
-                                <label class="form-check-label" for="actif">Actif</label>
+                    <div class="row g-0">
+                        <!-- Form Section -->
+                        <div class="col-lg-12">
+                            <div class="form-container">
+                                <form id="form">
+                                    <input type="hidden" name="Id" value="@Model.Categorie.Id" />
+
+                                    <div class="row g-3">
+                                        <!-- Nom du Département -->
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="Name">
+                                                    <i class="fas fa-tag"></i> Nom du Département
+                                                </label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="Name"
+                                                       name="Name"
+                                                       placeholder="Ex: Informatique, Ressources Humaines..."
+                                                       value="@Model.Categorie.Name"
+                                                       required>
+                                                <small class="form-text text-muted mt-2">
+                                                    <i class="fas fa-info-circle me-1"></i>
+                                                    Modifiez le nom du département selon vos besoins
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Statut Actif -->
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="actif" name="Actif" @actif>
+                                                    <label class="form-check-label" for="actif">
+                                                        <i class="fas fa-check-circle me-1"></i>Actif
+                                                    </label>
+                                                </div>
+                                                <small class="form-text text-muted">
+                                                    <i class="fas fa-info-circle me-1"></i>
+                                                    Un département inactif ne sera pas disponible dans les sélections
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="btn-group">
+                                        <button class="btn-custom"
+                                                id="btnUpdate"
+                                                type="button"
+                                                data-redirectroute="/Categorie/List"
+                                                data-url="/Categorie/UpdateCategorie">
+                                            <i class="fas fa-save me-2"></i>Enregistrer les modifications
+                                        </button>
+
+                                        <button class="btn-back" type="button" onclick="history.back()">
+                                            <i class="fas fa-arrow-left me-2"></i>Retour
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
-
                         </div>
-                        <div class="btn_box d-flex justify-content-between  col-12">
-                            <button class="custom-btn" id="btnUpdate" type="button" data-redirectroute="/Categorie/List" data-url="/Categorie/UpdateCategorie">
-                                Enregistrer
-                            </button>
-                            <button class="custom-btn" style="background-color:#007bff !important;border-color:#007bff !important;color:#fff !important" type="button" onclick="history.back()">
-                                Retour
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-md-6 card  ">
-
-                <div class="  row d-flex justify-content-center">
-
-                    <p class="col-12 text-center bg-danger text-white my-2">
-                        Liste des commandes en attente
-                    </p>
-                    <div class=" col-md-11 row " id="messagesList">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- end book section -->
-@section Scripts{
-
-    <script>
-        $(function () {
-
-
-            GetPendingCommandes();
-        })
-
-    </script>
-
-                    }

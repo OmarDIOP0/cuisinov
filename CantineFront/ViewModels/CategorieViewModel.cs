@@ -5,6 +5,6 @@ namespace CantineFront.ViewModels
     public class CategorieViewModel
     {
 
-        public Categorie Categorie { get; set; } 
+        public Categorie Categorie { get; set; }
     }
 }

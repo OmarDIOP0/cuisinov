@@ -95,7 +95,6 @@ namespace CantineFront.Controllers
                 var apiResponse = await ApiResultParser<Department>.Parse(response);
                 var urlEntreprise = ApiUrlGeneric.ReadAllURL<Entreprise>();
                 var apiResponseListEntreprises = await ApiService<Entreprise>.CallGetList(_httpClientFactory, urlEntreprise);
-                ViewBag.Entreprises = apiResponseListEntreprises?.Data;
 
                 var categorie = apiResponse.Data;
                 if (categorie != null)
