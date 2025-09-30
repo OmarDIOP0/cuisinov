@@ -5,6 +5,7 @@ using CantineFront.Services;
 using CantineFront.Static;
 using CantineFront.Utils;
 using CantineFront.ViewModels;
+using DPWorldMobile.ServiceFactory;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -41,8 +42,11 @@ namespace CantineFront.Controllers
             return Json(apiResponse);
         }
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var urlEntreprise = ApiUrlGeneric.ReadAllURL<Entreprise>();
+            var apiResponseListEntreprises = await ApiService<Entreprise>.CallGetList(_httpClientFactory, urlEntreprise);
+            ViewBag.Entreprises = apiResponseListEntreprises?.Data;
 
             return View();
         }

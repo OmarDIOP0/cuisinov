@@ -3,16 +3,8 @@
 @inject IHttpContextAccessor Accessor
 @model ArticleViewModel
 @section Styles{
-
-
-
-    <!-- alternatively you can use the font awesome icon library if using with `fas` theme (or Bootstrap 4.x) by uncommenting below. -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
-    <!-- the fileinput plugin styling CSS file -->
     <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-
-    <!-- if using RTL (Right-To-Left) orientation, load the RTL CSS file after fileinput.css by uncommenting below -->
-    <!-- link href="~/lib/bootstrap-fileinput/css/fileinput-rtl.min.css" media="all" rel="stylesheet" type="text/css" /-->
 }
 @{
     bool isAdmin = Convert.ToBoolean(Accessor.HttpContext?.Session.GetString("IsAdmin") ?? "false");
@@ -50,8 +42,6 @@
                     <form action="" class="row" id="form">
                         <input type="hidden" name="Id" value="@Model.Article.Id" />
                         <input type="hidden" name="ImageBase64" value="@Model.ImageBase64" />
-                     @*   <input type="hidden" name="IsArticleOnMenu" value="@actif" />
-                        <input type="hidden" name="Actif" value="@isArticleOnMenu" />*@
 
                         <div class="col-md-4 ">
                             
@@ -130,9 +120,6 @@
                             <label class="form-label">Image</label>
                             <input type="file" placeholder="" id="image" name="Image" />
                         </div>
-                        @* <div>
-                        <input type="date" class="form-control">
-                        </div>*@
                         <div class="btn_box d-flex justify-content-between  col-12">
                             <button class="custom-btn" id="btnUpdate" type="button" data-redirectroute="/Article/List" data-url="/Article/UpdateArticle">
                                 Enregistrer

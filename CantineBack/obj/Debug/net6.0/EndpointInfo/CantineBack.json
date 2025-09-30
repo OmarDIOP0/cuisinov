@@ -3129,6 +3129,10 @@
             "type": "string",
             "nullable": true
           },
+          "entrepriseId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "actif": {
             "type": "boolean"
           }
