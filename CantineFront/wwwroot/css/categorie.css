@@ -1,0 +1,188 @@
+﻿:root {
+    --primary-color: #1E1450;
+    --primary-dark: #161236;
+    --secondary-color: #FF6B35;
+    --accent-color: #00C9B1;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --light-bg: #f8f9fa;
+    --border-radius: 12px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+.card {
+    border-radius: var(--border-radius);
+    border: none;
+    transition: var(--transition);
+}
+
+    .card:hover {
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    }
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(30, 20, 80, 0.3);
+    }
+
+.table {
+    margin-bottom: 0;
+}
+
+    .table thead th {
+        border-bottom: 2px solid var(--primary-color);
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        font-weight: 600;
+        padding: 16px 12px;
+        vertical-align: middle;
+    }
+
+    .table tbody tr {
+        transition: var(--transition);
+    }
+
+        .table tbody tr:hover {
+            background-color: rgba(30, 20, 80, 0.05);
+            transform: translateX(4px);
+        }
+
+    .table tbody td {
+        padding: 16px 12px;
+        vertical-align: middle;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+.badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.badge-success {
+    background: linear-gradient(135deg, var(--success-color) 0%, #20c997 100%);
+    color: white;
+}
+
+.badge-danger {
+    background: linear-gradient(135deg, var(--danger-color) 0%, #e83e8c 100%);
+    color: white;
+}
+
+.btn-action {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    transition: var(--transition);
+    border: none;
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, var(--accent-color) 0%, #20c997 100%);
+    color: white;
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, var(--danger-color) 0%, #e83e8c 100%);
+    color: white;
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* DataTable Customization */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    padding: 20px;
+}
+
+    .dataTables_wrapper .dataTables_filter input {
+        border: 2px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 8px 12px;
+        transition: var(--transition);
+    }
+
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 20, 80, 0.1);
+        }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        border: none !important;
+        border-radius: 6px !important;
+        margin: 0 2px !important;
+        transition: var(--transition) !important;
+    }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
+            color: white !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: var(--primary-color) !important;
+            color: white !important;
+            transform: translateY(-1px);
+        }
+
+/* Loading Animation */
+#loadingSpinner {
+    display: none;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 15px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .btn-lg {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    .table-responsive {
+        border-radius: var(--border-radius);
+        overflow: hidden;
+    }
+}
+
+/* Empty State */
+.dataTables_empty {
+    padding: 40px;
+    text-align: center;
+    color: #6c757d;
+}
+
+    .dataTables_empty i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
