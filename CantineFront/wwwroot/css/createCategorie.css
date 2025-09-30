@@ -77,20 +77,12 @@
         color: var(--secondary-color);
     }
 
-.form-control {
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 15px 20px;
-    font-size: 1rem;
-    transition: var(--transition);
-    background: white;
-}
 
-    .form-control:focus {
+/*    .form-control:focus {
         border-color: var(--primary-color);
         box-shadow: 0 0 0 3px rgba(30, 20, 80, 0.1);
         transform: translateY(-2px);
-    }
+    }*/
 
 .btn-custom {
     background: var(--gradient-primary);

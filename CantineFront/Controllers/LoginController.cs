@@ -67,7 +67,7 @@ namespace CantineFront.Controllers
                     HttpContext.Session.SetString("refresh_token", refreshToken);
                     HttpContext.Session.SetObjectInSession("expire_at", expireAt);
                     HttpContext.Session.SetInt32("UserId", user.Id);
-
+                    HttpContext.Session.SetString("Username", user.Login);
                     HttpContext.Session.SetString("Matricule", user.Matricule ?? String.Empty);
                     HttpContext.Session.SetString("UserQRCode", System.Web.HttpUtility.JavaScriptStringEncode(user.QrCode ?? String.Empty));
                     HttpContext.Session.SetInt32("Solde", user.Solde);

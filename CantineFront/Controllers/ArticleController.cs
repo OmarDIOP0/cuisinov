@@ -99,7 +99,10 @@ namespace CantineFront.Controllers
             ArticleVM = new ArticleViewModel();
             var url =  ApiUrlGeneric.ReadAllURL<Categorie>();
             var apiResponse = await ApiService<Categorie>.CallGetList(_httpClientFactory, url);
+            var urlEntreprise = ApiUrlGeneric.ReadAllURL<Entreprise>();
+            var apiResponseListEntreprises = await ApiService<Entreprise>.CallGetList(_httpClientFactory, urlEntreprise);
             ArticleVM.Categories = apiResponse?.Data;
+            ArticleVM.Entreprises = apiResponseListEntreprises?.Data;
 
             return View(ArticleVM);
         }

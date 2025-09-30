@@ -8,5 +8,7 @@ namespace CantineFront.ViewModels
         public Article Article {get;set;}
         public string ImageBase64 { get;set;}
 
+        public List<Entreprise>? Entreprises { get; set; }
+
     }
 }

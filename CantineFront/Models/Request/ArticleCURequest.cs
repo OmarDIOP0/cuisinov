@@ -27,5 +27,7 @@ namespace CantineFront.Models.Request
         public bool Actif { get; set; }
 
         public bool ControlStockQuantity { get; set; } = true;
+
+        public int EntrepriseId { get; set; }
     }
 }

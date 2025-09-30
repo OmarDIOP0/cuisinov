@@ -1,5 +1,6 @@
 wwwroot\css\bootstrap.css
 wwwroot\css\categorie.css
+wwwroot\css\createCategorie.css
 wwwroot\css\font-awesome.min.css
 wwwroot\css\invoice-box.css
 wwwroot\css\login.css
