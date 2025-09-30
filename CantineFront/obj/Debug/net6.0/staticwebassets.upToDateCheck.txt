@@ -1,6 +1,7 @@
 wwwroot\css\bootstrap.css
 wwwroot\css\font-awesome.min.css
 wwwroot\css\invoice-box.css
+wwwroot\css\login.css
 wwwroot\css\notific.css
 wwwroot\css\profil.css
 wwwroot\css\qrcode-print.css

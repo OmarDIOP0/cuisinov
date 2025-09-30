@@ -1,125 +1,362 @@
-﻿<div class="p-2 container">
-
-
-    <div class="d-flex justify-content-end m-2">
-        <a class="btn btn-primary" href="/Categorie/Create"><i class="fa fa-plus"></i> Ajouter</a>
+﻿<div class="container-fluid p-4">
+    <!-- Header Section -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h2 class="h4 mb-0 text-primary">
+                        <i class="fas fa-tags me-2"></i>Gestion des Catégories
+                    </h2>
+                    <p class="text-muted mb-0">Gérez les catégories de votre restaurant d'entreprise</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <a class="btn btn-primary btn-lg px-4" href="/Categorie/Create">
+                        <i class="fas fa-plus-circle me-2"></i>Nouvelle Catégorie
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
-
-
-    <table class="table" id="tbCategories">
-        <thead>
-            <tr>
-                <th scope="col"></th>
-                <th scope="col">Nom</th>
-                <th scope="col">Statut</th>
-
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-     
-    </table>
+    <!-- DataTable Card -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="tbCategories">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" width="5%">#</th>
+                            <th scope="col" width="55%">
+                                <i class="fas fa-tag me-2"></i>Nom de la Catégorie
+                            </th>
+                            <th scope="col" width="15%" class="text-center">
+                                <i class="fas fa-circle me-2"></i>Statut
+                            </th>
+                            <th scope="col" width="25%" class="text-center">
+                                <i class="fas fa-cogs me-2"></i>Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by DataTable -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
+<!-- Loading Spinner -->
+<div id="loadingSpinner" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
+    </div>
+    <p class="text-muted mt-2">Chargement des catégories...</p>
+</div>
 
-@section Scripts{
+@section Styles {
+    <style>
+        :root {
+            --primary-color: #1E1450;
+            --primary-dark: #161236;
+            --secondary-color: #FF6B35;
+            --accent-color: #00C9B1;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --light-bg: #f8f9fa;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
 
+        .card {
+            border-radius: var(--border-radius);
+            border: none;
+            transition: var(--transition);
+        }
+
+            .card:hover {
+                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+            }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(30, 20, 80, 0.3);
+            }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+            .table thead th {
+                border-bottom: 2px solid var(--primary-color);
+                background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+                color: white;
+                font-weight: 600;
+                padding: 16px 12px;
+                vertical-align: middle;
+            }
+
+            .table tbody tr {
+                transition: var(--transition);
+            }
+
+                .table tbody tr:hover {
+                    background-color: rgba(30, 20, 80, 0.05);
+                    transform: translateX(4px);
+                }
+
+            .table tbody td {
+                padding: 16px 12px;
+                vertical-align: middle;
+                border-bottom: 1px solid #e9ecef;
+            }
+
+        .badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .badge-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #20c997 100%);
+            color: white;
+        }
+
+        .badge-danger {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #e83e8c 100%);
+            color: white;
+        }
+
+        .btn-action {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #e83e8c 100%);
+            color: white;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* DataTable Customization */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter,
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_paginate {
+            padding: 20px;
+        }
+
+            .dataTables_wrapper .dataTables_filter input {
+                border: 2px solid #e2e8f0;
+                border-radius: 6px;
+                padding: 8px 12px;
+                transition: var(--transition);
+            }
+
+                .dataTables_wrapper .dataTables_filter input:focus {
+                    border-color: var(--primary-color);
+                    box-shadow: 0 0 0 3px rgba(30, 20, 80, 0.1);
+                }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+                border: none !important;
+                border-radius: 6px !important;
+                margin: 0 2px !important;
+                transition: var(--transition) !important;
+            }
+
+                .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+                    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
+                    color: white !important;
+                }
+
+                .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                    background: var(--primary-color) !important;
+                    color: white !important;
+                    transform: translateY(-1px);
+                }
+
+        /* Loading Animation */
+        #loadingSpinner {
+            display: none;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .container-fluid {
+                padding: 15px;
+            }
+
+            .card-body {
+                padding: 20px;
+            }
+
+            .btn-lg {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .table-responsive {
+                border-radius: var(--border-radius);
+                overflow: hidden;
+            }
+        }
+
+        /* Empty State */
+        .dataTables_empty {
+            padding: 40px;
+            text-align: center;
+            color: #6c757d;
+        }
+
+            .dataTables_empty i {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+                opacity: 0.5;
+            }
+    </style>
+}
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script type="text/javascript">
-
-
         $(function () {
-         //   $("#tbCategories").DataTable();
-            var successHandler = function (res) {
-                console.log(JSON.stringify(res))
-                if (res) {
+            // Show loading spinner
+            $('#loadingSpinner').show();
 
-                    if (res.Success) {
-                        ToastR(res.Message, res.Status, 15);
-                       
-                     $('#tbCategories').DataTable({
-                            data: res.Data,
+            var successHandler = function (res) {
+                console.log(JSON.stringify(res));
+                $('#loadingSpinner').hide();
+
+                if (res) {
+                    if (res.success) {
+                        ToastR(res.message, res.status, 15);
+
+                        $('#tbCategories').DataTable({
+                            data: res.data,
                             responsive: true,
                             destroy: true,
+                            language: {
+                                "zeroRecords": "<div class='dataTables_empty'><i class='fas fa-inbox'></i><br>Aucune catégorie trouvée</div>",
+                                "emptyTable": "<div class='dataTables_empty'><i class='fas fa-inbox'></i><br>Aucune donnée disponible</div>",
+                                "info": "Affichage de _START_ à _END_ sur _TOTAL_ catégories",
+                                "infoEmpty": "Affichage de 0 à 0 sur 0 catégories",
+                                "infoFiltered": "(filtrées depuis _MAX_ catégories au total)",
+                                "lengthMenu": "Afficher _MENU_ catégories",
+                                "search": "<i class='fas fa-search'></i>",
+                                "paginate": {
+                                    "first": "<i class='fas fa-angle-double-left'></i>",
+                                    "last": "<i class='fas fa-angle-double-right'></i>",
+                                    "next": "<i class='fas fa-angle-right'></i>",
+                                    "previous": "<i class='fas fa-angle-left'></i>"
+                                }
+                            },
                             columns: [
                                 {
                                     width: '5%',
                                     data: null,
-                                    defaultContent: '',
-                                },
-                                {
-                                    width: '60%',
-                                    data: 'Name',
-                                    defaultContent: '',
-                                },
-                                
-                                {
-
-                                    data: "Actif",
-                                    width: '7%',
-                                    defaultContent: "",
-                                    render: function (data, type, row) {
-
-                                        var className = (data == true ? "badge-success" : "badge-danger");
-                                        var status = (data == true ? "actif" : "inactif");
-
-                                        return `<span class="badge badge-pill ${className}">${status}</span>`;
+                                    render: function (data, type, row, meta) {
+                                        return '<span class="text-muted">' + (meta.row + 1) + '</span>';
                                     }
                                 },
                                 {
-                                    
-                                    data:null,
-                                    width: '20%',
-                                    defaultContent: "",
+                                    width: '55%',
+                                    data: 'name',
                                     render: function (data, type, row) {
+                                        return '<div class="d-flex align-items-center">' +
+                                               '<i class="fas fa-tag text-primary me-3"></i>' +
+                                               '<span class="fw-semibold">' + data + '</span>' +
+                                               '</div>';
+                                    }
+                                },
+                                {
+                                    data: "actif",
+                                    width: '15%',
+                                    className: 'text-center',
+                                    render: function (data, type, row) {
+                                        var className = (data == true ? "badge-success" : "badge-danger");
+                                        var status = (data == true ? "Actif" : "Inactif");
+                                        var icon = (data == true ? "fa-check-circle" : "fa-times-circle");
 
+                                        return '<div class="d-flex justify-content-center align-items-center">' +
+                                               '<i class="fas ' + icon + ' me-2"></i>' +
+                                               '<span class="badge ' + className + '">' + status + '</span>' +
+                                               '</div>';
+                                    }
+                                },
+                                {
+                                    data: null,
+                                    width: '25%',
+                                    className: 'text-center',
+                                    render: function (data, type, row) {
+                                        var btnEdit = '<a class="btn btn-action btn-edit me-2" href="/Categorie/Update/' + row.id + '" title="Modifier">' +
+                                                     '<i class="fas fa-edit me-1"></i>Modifier</a>';
 
-                                        var btnEdit = `          <a class="btn btn-primary m-2" href="/Categorie/Update/${row.Id}"><span class='fa fa-edit'></span></a>`;
-                                        var btnDelete=`    
-                                                <button type="button" data-method="DELETE"
-                                                                data-message=" Voulez-vous vraiment supprimer le categorie <b>${row.Name}</b>"
-                                                                data-url="/Categorie/DeleteCategorie/${row.Id}" data-toggle="modal"
-                                                        data-target="#confirmModal" rel="tooltip"
-                                                        class="btn btn-danger m-2" data-original-title="" title="">
-                                                    <span class="fa-remove  fa"></span>
-                                                </button>`;
+                                        var btnDelete = '<button type="button" class="btn btn-action btn-delete" ' +
+                                                       'data-method="DELETE" ' +
+                                                       'data-message="Voulez-vous vraiment supprimer la catégorie <b>' + row.name + '</b> ?" ' +
+                                                       'data-url="/Categorie/DeleteCategorie/' + row.id + '" ' +
+                                                       'data-toggle="modal" data-target="#confirmModal" ' +
+                                                       'title="Supprimer">' +
+                                                       '<i class="fas fa-trash me-1"></i>Supprimer</button>';
 
-                                                return btnEdit+btnDelete;
+                                        return '<div class="d-flex justify-content-center">' + btnEdit + btnDelete + '</div>';
                                     }
                                 }
-                            ], "language": {
-                                "zeroRecords": "Aucune donnée n'est disponible",
-                                "lengthMenu": "Afficher _MENU_ éléments",
-                                "info": "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
-                                "search": "Rechercher : ",
-                                "oPaginate": {
-                                    "sFirst": "Premier",
-                                    "sLast": "Dernier",
-                                    "sNext": "Suivant",
-                                    "sPrevious": "Précédent"
-                                },
+                            ],
+                            initComplete: function () {
+                                // Add custom styling after table initialization
+                                $('.dataTables_filter label').addClass('d-flex align-items-center');
+                                $('.dataTables_filter input').attr('placeholder', 'Rechercher une catégorie...');
+                            },
+                            drawCallback: function () {
+                                // Re-initialize tooltips
+                                $('[title]').tooltip();
                             }
                         });
 
-
                     } else {
-                      
                         ToastR(res.message, res.status, 15);
                     }
                 }
             }
 
             var errorHandler = (err) => {
-              
-                ToastR("Une erreur a été rencontré", "error", 15);
+                $('#loadingSpinner').hide();
+                ToastR("Une erreur a été rencontrée lors du chargement des catégories", "error", 15);
+                console.error(err);
             }
-
 
             ajaxManager('GET', '/Categorie/GetCategories', successHandler, errorHandler);
-
-
-
-
         });
-
     </script>
-            }
+}

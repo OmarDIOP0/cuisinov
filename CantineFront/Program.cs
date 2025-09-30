@@ -24,7 +24,7 @@ ApiUrlGeneric.AppSettings = builder.Configuration.GetRequiredSection("AppSetting
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     });
 
 

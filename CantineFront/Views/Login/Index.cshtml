@@ -162,8 +162,8 @@
 
             let successHanlder = function (res) {
                 if (res != null) {
-                    if (res.Success) {
-                        ToastR(res.Message, "success", 10);
+                    if (res.success) {
+                        ToastR(res.message, "success", 10);
                         console.log("Reçu ", res);
 
                         if (res.ResetPassword) {
