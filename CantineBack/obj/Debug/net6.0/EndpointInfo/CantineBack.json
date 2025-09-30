@@ -1113,7 +1113,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DepartmentReadDto"
+                    "$ref": "#/components/schemas/Department"
                   }
                 }
               },
@@ -1121,7 +1121,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DepartmentReadDto"
+                    "$ref": "#/components/schemas/Department"
                   }
                 }
               },
@@ -1129,7 +1129,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DepartmentReadDto"
+                    "$ref": "#/components/schemas/Department"
                   }
                 }
               }

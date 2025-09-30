@@ -6,7 +6,7 @@
 <section class="create-section">
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-lg-12">
+            <div class="col-lg-6">
                 <div class="create-card">
                     <!-- Header -->
                     <div class="card-header">
@@ -16,7 +16,7 @@
 
                     <div class="row g-0">
                         <!-- Form Section -->
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-container">
                                 <form id="form">
                                     <div class="row g-3">
@@ -80,7 +80,7 @@
                         </div>
 
                         <!-- Commands Panel -->
-                        <div class="col-lg-6">
+                        @* <div class="col-lg-6">
                             <div class="commands-panel">
                                 <div class="commands-header">
                                     <i class="fas fa-clock me-2"></i>Commandes en Attente
@@ -94,7 +94,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> *@
                     </div>
                 </div>
             </div>
@@ -113,9 +113,9 @@
             language: "fr",
             theme: 'fas',
             });
-            $(function () {
-                GetPendingCommandes();
-            })
+            // $(function () {
+            //     GetPendingCommandes();
+            // })
 
             // Form submission handler
             $('#btnCreate').on('click', function() {

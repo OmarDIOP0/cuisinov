@@ -30,14 +30,14 @@ namespace CantineBack.Controllers
         // GET: api/Departments
         [HttpGet]
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
-        public async Task<ActionResult<IEnumerable<DepartmentReadDto>>> GetDepartments()
+        public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
         {
           if (_context.Departments == null)
           {
               return NotFound();
           }
             var l= await _context.Departments.Include(d => d.Entreprise).ToListAsync();
-            return Ok(_mapper.Map<IEnumerable<DepartmentReadDto>>(l));
+            return Ok(_mapper.Map<IEnumerable<Department>>(l));
         }
 
         // GET: api/Departments/5
