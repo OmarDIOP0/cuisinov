@@ -1,107 +1,120 @@
-﻿
-
-@section Styles{
-
+﻿@section Styles {
+    <link rel="stylesheet" href="~/css/categorie.css"/>
     <style>
-
-        #tbArticles thead th{
-            font-size:0.8em !important;
+        #tbArticles thead th {
+            font-size: 0.8em !important;
         }
     </style>
 }
 
-<div class=" container-fluid">
-
-
-    <div class="d-flex justify-content-end m-2">
-        <a class="btn btn-primary" href="/Article/Create"><i class="fa fa-plus"></i> Ajouter</a>
+<div class="container-fluid p-4">
+    <!-- Header Section -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h2 class="h4 mb-0 text-primary">
+                        <i class="fas fa-boxes me-2"></i>Gestion des Articles
+                    </h2>
+                    <p class="text-muted mb-0">Gérez les articles de votre restaurant d'entreprise</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <a class="btn btn-primary btn-lg px-4" href="/Article/Create">
+                        <i class="fas fa-plus-circle me-2"></i>Nouvel Article
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
-
-    <div class="col-md-12">
-        <table class="table col-md-12" id="tbArticles" style="width:100%">
-            <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col" >Image</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Description</th>
-               @*     <th scope="col">Prix d'achat</th>*@
-                    <th scope="col">Prix de vente</th>
-                    <th scope="col">Qté</th>
-                    <th scope="col">Contrôle Stock</th>
-
-                    <th scope="col">Catégorie</th>
-                    <th scope="col">Visibilité</th>
-                    <th scope="col">Approuvé</th>
-                    <th scope="col">Actif</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-
-        </table>
+    <!-- DataTable Card -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="tbArticles" style="width:100%">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" width="1%">#</th>
+                            <th scope="col" width="5%">Image</th>
+                            <th scope="col" width="15%">Nom</th>
+                            <th scope="col" width="8%">Prix de vente</th>
+                            <th scope="col" width="5%">Qté</th>
+                            <th scope="col" width="8%">Contrôle Stock</th>
+                            <th scope="col" width="8%">Catégorie</th>
+                            <th scope="col" width="10%">Visibilité</th>
+                            <th scope="col" width="10%">Approuvé</th>
+                            <th scope="col" width="5%">Actif</th>
+                            <th scope="col" width="17%">Actions</th>
+                            <th scope="col" width="15%">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by DataTable -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
 </div>
 
+<!-- Loading Spinner -->
+<div id="loadingSpinner" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
+    </div>
+    <p class="text-muted mt-2">Chargement des articles...</p>
+</div>
 
-@section Scripts{
-
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script type="text/javascript">
         function updateCell(btn, data) {
-
             var td = $(btn).closest('td');
-
-            //console.log("td = ",td)
-            //console.log("data = ", data);
             if (data) {
-
                 var isArticleOnMenu = data.isArticleOnMenu
                 var className = (isArticleOnMenu == true ? "badge-success" : "badge-danger");
                 var disponibilite = (isArticleOnMenu == true ? "visible" : "invisible");
                 var changerDisponibilite = (isArticleOnMenu == true ? "invisible" : "visible");
                 td.html(`<span class="badge badge-pill ${className}">${disponibilite}</span>
-                                 <a href="#" class="link-primary btn-toggle-menu"
-                                    data-method="PATCH"
-                                    data-message=" Voulez-vous rendre ${changerDisponibilite} l'article <b>${data.title}</b>"
-                                    data-url="/Article/UpdateStatusArticle/${data.id}" data-toggle="modal"
-                                    data-callback="updateCell"
-                                    data-target="#confirmModal"
-                                    rel="tooltip">modifier
-                                 </a>`);
+                         <a href="#" class="link-primary btn-toggle-menu"
+                            data-method="PATCH"
+                            data-message=" Voulez-vous rendre ${changerDisponibilite} l'article <b>${data.title}</b>"
+                            data-url="/Article/UpdateStatusArticle/${data.id}" data-toggle="modal"
+                            data-callback="updateCell"
+                            data-target="#confirmModal"
+                            rel="tooltip">modifier
+                         </a>`);
             }
-
         }
+
         function updateApproveCell(btn, data) {
-
             var td = $(btn).closest('td');
-
-            //console.log("td = ",td)
-            //console.log("data = ", data);
             if (data) {
-
                 var isApproved = data.isApproved
                 var className = (isApproved == true ? "badge-success" : "badge-danger");
                 var approval = (isApproved == true ? "approuvé" : "non approuvé");
                 var changerApprobation = (isApproved == true ? "désactivé" : "approuvé");
                 td.html(`<span class="badge badge-pill ${className}">${approval}</span>
-                                         <a href="#" class="link-primary btn-toggle-menu"
-                                            data-method="PATCH"
-                                                    data-message=" Voulez-vous rendre ${changerApprobation} l'article <b>${data.title}</b>"
-                                            data-url="/Article/ApproveArticle/${data.id}" data-toggle="modal"
-                                            data-callback="updateCell"
-                                            data-target="#confirmModal"
-                                                            rel="tooltip">modifier
-                                         </a>`);
+                         <a href="#" class="link-primary btn-toggle-menu"
+                            data-method="PATCH"
+                            data-message=" Voulez-vous rendre ${changerApprobation} l'article <b>${data.title}</b>"
+                            data-url="/Article/ApproveArticle/${data.id}" data-toggle="modal"
+                            data-callback="updateCell"
+                            data-target="#confirmModal"
+                            rel="tooltip">modifier
+                         </a>`);
             }
-
         }
+
         $(function () {
+            // Show loading spinner
+            $('#loadingSpinner').show();
 
             var successHandler = function (res) {
-                //  console.log(JSON.stringify(res))
-                if (res) {
+                console.log(JSON.stringify(res));
+                $('#loadingSpinner').hide();
 
+                if (res) {
                     if (res.success) {
                         ToastR(res.message, res.status, 15);
 
@@ -109,40 +122,34 @@
                             data: res.data,
                             responsive: true,
                             destroy: true,
-                            //"columnDefs": [{
-                            //    "targets": 8,
-                            //    "createdCell": function (td, cellData, rowData, row, col) {
-
-                            //        //console.log(td)
-                            //        //console.log(cellData)
-
-                            //        if (cellData) {
-                            //            if (cellData == null) {
-                            //                return "";
-                            //            }
-
-
-                            //            td.querySelector(".btn-toggle-menu").setAttribute("data-callback", function(td){updateCell(td)})
-
-
-                            //        }
-                            //    }
-                            //}],
+                            language: {
+                                "zeroRecords": "<div class='dataTables_empty'><i class='fas fa-inbox'></i><br>Aucun article trouvé</div>",
+                                "emptyTable": "<div class='dataTables_empty'><i class='fas fa-inbox'></i><br>Aucune donnée disponible</div>",
+                                "info": "Affichage de _START_ à _END_ sur _TOTAL_ articles",
+                                "infoEmpty": "Affichage de 0 à 0 sur 0 articles",
+                                "infoFiltered": "(filtrées depuis _MAX_ articles au total)",
+                                "lengthMenu": "Afficher _MENU_ articles",
+                                "search": "<i class='fas fa-search'></i>",
+                                "paginate": {
+                                    "first": "<i class='fas fa-angle-double-left'></i>",
+                                    "last": "<i class='fas fa-angle-double-right'></i>",
+                                    "next": "<i class='fas fa-angle-right'></i>",
+                                    "previous": "<i class='fas fa-angle-left'></i>"
+                                }
+                            },
                             columns: [
                                 {
                                     data: null,
                                     width: '1%',
-                                    defaultContent: ''
-                                }
-                                ,
+                                    render: function (data, type, row, meta) {
+                                        return '<span class="text-muted">' + (meta.row + 1) + '</span>';
+                                    }
+                                },
                                 {
                                     width: '5%',
                                     data: "image",
-                                    className:"fs-6",
-                                    defaultContent: '',
-
+                                    className: "text-center",
                                     render: function (data, type, row) {
-
                                         if (data == null) {
                                             return "";
                                         }
@@ -152,244 +159,194 @@
                                 {
                                     width: '15%',
                                     data: 'title',
-                                    defaultContent: '',
-                                }
-                                ,
+                                    render: function (data, type, row) {
+                                        return '<span class="fw-semibold">' + data + '</span>';
+                                    }
+                                },
                                 {
+                                    data: "prixDeVente",
+                                    width: '8%',
+                                    className: 'text-center',
+                                    render: function (data, type, row) {
+                                        if (!data || data == 0) return "";
+                                        return `<span class="fw-semibold">${data} XOF</span>`;
+                                    }
+                                },
+                                {
+                                    data: "quantiteStock",
+                                    width: '5%',
+                                    className: 'text-center',
+                                    render: function (data, type, row) {
+                                        return `<span id="stock_${row.id}" class="fw-semibold">${data}</span>`
+                                    }
+                                },
+                                {
+                                    data: "controlStockQuantity",
+                                    width: '8%',
+                                    className: 'text-center',
+                                    render: function (data, type, row) {
+                                        console.log("controlStockQuantity = ", data)
+                                        var className = (data == true ? "badge-success" : "badge-danger");
+                                        var status = (data == true ? "oui" : "non");
+                                        return `<span class="badge">${status}</span>`;
+                                    }
+                                },
+                                {
+                                    data: "categorieNavigation",
+                                    width: '8%',
+                                    className: 'text-center',
+                                    render: function (data, type, row) {
+                                        return data ? '<span class="fw-semibold">' + data.name + '</span>' : "";
+                                    }
+                                },
+                                {
+                                    data: "isArticleOnMenu",
+                                    width: '10%',
+                                    className: 'text-center',
+                                    render: function (data, type, row) {
+                                        var className = (data == true ? "badge-success" : "badge-danger");
+                                        var visibilite = (data == true ? "visible" : "invisible");
+                                        var changerVisibilite = (data == true ? "invisible" : "visible");
+                                        return `<span class="badge me-2">${visibilite}</span>
+                                                <a href="#" class="btn-action btn-edit btn-sm"
+                                                   data-method="PATCH"
+                                                   data-message=" Voulez-vous rendre ${changerVisibilite} l'article <b>${row.title}</b>"
+                                                   data-url="/Article/UpdateStatusArticle/${row.id}"
+                                                   data-toggle="modal"
+                                                   data-callback="updateCell"
+                                                   data-target="#confirmModal"
+                                                   rel="tooltip">modifier</a>`;
+                                    }
+                                },
+                                {
+                                    data: "isApproved",
+                                    width: '10%',
+                                    className: 'text-center',
+                                    render: function (data, type, row) {
+                                        var className = (data == true ? "badge-success" : "badge-danger");
+                                        var approval = (data == true ? "approuvé" : "non approuvé");
+                                        var changerApprobation = (data == true ? "désactivé" : "approuvé");
+                                        if (!isAdmin) return `<span class="badge">${approval}</span>`;
+                                        return `<span class="badge me-2">${approval}</span>
+                                                <a href="#" class="btn-action btn-edit btn-sm"
+                                                   data-method="PATCH"
+                                                   data-message=" Voulez-vous ${changerApprobation} l'article <b>${row.title}</b>"
+                                                   data-url="/Article/ApproveArticle/${row.id}"
+                                                   data-toggle="modal"
+                                                   data-callback="updateApproveCell"
+                                                   data-target="#confirmModal"
+                                                   rel="tooltip">modifier</a>`;
+                                    }
+                                },
+                                {
+                                    data: "actif",
+                                    width: '5%',
+                                    className: 'text-center',
+                                    render: function (data, type, row) {
+                                        var className = (data == true ? "badge-success" : "badge-danger");
+                                        var status = (data == true ? "actif" : "inactif");
+                                        return `<span class="badge">${status}</span>`;
+                                    }
+                                },
+                                {
+                                    data: null,
+                                    width: '17%',
+                                    className: 'text-center',
+                                    render: function (data, type, row) {
+                                        var btnEdit = `<a class="btn btn-action btn-edit me-2" href="/Article/Update/${row.id}" title="Modifier">
+                                                         <i class="fas fa-edit me-1"></i>Modifier
+                                                       </a>`;
+                                        var btnDelete = `<button type="button" class="btn btn-action btn-delete me-2"
+                                                                data-method="DELETE"
+                                                                data-message=" Voulez-vous vraiment supprimer l'article <b>${row.title}</b>"
+                                                                data-url="/Article/DeleteArticle/${row.id}"
+                                                                data-toggle="modal"
+                                                                data-target="#confirmModal"
+                                                                rel="tooltip"
+                                                                title="Supprimer">
+                                                            <i class="fas fa-trash me-1"></i>Supprimer
+                                                         </button>`;
+                                        var btnMouvement = `<button type="button" class="btn btn-action btn-success"
+                                                                   data-method="PATCH"
+                                                                   data-modaltitle="Mouvement de l'article <b>${row.title} </b>"
+                                                                   data-successhandler="mouvementSuccessHandler"
+                                                                   data-errorhandler="errorHandler"
+                                                                   data-callback="updateQuantiteStockCell"
+                                                                   data-forward="mouvementFormValid()"
+                                                                   data-getdata="getDataMouvementForm(${row.id})"
+                                                                   data-modalbody="
+                                                                   <div class='row'>
+                                                                     <div class='col-md-11 mb-3'>
+                                                                        <label>Type de mouvement</label>
+                                                                        <select class='form-control wide nice-select' id='typeMouvement' name='TypeMouvement'>
+                                                                            <option selected/>
+                                                                            <option value='ENTREE'>ENTRÉE</option>
+                                                                            <option value='SORTIE'>SORTIE</option>
+                                                                        </select>
+                                                                     </div>
+                                                                     <div class='col-md-11 mb-3'>
+                                                                        <label>Quantité</label>
+                                                                        <input class='form-control' name='quantite' id='quantite' type='number'>
+                                                                     </div>
+                                                                   </div>"
+                                                                   data-url="/Article/Mouvement"
+                                                                   data-toggle="modal"
+                                                                   data-target="#genericModal"
+                                                                   rel="tooltip"
+                                                                   title="Mouvement de stock">
+                                                            <i class="fas fa-exchange-alt me-1"></i>Mouvement
+                                                         </button>`;
 
+                                        return '<div class="d-flex justify-content-center">' + btnEdit + btnDelete + btnMouvement + '</div>';
+                                    }
+                                },
+                                {
                                     data: "description",
                                     width: '15%',
-                                    defaultContent: "",
                                     render: function (data, type, row) {
-
                                         if (data == null) {
                                             return "";
                                         }
                                         var dataDisplay = data.length > 50 ? (data.substring(0, 50) + "...") : data;
-
-                                        //return '<span data-toggle="tooltip" title="' + row.PORT.NOM + '">' + data + '</span>'
-                                        return `<div data-toggle="tooltip"  title=\"${data}\" tabindex="0"><span style="pointer-events: none;" class="litletext"> ${dataDisplay}</span></div>`
-                                    }
-                                }
-                                //,
-                                //{
-
-                                //    data: "prixDachat",
-                                //    width: '8%',
-                                //    defaultContent: "",
-                                //    render: function (data, type, row) {
-                                //        if(!data || data==0) return "";
-                                //        return `${data} <b>XOF</b>`;
-                                //    }
-
-                                //}
-                                ,
-                                {
-
-                                    data: "prixDeVente",
-                                    width: '8%',
-                                    defaultContent: "",
-                                    render: function (data, type, row) {
-                                        if (!data || data == 0) return "";
-                                        return `${data} <b>XOF</b>`;
-                                    }
-                                }
-                                ,
-                                {
-
-                                    data: "quantiteStock",
-                                    width: '5%',
-                                    defaultContent: "",
-                                    render: function (data, type, row) {
-                                        return `<span id="stock_${row.id}">${data}</span>`
+                                        return `<div data-toggle="tooltip" title=\"${data}\" tabindex="0"><span style="pointer-events: none;" class="litletext">${dataDisplay}</span></div>`
                                     }
                                 },
-                                {
-
-                                    data: "controlStockQuantity",
-                                    width: '8%',
-                                    defaultContent: "",
-                                    render: function (data, type, row) {
-                                        console.log("controlStockQuantity = ",data)
-                                        var className = (data == true ? "badge-success" : "badge-danger");
-                                        var status = (data == true ? "oui" : "non");
-
-                                        return `<span class="badge badge-pill ${className}">${status}</span>`;
-                                    }
-                                }
-                                ,
-                                {
-
-                                    data: "categorieNavigation",
-                                    width: '8%',
-                                    defaultContent: "",
-                                    render: function (data, type, row) {
-                                        return data ? data.name : "";
-                                    }
-                                }
-                                ,
-                                {
-
-                                    data: "isArticleOnMenu",
-                                    width: '10%',
-                                    defaultContent: "",
-                                    render: function (data, type, row) {
-
-                                        var className = (data == true ? "badge-success" : "badge-danger");
-                                        var visibilite = (data == true ? "visible" : "invisible");
-                                        var changerVisibilite = (data == true ? "invisible" : "visible");
-                                        return `<span class="badge badge-pill ${className}">${visibilite}</span> <a href="#" class="link-primary btn-toggle-menu"   data-method="PATCH"
-                                                                                                                        data-message=" Voulez-vous rendre ${changerVisibilite} l'article <b>${row.title}</b>"
-                                                                                                                data-url="/Article/UpdateStatusArticle/${row.id}" data-toggle="modal"
-                                                                                                                        data-callback="updateCell"
-
-                                                                                                        data-target="#confirmModal" rel="tooltip">modifier</a>`;
-                                    }
-                                }
-                                ,
-                                {
-
-                                    data: "isApproved",
-                                    width: '10%',
-                                    defaultContent: "",
-                                    render: function (data, type, row) {
-                                      
-                                        var className = (data == true ? "badge-success" : "badge-danger");
-                                        var approval = (data == true ? "approuvé" : "non approuvé");
-                                        var changerApprobation = (data == true ? "désactivé" : "approuvé");
-                                        if (!isAdmin) return `<span class="badge badge-pill ${className}">${approval}</span>`;
-                                        return `<span class="badge badge-pill ${className}">${approval}</span> <a href="#" class="link-primary btn-toggle-menu"   data-method="PATCH"
-                                                                                                                                        data-message=" Voulez-vous ${changerApprobation} l'article <b>${row.title}</b>"
-                                                                                                                        data-url="/Article/ApproveArticle/${row.id}" data-toggle="modal"
-                                                                                                                                data-callback="updateApproveCell"
-
-                                                                                                                        data-target="#confirmModal" rel="tooltip"> modifier</a>`;
-                                    }
-                                }
-                                ,
-                                {
-
-                                    data: "actif",
-                                    width: '5%',
-                                    defaultContent: "",
-                                    render: function (data, type, row) {
-
-                                        var className = (data == true ? "badge-success" : "badge-danger");
-                                        var status = (data == true ? "actif" : "inactif");
-
-                                        return `<span class="badge badge-pill ${className}">${status}</span>`;
-                                    }
-                                }
-                                ,
-                                {
-
-                                    data: null,
-                                    width: '17%',
-                                    defaultContent: "",
-                                    render: function (data, type, row) {
-                                        var btnEdit = `          <a class="btn btn-primary m-2" href="/Article/Update/${row.id}"><span class='fa fa-edit'></span></a>`;
-                                        var btnDelete = `
-                                                                                <button type="button"
-                                                                                                data-method="DELETE"
-                                                                                                data-message=" Voulez-vous vraiment supprimer l'article <b>${row.title}</b>"
-                                                                                                data-url="/Article/DeleteArticle/${row.id}" data-toggle="modal"
-                                                                                        data-target="#confirmModal" rel="tooltip"
-                                                                                        class="btn btn-danger m-1" data-original-title="" title="">
-                                                                                    <span class="fa-remove  fa"></span>
-                                                                                </button>`;
-
-                                        var btnMouvement = `
-                                                                                        <button type="button" data-method="PATCH"
-                                                                                                         data-modaltitle="Mouvement de l'article <b>${row.title} </b>"
-                                                                                                                 data-successhandler="mouvementSuccessHandler"
-                                                                                                         data-errorhandler="errorHandler"
-                                                                                                         data-callback="updateQuantiteStockCell"
-                                                                                                         data-forward="mouvementFormValid()"
-                                                                                                         data-getdata="getDataMouvementForm(${row.id})"
-                                                                                                                                                        data-modalbody=" 
-                                                                                                                                                        <div class='row'>
-                                                                                                                                                         
-                                                                                                                                                             <div class='col-md-11 mb-3'>
-                                                                                                                                                                <label>Type de mouvement</label>
-                                                                                                                                                                            <select class='form-control wide nice-select' id='typeMouvement' name='TypeMouvement'>
-                                                                                                                                                                    <option selected/>
-                                                                                                                                                                    <option value='ENTREE'>ENTRÉE</option>
-                                                                                                                                                                    <option value='SORTIE'>SORTIE</option>
-                                                                                                                                                                    </select>
-                                                                                                                                                               </div>
-                                                                                                                                                                 <div class='col-md-11 mb-3'>
-                                                                                                                                                                 <label>Quantité</label>
-                                                                                                                                                                        <input class='form-control' name='quantite' id='quantite' type='number' >
-                                                                                                                                                               </div>
-                                                                                                                                                         </div>
-                                                                                                                                                           "
-
-
-
-                                                                                                                        data-url="/Article/Mouvement" data-toggle="modal"
-                                                                                                        data-target="#genericModal" rel="tooltip"
-                                                                                                class="btn btn-success m-1" data-original-title="" title="" style="font-size:11px;">
-                                                                                                    Mouvement
-                                                                                        </button>`;
-
-                                        return btnEdit + btnDelete + btnMouvement;
-                                    }
-                                }
-                            ]
-                                  ,  "language": {
-                                "zeroRecords": "Aucune donnée n'est disponible",
-                                "lengthMenu": "Afficher _MENU_ éléments",
-                                "info": "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
-                                "search": "Rechercher : ",
-                                "oPaginate": {
-                                    "sFirst": "Premier",
-                                    "sLast": "Dernier",
-                                    "sNext": "Suivant",
-                                    "sPrevious": "Précédent"
-                                },
-                            }
-                            ,
-                            drawCallback: function (setting) {
-
-
-                                $('[data-toggle="tooltip"]').tooltip();
-
-
+                            ],
+                            initComplete: function () {
+                                // Add custom styling after table initialization
+                                $('.dataTables_filter label').addClass('d-flex align-items-center');
+                                $('.dataTables_filter input').attr('placeholder', 'Rechercher un article...');
                             },
+                            drawCallback: function (setting) {
+                                // Re-initialize tooltips
+                                $('[data-toggle="tooltip"]').tooltip();
+                                $('[title]').tooltip();
+                            }
                         });
-
-
                     } else {
-
                         ToastR(res.message, res.status, 15);
                     }
                 }
             }
 
             var errorHandler = (err) => {
-
-                ToastR("Une erreur a été rencontré", "error", 15);
+                $('#loadingSpinner').hide();
+                ToastR("Une erreur a été rencontrée lors du chargement des articles", "error", 15);
+                console.error(err);
             }
 
-
             ajaxManager('GET', '/Article/GetArticles', successHandler, errorHandler);
-
-
-
-
         });
-
 
         var mouvementSuccessHandler = (res) => {
             if (res) {
                 let status = res.success ? "success" : "error"
                 ToastR(res.message, status, 15);
             }
-
         }
+
         function getDataMouvementForm(articleId) {
             if (articleId > 0) {
-
                 var formData = new FormData();
                 formData.append("quantite", $("#genericModal").find("#quantite").val());
                 formData.append("mouvement", $("#genericModal").find("#typeMouvement").val());
@@ -399,21 +356,14 @@
         }
 
         function updateQuantiteStockCell(btn, data) {
-
-           // var td = $(btn).closest('td');
-
-           // console.log("td = ", td)
             console.log("data = ", data);
             if (data) {
                 $("#stock_" + data.id).replaceWith(`<b id="stock_${data.id}">${data.quantiteStock}</b>`);
-                //  td.html(`${data.solde} F CFA`);
             }
-
         }
+
         function mouvementFormValid() {
-
             var quantite = $("#genericModal").find("#quantite").val();
-
             var typeMouvement = $("#genericModal").find("#typeMouvement").val();
 
             if (!typeMouvement) {
@@ -421,10 +371,9 @@
                 return "return";
             }
             if (!quantite || quantite <= 0) {
-
                 ToastR("Quantité invalide!", "error", 10);
                 return "return";
             }
         }
     </script>
-            }
+}
