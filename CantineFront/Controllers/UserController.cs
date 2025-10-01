@@ -134,8 +134,11 @@ namespace CantineFront.Controllers
         {
             UserVM = new UserViewModel();
             var url = ApiUrlGeneric.ReadAllURL<Department>();
+            var urlEnt = ApiUrlGeneric.ReadAllURL<Entreprise>();
             var apiResponse = await ApiService<Department>.CallGetList(_httpClientFactory, url);
+            var apiResponseEnt = await ApiService<Entreprise>.CallGetList(_httpClientFactory, urlEnt);
             UserVM.Departments = apiResponse?.Data;
+            UserVM.Entreprises = apiResponseEnt?.Data;
 
             return View(UserVM);
         }

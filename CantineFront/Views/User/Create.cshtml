@@ -1,243 +1,225 @@
 ﻿@using CantineFront.ViewModels
 @model UserViewModel
-@section Styles{
 
-
-
-    <!-- alternatively you can use the font awesome icon library if using with `fas` theme (or Bootstrap 4.x) by uncommenting below. -->
+@section Styles {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
-    <!-- the fileinput plugin styling CSS file -->
+    <link rel="stylesheet" href="~/css/createCategorie.css" />
     <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-
-    <!-- if using RTL (Right-To-Left) orientation, load the RTL CSS file after fileinput.css by uncommenting below -->
-    <!-- link href="~/lib/bootstrap-fileinput/css/fileinput-rtl.min.css" media="all" rel="stylesheet" type="text/css" /-->
 }
 
-<!-- book section -->
-<section class="book_section layout_padding">
-    <div class="container">
-        <div class="heading_container">
-            <h2>
-                Créer un utilisateur
-            </h2>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form_container">
-                    <form action="" class="row" id="form">
-                        <div class="col-md-4 ">
+<section class="create-section">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="create-card">
+                    <!-- Header -->
+                    <div class="card-header">
+                        <h2><i class="fas fa-user-plus me-2"></i>Créer un Utilisateur</h2>
+                        <div class="subtitle">Ajoutez un nouvel utilisateur au système</div>
+                    </div>
 
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="isInterimEmployee" >
-                                <label class="form-check-label" for="isInterimEmployee">Est Intérimaire</label>
+                    <div class="row g-0">
+                        <!-- Form Section -->
+                        <div class="col-lg-12">
+                            <div class="form-container">
+                                <form id="form">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="Login">
+                                                    <i class="fas fa-user"></i>Nom d'utilisateur
+                                                </label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="Login"
+                                                       name="Login"
+                                                       placeholder="Ex: cheikhou badji ..."
+                                                       required>
+                                                <small class="form-text text-muted mt-2">
+                                                    <i class="fas fa-info-circle me-1"></i>
+                                                    Choisissez un nom d'utilisateur unique
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="password">
+                                                    <i class="fas fa-lock"></i>Mot de passe
+                                                </label>
+                                                <div class="input-group">
+                                                    <input type="password"
+                                                           class="form-control"
+                                                           id="password"
+                                                           name="password"
+                                                           placeholder="Créez un mot de passe sécurisé">
+                                                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </div>
+                                                <small class="form-text text-muted mt-2">
+                                                    <i class="fas fa-info-circle me-1"></i>
+                                                    Minimum 8 caractères avec chiffres et lettres
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="Telephone">
+                                                    <i class="fas fa-phone"></i>Téléphone
+                                                </label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="Telephone"
+                                                       name="Telephone"
+                                                       placeholder=" 77 123 00 00"
+                                                       required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="EntrepriseId">
+                                                    <i class="fas fa-briefcase"></i>Entreprise
+                                                </label>
+                                                <select class="form-control nice-select wide"
+                                                        name="EntrepriseId"
+                                                        id="EntrepriseId"
+                                                        required>
+                                                    <option disabled selected>
+                                                        Sélectionnez une entreprise
+                                                    </option>
+                                                    @if (Model.Entreprises != null)
+                                                    {
+                                                        foreach (var item in Model.Entreprises)
+                                                        {
+                                                            <option value="@item.Id">@item.Nom</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="DepartmentId">
+                                                    <i class="fas fa-building"></i>Département
+                                                </label>
+                                                <select class="form-control nice-select wide"
+                                                        name="DepartmentId"
+                                                        id="DepartmentId"
+                                                        required>
+                                                    <option disabled selected>
+                                                        Sélectionnez un département
+                                                    </option>
+                                                    @if (Model.Departments != null)
+                                                    {
+                                                        foreach (var item in Model.Departments)
+                                                        {
+                                                            <option value="@item.Id">@item.Name</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="Profile">
+                                                    <i class="fas fa-user-tag"></i>Profil
+                                                </label>
+                                                <select class="form-control nice-select wide"
+                                                        name="Profile"
+                                                        id="Profile"
+                                                        required>
+                                                    <option disabled selected>
+                                                        Sélectionnez un profil
+                                                    </option>
+                                                    <option value="USER">USER</option>
+                                                    <option value="GERANT">GERANT</option>
+                                                    <option value="ADMIN">ADMIN</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @* 
+                                    <div class="col-md-12"> *@
+                                        <div class="form-group">
+                                            <label class="form-label" for="Email">
+                                                <i class="fas fa-envelope"></i>Email
+                                            </label>
+                                            <input type="email"
+                                                   class="form-control"
+                                                   id="Email"
+                                                   name="Email"
+                                                   placeholder="cheikhou@entreprise.com">
+                                        </div>
+                                    @* </div> *@
+
+                                    <div class="btn-group">
+                                        <button class="btn-custom"
+                                                id="btnCreate"
+                                                type="button"
+                                                data-redirectroute="/User/List"
+                                                data-url="/User/CreateUser">
+                                            <i class="fas fa-save me-2"></i>Créer l'Utilisateur
+                                        </button>
+
+                                        <button class="btn-back" type="button" onclick="history.back()">
+                                            <i class="fas fa-arrow-left me-2"></i>Retour
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
-
                         </div>
-                        <div class="col-md-8">
-
-
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="useActiveDirectoryAuth" >
-                                <label class="form-check-label" for="useActiveDirectoryAuth">Uilise les Identfiants Windows</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Prénom</label>
-                            <input type="text" class="form-control" placeholder="" name="Prenom" id="Prenom" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Nom</label>
-                            <input type="text" class="form-control" placeholder="" name="Nom" id="Nom" required/>
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Login</label>
-                            <input type="text" class="form-control" placeholder="" name="Login" id="Login" required />
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Matricule</label>
-                            <input type="text" class="form-control" placeholder="" name="Matricule" id="Matricule" required />
-                        </div>
-                        <div class="col-8">
-                            <label class="form-label">Email</label>
-                            <input type="text" class="form-control" placeholder="" name="Email" id="Email"  />
-                        </div>
-                        <div class="col-8">
-                            <label class="form-label">Téléphone</label>
-                            <input type="text" class="form-control" placeholder="" name="Telephone" id="Telephone" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Département</label>
-                            <select class="form-control nice-select wide" name="DepartmentId" id="DepartmentId" required>
-                                <option value="" disabled selected>
-                                    Sélectionnez le département?
-                                </option>
-                                @if (Model.Departments != null)
-                                {
-                                    foreach (var item in Model.Departments)
-                                    {
-                                        <option value="@item.Id">@item.Name</option>
-                                    }
-                                }
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Profil</label>
-                            <select class="form-control nice-select wide" name="Profile" id="Profile" required>
-                                <option value="" disabled selected>
-                                    Sélectionnez le profil?
-                                </option>
-
-                                <option value="USER">USER</option>
-                                <option value="GERANT">GERANT</option>
-                                <option value="ADMIN">ADMIN</option>
-                              
-                            </select>
-                        </div>
-
-                        <div class="btn_box d-flex justify-content-between  col-12">
-                            <button class="custom-btn" id="btnCreate" type="button" data-redirectroute="/User/List" data-url="/User/CreateUser">
-                                Ajouter
-                            </button>
-                            <button class="custom-btn" style="background-color:#007bff !important;border-color:#007bff !important;color:#fff !important" type="button" onclick="history.back()">
-                                Retour
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-md-6 card  ">
-
-                <div class="  row d-flex justify-content-center">
-
-                    <p class="col-12 text-center bg-danger text-white my-2">
-                        Liste des commandes en attente
-                    </p>
-                    <div class=" col-md-11 row " id="messagesList">
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 </section>
-<!-- end book section -->
-@section Scripts{
 
+@section Scripts {
     <script>
-
         $(function () {
-
-            $("#Profile").on("change",function(){
-                let val=$(this).val();
-
-               
-                    $("#Matricule").prop("required", (val!="GERANT"));
-       
+            // Toggle password visibility
+            $('#togglePassword').click(function() {
+                const passwordInput = $('#password');
+                const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+                passwordInput.attr('type', type);
+                $(this).find('i').toggleClass('fa-eye fa-eye-slash');
             });
 
-
-            GetPendingCommandes();
-        })
-        //$("#btnCreate").on("click",function(){
-
-
-        //    //if (!$('#ssrForm').valid()) return;
-        //    try {
-
-        //        //run_waitMe('img');
-        //        startLoadingById("body");
-
-
-        //        form = document.getElementById('form');
-        //        //let postData = serializeObject(form);
-        //        let postData = new FormData(form);
- 
-        //        //var successHandler = (res) => {
-        //        //    endLoadingById("body");
-                 
-                    
-        //        //}
-        //        var successHandler = (data) => {
-        //            endLoadingById("body");
-        //            if (data == undefined || data == null || data == "")
-        //                ToastR("Une erreur a été rencontrée", "error", 10);
-        //            else {
-        //                console.log(data)
-        //                if (data.success) {
-        //                    ToastR(data.message, "success", 10);
-        //                    setTimeout(function(){
-        //                        window.location = window.location.origin + '/User/List';
-        //                    },3000);    
-                          
-                   
-
-        //                }
-
-        //                else {
-        //                    if (data.message != undefined && data.message.trim() != "")
-        //                        ToastR(data.message, "error", 10);
-        //                    if (data.errors != undefined && data.errors != null) {
-
-        //                        for (var elementId in data.errors) {
-        //                            var errorMessages = data.errors[elementId];
-        //                            let length = errorMessages.length;
-        //                            for (var i = 0; i < length; i++) {
-
-        //                                $(`#${elementId}-error${i}`).remove();
-        //                                if ($(`#${elementId}`).is('select')) {
-        //                                    $(`.sumo_${elementId}`).after(`<label id="${elementId}-error${i}" class="error fail-alert" for="Intitule">${errorMessages[i]}</label>`);
-
-        //                                }
-        //                                else
-        //                                    $(`#${elementId}`).after(`<label id="${elementId}-error${i}" class="error fail-alert" for="Intitule">${errorMessages[i]}</label>`);
-
-        //                            }
-
-        //                        }
-        //                    }
-        //                }
-
-        //            }
-
-        //        };
-        //        var errorHandler = (err) => {
-        //            endLoadingById("body");
-                   
-        //            ToastR("Une erreur inattendue a été rencontrée", "error", 15);
-        //        }
-
-
-
-        //        $.ajax({
-        //            type: "POST",
-        //            url: "/User/CreateUser",
-        //            crossDomain: false,
-        //            data: postData,
-        //            dataType: "json",
-        //            contentType: "multipart/form-data",
-        //            processData: false,
-        //            contentType: false,
-        //            headers: {
-        //                "Accept": "application/json"
-        //            },
-        //            success: successHandler,
-        //            error: errorHandler
-        //        });
-
-        //    } catch (e) {
-        //        console.log("Error : " + e);
-        //    }
-        //    finally {
-
-             
-
-        //    }
-
-        //}
-        
-        //)    ;
-
-    </script>
-
+            // Form validation
+            $('#form').validate({
+                rules: {
+                    Login: { required: true },
+                    Telephone: { required: true },
+                    DepartmentId: { required: true },
+                    Profile: { required: true },
+                    password: { required: true, minlength: 8 }
+                },
+                messages: {
+                    password: {
+                        minlength: "Le mot de passe doit contenir au moins 8 caractères"
                     }
+                }
+            });
+
+            // Enter key support
+            $('#Login').on('keypress', function(e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    $('#btnCreate').click();
+                }
+            });
+        });
+
+        function initializeForm() {
+            $('#Login').focus();
+        }
+    </script>
+}
