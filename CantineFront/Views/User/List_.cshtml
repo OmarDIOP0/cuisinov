@@ -844,19 +844,19 @@
                             var btnSendQrCode = '';
                             if(row.profile!="GERANT"){
                                 btnRecharger = `
-                                                                                                <button type="button" data-method="PUT"
-                                                                                                         data-modaltitle="Rechargement compte"
-                                                                                                                 data-successhandler="rechargementSuccessHandler"
-                                                                                                                 data-errorhandler="errorHandler"
-                                                                                                                 data-callback="updateSoldeCell"
-                                                                                                                 data-forward="rechargeCompteFormValid()"
-                                                                                                         data-getdata="getDataSoldeForm(${row.id})"
-                                                                                                                                                        data-modalbody=" <h6>Recharger le compte de <b>${row.prenom}  ${row.nom} Mat: ${row.matricule} </b><br><br><input class='form-control' name='montant' id='montant' type='number' ></h6>"
-                                                                                                                        data-url="/User/RechargerCompte" data-toggle="modal"
-                                                                                                                data-target="#genericModal" rel="tooltip"
-                                                                                                        class="btn btn-success m-2 btn-sm" data-original-title="" title="">
-                                                                                                    <span class="fa-money  fa"></span>
-                                                                                                </button>`;
+                                            <button type="button" data-method="PUT"
+                                                        data-modaltitle="Rechargement compte"
+                                                                data-successhandler="rechargementSuccessHandler"
+                                                                data-errorhandler="errorHandler"
+                                                                data-callback="updateSoldeCell"
+                                                                data-forward="rechargeCompteFormValid()"
+                                                        data-getdata="getDataSoldeForm(${row.id})"
+                                                                                                    data-modalbody=" <h6>Recharger le compte de <b>${row.prenom}  ${row.nom} Mat: ${row.matricule} </b><br><br><input class='form-control' name='montant' id='montant' type='number' ></h6>"
+                                                                    data-url="/User/RechargerCompte" data-toggle="modal"
+                                                            data-target="#genericModal" rel="tooltip"
+                                                    class="btn btn-success m-2 btn-sm" data-original-title="" title="">
+                                                <span class="fa-money  fa"></span>
+                                            </button>`;
                                 btnPrint = `<a class=" m-2 printQrCode" href="#!" data-matricule="${row.matricule}"  data-fullname="${row.prenom + " " + row.nom}" data-printable="qrCode${row.id}"><span class='fa fa-print'> Imprimer QR Code</span></a>`
                                 btnSendQrCode = `
                                                                                                                 <button type="button" data-method="PUT"

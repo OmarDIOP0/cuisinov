@@ -39,10 +39,6 @@ namespace CantineFront.Controllers
         [HttpGet]
         public async Task<JsonResult> GetUsers()
         {
-
-
-
-
             var url = ApiUrlGeneric.ReadAllURL<User>();
             var httpClient = _httpClientFactory.CreateClient("ClearanceApi");
             HttpResponseMessage response = await httpClient.GetAsync(url);

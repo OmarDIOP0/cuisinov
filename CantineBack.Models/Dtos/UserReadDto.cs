@@ -30,5 +30,6 @@ namespace CantineBack.Models.Dtos
         public DateTime? LastRechargeDate { get; set; }
         public int? LastRechargeAmount { get; set; }
         public DepartmentReadDto? Department { get; set; }
+        public Entreprise? Entreprise { get; set; }
     }
 }

@@ -268,7 +268,7 @@ namespace CantineBack.Controllers
             {
                 return NotFound();
             }
-            var r = await _context.Users.Include(u => u.Department).ToListAsync();
+            var r = await _context.Users.Include(u => u.Department).Include(e => e.Entreprise).ToListAsync();
             var l = _mapper.Map<IEnumerable<UserReadDto>>(r);
             return Ok(l);
         }

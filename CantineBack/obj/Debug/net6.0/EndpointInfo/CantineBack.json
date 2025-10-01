@@ -3759,6 +3759,9 @@
           },
           "department": {
             "$ref": "#/components/schemas/DepartmentReadDto"
+          },
+          "entreprise": {
+            "$ref": "#/components/schemas/Entreprise"
           }
         },
         "additionalProperties": false
