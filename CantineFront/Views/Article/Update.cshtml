@@ -2,144 +2,277 @@
 @using Newtonsoft.Json
 @inject IHttpContextAccessor Accessor
 @model ArticleViewModel
-@section Styles{
+
+@section Styles {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/createCategorie.css" />
     <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
 }
+
 @{
     bool isAdmin = Convert.ToBoolean(Accessor.HttpContext?.Session.GetString("IsAdmin") ?? "false");
     List<string> ImagesPreviews = new List<string>();
     List<object> ImagesKeys = new List<object>();
     string ImagesPreviewsJSON = "";
     string ImagesKeysJSON = "";
+
     if (!String.IsNullOrWhiteSpace(Model.ImageBase64))
     {
-
         ImagesPreviews.Add($"<img class=\"kv-preview-data file-preview-image\" src=\"data:image/png;base64,{Model.ImageBase64}\">");
         ImagesKeys.Add(new { key = 1, extra = new { id = 2 } });
-
-
     }
-    string actif = (Model.Article?.Actif??false)?"checked":"";
+
+    string actif = (Model.Article?.Actif ?? false) ? "checked" : "";
     string isArticleOnMenu = (Model.Article?.IsArticleOnMenu ?? false) ? "checked" : "";
     string isApproved = (Model.Article?.IsApproved ?? false) ? "checked" : "";
+    string controlStockQuantity = (Model.Article?.ControlStockQuantity ?? false) ? "checked" : "";
+
     ImagesPreviewsJSON = JsonConvert.SerializeObject(ImagesPreviews);
     ImagesKeysJSON = JsonConvert.SerializeObject(ImagesKeys);
-
-    string controlStockQuantity = (Model.Article?.ControlStockQuantity ?? false) ? "checked" : "";
 }
-<!-- book section -->
-<section class="book_section layout_padding">
-    <div class="container">
-        <div class="heading_container">
-            <h2>
-                Modifier article
-            </h2>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form_container">
-                    <form action="" class="row" id="form">
-                        <input type="hidden" name="Id" value="@Model.Article.Id" />
-                        <input type="hidden" name="ImageBase64" value="@Model.ImageBase64" />
 
-                        <div class="col-md-4 ">
-                            
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="actif" @actif>
-                                <label class="form-check-label" for="actif">Actif</label>
+<section class="create-section">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="create-card">
+                    <!-- Header -->
+                    <div class="card-header">
+                        <h2><i class="fas fa-edit me-2"></i>Modifier l'Article</h2>
+                        <div class="subtitle">Modifiez les informations de votre article</div>
+                    </div>
+
+                    <div class="row g-0">
+                        <!-- Form Section -->
+                        <div class="col-lg-12">
+                            <div class="form-container">
+                                <form id="form">
+                                    <input type="hidden" name="Id" value="@Model.Article.Id" />
+                                    <input type="hidden" name="ImageBase64" value="@Model.ImageBase64" />
+
+                                    <!-- Checkboxes Section -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input type="checkbox"
+                                                       class="form-check-input"
+                                                       id="actif"
+                                                       name="Actif"
+                                                       @actif>
+                                                <label class="form-check-label" for="actif">
+                                                    <i class="fas fa-check-circle me-2"></i>
+                                                    Actif
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input type="checkbox"
+                                                       class="form-check-input"
+                                                       id="isArticleOnMenu"
+                                                       name="IsArticleOnMenu"
+                                                       @isArticleOnMenu>
+                                                <label class="form-check-label" for="isArticleOnMenu">
+                                                    <i class="fas fa-eye me-2"></i>
+                                                    Visible sur le menu
+                                                </label>
+                                            </div>
+                                        </div>
+                                        @if (isAdmin)
+                                        {
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input type="checkbox"
+                                                           class="form-check-input"
+                                                           id="isApproved"
+                                                           name="IsApproved"
+                                                           @isApproved>
+                                                    <label class="form-check-label" for="isApproved">
+                                                        <i class="fas fa-check-double me-2"></i>
+                                                        Approuvé
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="Title">
+                                                    <i class="fas fa-tag"></i>Nom de l'Article
+                                                </label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="Title"
+                                                       name="Title"
+                                                       placeholder="Ex: Pizza Margherita, Salade César..."
+                                                       value="@Model.Article.Title"
+                                                       required>
+                                                <small class="form-text text-muted mt-2">
+                                                    <i class="fas fa-info-circle me-1"></i>
+                                                    Choisissez un nom attractif pour votre article
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="EntrepriseId">
+                                                    <i class="fas fa-building"></i>Entreprise
+                                                </label>
+                                                <select class="form-control nice-select wide"
+                                                        name="EntrepriseId"
+                                                        id="EntrepriseId"
+                                                        required>
+                                                    <option disabled selected>
+                                                        Sélectionnez une entreprise
+                                                    </option>
+                                                    @if (Model.Entreprises != null)
+                                                    {
+                                                        foreach (var ent in Model.Entreprises)
+                                                        {
+                                                            <option value="@ent.Id" selected="@(ent.Id == Model.Article.EntrepriseId ? "selected" : null)">
+                                                                @ent.Nom (@ent.Code)
+                                                            </option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="Description">
+                                            <i class="fas fa-align-left"></i>Description
+                                        </label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="Description"
+                                               name="Description"
+                                               placeholder="Décrivez brièvement votre article..."
+                                               value="@Model.Article.Description"
+                                               required>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="PrixDachat">
+                                                    <i class="fas fa-money-bill-wave"></i>Prix d'Achat
+                                                </label>
+                                                <input type="number"
+                                                       class="form-control"
+                                                       id="PrixDachat"
+                                                       name="PrixDachat"
+                                                       placeholder="0.00"
+                                                       min="0"
+                                                       step="0.01"
+                                                       value="@Model.Article.PrixDachat">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="PrixDeVente">
+                                                    <i class="fas fa-tags"></i>Prix de Vente
+                                                </label>
+                                                <input type="number"
+                                                       class="form-control"
+                                                       id="PrixDeVente"
+                                                       name="PrixDeVente"
+                                                       placeholder="0.00"
+                                                       min="0"
+                                                       step="0.01"
+                                                       value="@Model.Article.PrixDeVente"
+                                                       required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="QuantiteStock">
+                                                    <i class="fas fa-boxes"></i>Quantité en Stock
+                                                </label>
+                                                <input type="number"
+                                                       class="form-control"
+                                                       id="QuantiteStock"
+                                                       name="QuantiteStock"
+                                                       placeholder="0"
+                                                       min="0"
+                                                       value="@Model.Article.QuantiteStock"
+                                                       required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="CategorieId">
+                                                    <i class="fas fa-layer-group"></i>Catégorie
+                                                </label>
+                                                <select class="form-control nice-select wide"
+                                                        name="CategorieId"
+                                                        id="CategorieId"
+                                                        required>
+                                                    <option disabled selected>
+                                                        Sélectionnez une catégorie
+                                                    </option>
+                                                    @if (Model.Categories != null)
+                                                    {
+                                                        foreach (var item in Model.Categories)
+                                                        {
+                                                            bool selected = Model.Article.CategorieId == item.Id;
+                                                            <option value="@item.Id" selected="@(selected ? "selected" : null)">@item.Name</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               id="controlStockQuantity"
+                                               name="ControlStockQuantity"
+                                               value="true"
+                                               @controlStockQuantity>
+                                        <label class="form-check-label" for="controlStockQuantity">
+                                            <i class="fas fa-check-circle me-2"></i>
+                                            Vérifier le stock lors de la commande
+                                        </label>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="image">
+                                            <i class="fas fa-image"></i>Image de l'Article
+                                        </label>
+                                        <input type="file"
+                                               class="form-control"
+                                               id="image"
+                                               name="Image"
+                                               accept="image/*">
+                                        <small class="form-text text-muted mt-2">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            Formats acceptés: PNG, JPG, JPEG (Max: 100KB)
+                                        </small>
+                                    </div>
+
+                                    <div class="btn-group">
+                                        <button class="btn-custom"
+                                                id="btnUpdate"
+                                                type="button"
+                                                data-redirectroute="/Article/List"
+                                                data-url="/Article/UpdateArticle">
+                                            <i class="fas fa-save me-2"></i>Modifier l'Article
+                                        </button>
+
+                                        <button class="btn-back" type="button" onclick="history.back()">
+                                            <i class="fas fa-arrow-left me-2"></i>Retour
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
-                           
                         </div>
-                        <div class="col-md-4">
-
-                        
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="isArticleOnMenu" @isArticleOnMenu>
-                                <label class="form-check-label" for="isArticleOnMenu">Visible sur le menu</label>
-                            </div>
-                        </div>
-                        @if(isAdmin){
-                            <div class="col-md-4">
-
-
-                                <div class="form-group form-check">
-                                    <input type="checkbox" class="form-check-input" id="isApproved" @isApproved>
-                                    <label class="form-check-label" for="isApproved">Approuvé</label>
-                                </div>
-                            </div>
-                        }
-                    
-                        <div class="col-12">
-                            <label class="form-label">Nom</label>
-                            <input type="text" class="form-control" placeholder="" name="Title" id="Title"   value="@Model.Article.Title"/>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Description</label>
-                            <input type="text" class="form-control" placeholder="" name="Description" id="Description" value="@Model.Article.Description">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Prix d'achat</label>
-                            <input type="number" class="form-control" placeholder="" name="PrixDachat" id="PrixDachat" value="@Model.Article.PrixDachat" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Prix de vente</label>
-                            <input type="number" class="form-control" placeholder="" name="PrixDeVente" id="PrixDeVente" value="@Model.Article.PrixDeVente" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Quantité en Stock</label>
-                            <input type="number" class="form-control" placeholder="" name="QuantiteStock" id="QuantiteStock" value="@Model.Article.QuantiteStock" />
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label">Catégorie</label>
-                            <select class="form-control nice-select wide" name="CategorieId" id="CategorieId">
-                                <option value="" disabled selected>
-                                    Sélectionnez la catégorie?
-                                </option>
-                                @if (Model.Categories != null)
-                                {
-                                    foreach (var item in Model.Categories)
-                                    {
-                                        bool selected = Model.Article.CategorieId == item.Id;
-                                        <option selected="@selected" value="@item.Id" >@item.Name</option>
-                                    }
-                                }
-                            </select>
-                        </div>
-
-                        <div class="col-md-8 ">
-
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" @controlStockQuantity id="controlStockQuantity">
-                                <label class="form-check-label" for="ControlStockQuantity">Vérifier le stock lors de la commande</label>
-                            </div>
-
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Image</label>
-                            <input type="file" placeholder="" id="image" name="Image" />
-                        </div>
-                        <div class="btn_box d-flex justify-content-between  col-12">
-                            <button class="custom-btn" id="btnUpdate" type="button" data-redirectroute="/Article/List" data-url="/Article/UpdateArticle">
-                                Enregistrer
-                            </button>
-
-                            <button class="custom-btn" style="background-color:#007bff !important;border-color:#007bff !important;color:#fff !important" type="button" onclick="history.back()">
-                                Retour
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-md-6 card  ">
-
-                <div class="  row d-flex justify-content-center">
-
-                    <p class="col-12 text-center bg-danger text-white my-2">
-                        Liste des commandes en attente
-                    </p>
-                    <div class=" col-md-11 row " id="messagesList">
                     </div>
                 </div>
             </div>
@@ -159,9 +292,9 @@
                 showPreview: true,
                 showUpload: false,
                 overwriteInitial: true,
-                ShowCaption: false, // does not display the local file name
-                AllowedFileTypes: ['image'], // Allow upload of pictures only
-                allowedFileExtensions: ["png"],
+                ShowCaption: false, 
+                AllowedFileTypes: ['image'],
+                allowedFileExtensions: ["jpg", "jpeg", "png"],
 
                 maxFileSize: 100,
                 maxFileCount: 1,
@@ -177,15 +310,7 @@
                 },
                 theme: 'fas',
             }).on('fileuploaded', function (event, data, previewId, index) {
-                //var response = data.response;
-                //$('input#coverUploader').attr('required', false);
-                //var input = $('<input type="hidden" name="cover" />');
-                //input.attr('value', response.key);
-                //$('form').append(input);
             }).on('filecleared', function (event) {
-                //$(".file-drop-zone-title").css({ fontSize: "11px" })
-                //$("#images").attr('required', true);
-                //console.log("filecleared")
             });
 
             $('#form').validate({
@@ -204,7 +329,7 @@
                 validClass: "valid success-alert"
 
             });
-            GetPendingCommandes();
+            // GetPendingCommandes();
         })
 
     </script>

@@ -160,6 +160,8 @@ namespace CantineFront.Controllers
                 var httpClient = _httpClientFactory.CreateClient("ClearanceApi");
                 HttpResponseMessage response = await httpClient.GetAsync(url);
                 var apiResponse = await ApiResultParser<Article>.Parse(response);
+                var urlEntreprise = ApiUrlGeneric.ReadAllURL<Entreprise>();
+                var apiResponseListEntreprises = await ApiService<Entreprise>.CallGetList(_httpClientFactory, urlEntreprise);
 
                 var article = apiResponse.Data;
                 if (article != null)
@@ -170,6 +172,7 @@ namespace CantineFront.Controllers
                     var catApiResponse = await ApiResultParser<Categorie>.ParseList(response);
                     ArticleVM.Categories = catApiResponse.Data;
                     ArticleVM.Article = article;
+                    ArticleVM.Entreprises = apiResponseListEntreprises?.Data;
                     if (article.Image != null)
                         ArticleVM.ImageBase64 = $"{Convert.ToBase64String(article.Image!)}";
                     return View(ArticleVM);
