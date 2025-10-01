@@ -188,6 +188,8 @@ namespace CantineFront.Controllers
                 var httpClient = _httpClientFactory.CreateClient("ClearanceApi");
                 HttpResponseMessage response = await httpClient.GetAsync(url);
                 var apiResponse = await ApiResultParser<User>.Parse(response);
+                var urlEnt = ApiUrlGeneric.ReadAllURL<Entreprise>();
+                var apiResponseEnt = await ApiService<Entreprise>.CallGetList(_httpClientFactory, urlEnt);
 
                 var categorie = apiResponse.Data;
                 if (categorie != null)
@@ -198,6 +200,7 @@ namespace CantineFront.Controllers
                     response = await httpClient.GetAsync(url);
                     var catApiResponse = await ApiResultParser<Department>.ParseList(response);
                     UserVM.Departments = catApiResponse.Data;
+                    UserVM.Entreprises = apiResponseEnt?.Data;
 
                     return View(UserVM);
                 }
@@ -210,7 +213,7 @@ namespace CantineFront.Controllers
             return NotFound();
         }
         [Authorize(Policy = "AdminPolicy")]
-        [HttpPost]
+        [HttpPost] 
         public async Task<JsonResult> UpdateUser(UserCURequest userRequest)
         {
             if (!ModelState.IsValid)
@@ -227,10 +230,6 @@ namespace CantineFront.Controllers
             string msg = success ? "User modifiée avec succès!" : (apiResponse.Message ?? "Une erreur a été rencontrée.");
 
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
-
-
-
-
         }
 
 

@@ -337,7 +337,7 @@ namespace CantineBack.Controllers
         // PUT: api/Users/5
         [HttpPut("{id}")]
         [Authorize(Policy = IdentityData.AdminUserPolicyName)]
-        public async Task<IActionResult> PutUser(int id, [FromBody] User user)
+        public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.Id)
                 return BadRequest("L'identifiant de l'utilisateur ne correspond pas.");
@@ -373,18 +373,13 @@ namespace CantineBack.Controllers
                 userBD.ResetPassword = true;
 
                 // Ici tu pourrais renvoyer le mot de passe en clair à l’admin
-                return Ok(new
-                {
-                    Message = "Utilisateur mis à jour et mot de passe réinitialisé.",
-                    Username = userBD.Login,
-                    Password = plainPassword
-                });
+                return NoContent();
             }
 
             try
             {
                 await _context.SaveChangesAsync();
-                return Ok(new { Message = "Utilisateur mis à jour avec succès." });
+                return NoContent();
             }
             catch (DbUpdateConcurrencyException)
             {
