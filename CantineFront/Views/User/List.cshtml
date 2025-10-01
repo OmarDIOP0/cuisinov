@@ -106,7 +106,7 @@
                             <th scope="col">Profil</th>
                             <th scope="col">Actif</th>
                             <th scope="col">Actions</th>
-                            <th scope="col">Plus</th>
+                            @* <th scope="col">Plus</th> *@
                         </tr>
                     </thead>
                     <tbody>
@@ -162,18 +162,20 @@
                             },
                             columns: [
                                 {
-                                    width: '0%',
                                     data: null,
-                                    defaultContent: '',
+                                    width: '1%',
+                                    render: function (data, type, row, meta) {
+                                        return '<span class="text-muted">' + (meta.row + 1) + '</span>';
+                                    }
                                 },
                                 {
-                                    width: '6%',
+                                    width: '15%',
                                     data: 'login',
                                     defaultContent: '',
                                     className: "text-center"
                                 },
                                 {
-                                    width: '6%',
+                                    width: '15%',
                                     data: 'password',
                                     defaultContent: '',
                                     className: "tablesmalltext",
@@ -195,13 +197,13 @@
                                 //     defaultContent: '',
                                 // },
                                 {
-                                    width: '6%',
+                                    width: '15%',
                                     data: 'telephone',
                                     defaultContent: '',
                                     className: "text-center",
                                 },
                                 {
-                                    width: '6%',
+                                    width: '10%',
                                     data: 'profile',
                                     defaultContent: '',
                                     className: "text-center",
@@ -235,7 +237,7 @@
                                 },
                                 {
                                     data: null,
-                                    width: '17%',
+                                    width: '30%',
                                     className: 'text-center',
                                     render: function (data, type, row) {
                                         var btnEdit = `<a class="btn btn-action btn-edit me-2" href="/User/Update/${row.id}" title="Modifier">
@@ -269,21 +271,21 @@
                                             </button>`;
                                         }
 
-                                        return '<div class="d-flex justify-content-center">' + btnEdit + btnDelete + btnRecharger + '</div>';
+                                        return '<div class="d-flex justify-content-center">' + btnEdit + btnDelete + '</div>';
                                     }
                                 },
-                                {
-                                    data: null,
-                                    width: '10%',
-                                    defaultContent: "",
-                                    className: "dt-custom-control custom px-2",
-                                    render: function (data, type, row, meta) {
-                                        if (type === 'export') {
-                                            return data;
-                                        }
-                                        return `<span class="dt-custom-control-plus"></span> <a></a>`;
-                                    }
-                                },
+                                // {
+                                //     data: null,
+                                //     width: '10%',
+                                //     defaultContent: "",
+                                //     className: "dt-custom-control custom px-2",
+                                //     render: function (data, type, row, meta) {
+                                //         if (type === 'export') {
+                                //             return data;
+                                //         }
+                                //         return `<span class="dt-custom-control-plus"></span> <a></a>`;
+                                //     }
+                                // },
                             ],
                             initComplete: function () {
                                 // Add custom styling after table initialization
