@@ -10,7 +10,7 @@
 <section class="create-section">
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-lg-12">
+            <div class="col-lg-10">
                 <div class="create-card">
                     <!-- Header -->
                     <div class="card-header">
@@ -20,7 +20,7 @@
 
                     <div class="row g-0">
                         <!-- Form Section -->
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-container">
                                 <form id="form">
                                     <div class="row">
@@ -130,7 +130,7 @@
                                                 <label class="form-label" for="CategorieId">
                                                     <i class="fas fa-layer-group"></i>Catégorie
                                                 </label>
-                                                <select class="form-control"
+                                                <select class="form-control nice-select wide"
                                                         name="CategorieId"
                                                         id="CategorieId"
                                                         required>
@@ -194,23 +194,6 @@
                                 </form>
                             </div>
                         </div>
-
-                        <!-- Commands Panel -->
-                        <div class="col-lg-6">
-                            <div class="commands-panel">
-                                <div class="commands-header">
-                                    <i class="fas fa-clock me-2"></i>Commandes en Attente
-                                </div>
-                                <div class="commands-list" id="messagesList">
-                                    <!-- Commandes will be loaded here -->
-                                    <div class="empty-state">
-                                        <i class="fas fa-clock"></i>
-                                        <p>Aucune commande en attente</p>
-                                        <small class="text-muted">Les nouvelles commandes apparaîtront ici</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -251,16 +234,6 @@
                 errorClass: "error fail-alert",
                 validClass: "valid success-alert"
             });
-
-            // Load pending commands
-            GetPendingCommandes();
-
-            // Form submission handler
-            // $('#btnCreate').on('click', function() {
-            //     submitArticleForm();
-            // });
-
-            // Enter key support
             $('#Title').on('keypress', function(e) {
                 if (e.which === 13) {
                     e.preventDefault();
@@ -272,54 +245,5 @@
         function initializeForm() {
             $('#Title').focus();
         }
-
-        // function submitArticleForm() {
-        //     const title = $('#Title').val().trim();
-        //     const description = $('#Description').val().trim();
-        //     const prixVente = $('#PrixDeVente').val();
-        //     const categorieId = $('#CategorieId').val();
-        //     const btn = $('#btnCreate');
-
-        //     Validation de base
-        //     if (!title) {
-        //         ToastR("Veuillez saisir un nom pour l'article", "error", 10);
-        //         $('#Title').focus();
-        //         return;
-        //     }
-
-        //     if (!description) {
-        //         ToastR("Veuillez saisir une description", "error", 10);
-        //         $('#Description').focus();
-        //         return;
-        //     }
-
-        //     if (!prixVente || parseFloat(prixVente) <= 0) {
-        //         ToastR("Veuillez saisir un prix de vente valide", "error", 10);
-        //         $('#PrixDeVente').focus();
-        //         return;
-        //     }
-
-        //     if (!categorieId) {
-        //         ToastR("Veuillez sélectionner une catégorie", "error", 10);
-        //         $('#CategorieId').focus();
-        //         return;
-        //     }
-
-        //     if (title.length < 2) {
-        //         ToastR("Le nom de l'article doit contenir au moins 2 caractères", "error", 10);
-        //         $('#Title').focus();
-        //         return;
-        //     }
-
-        //     Vérification du formulaire jQuery Validation
-        //     if (!$('#form').valid()) {
-        //         ToastR("Veuillez corriger les erreurs dans le formulaire", "error", 10);
-        //         return;
-        //     }
-
-        //     Show loading state
-        //     btn.addClass('btn-loading').prop('disabled', true);
-
-        // }
     </script>
 }
