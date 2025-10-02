@@ -669,7 +669,7 @@ namespace CantineBack.Controllers
         }
         [Authorize]
         [HttpPost("ResetPassword")]
-        public async Task<ActionResult<User>> ResetPassword(UserResetPwdRequest utilisateurReset)
+        public async Task<ActionResult<User>> ResetPassword([FromBody] UserResetPwdRequest utilisateurReset)
         {
 
             if (ModelState.IsValid)
@@ -677,7 +677,9 @@ namespace CantineBack.Controllers
 
                 string passwordHash = BCrypt.Net.BCrypt.HashPassword(utilisateurReset.OldPassword);
                 var oldpwd = utilisateurReset.OldPassword;
-                User? utilisateur = await _context.Users.Where(u => (u.Login == utilisateurReset.Login) && (u.Profile == "GERANT")).FirstOrDefaultAsync();
+                User? utilisateur = await _context.Users
+                                                        .FirstOrDefaultAsync(u => u.Login == utilisateurReset.Login);
+
 
                 if (utilisateur != null)
                 {

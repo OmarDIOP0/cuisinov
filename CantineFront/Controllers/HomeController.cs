@@ -149,7 +149,7 @@ namespace CantineFront.Controllers
             return Json(apiResponse);
         }
         [HttpPost]
-        public async Task<JsonResult> ResetPassword(UserResetPwdRequest userResetPwdRequest)
+        public async Task<JsonResult> ResetPassword([FromBody] UserResetPwdRequest userResetPwdRequest)
         {
             if (!ModelState.IsValid)
             {

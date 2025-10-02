@@ -11,14 +11,13 @@
 @section Styles {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/createCategorie.css" />
-    <link rel="stylesheet" href="~/css/profil.css" />
 }
 
-<section class="profile-section">
+<section class="create-section">
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="profile-card">
+                <div class="create-card">
                     <!-- Header -->
                     <div class="card-header">
                         <h2><i class="fas fa-user-circle me-2"></i>Mon Profil</h2>
@@ -26,188 +25,187 @@
                     </div>
 
                     <div class="row g-0">
+                        <!-- Form Section -->
                         <div class="col-lg-12">
-                            <!-- Profile Info Header -->
-                            <div class="profile-header">
-                                <div class="profile-avatar">
-                                    <i class="fas fa-user"></i>
-                                </div>
-                                <div class="profile-info">
+                            <div class="form-container">
+                                <!-- Profile Info Header -->
+                                <div class="profile-header text-center mb-4">
+                                    <div class="profile-avatar mb-3">
+                                        <i class="fas fa-user"></i>
+                                    </div>
                                     <h3 id="profileUsername" class="h4 mb-2">@username</h3>
-                                    <div id="profileRole" class="profile-role role-user">
+                                    <div id="profileRole" class="profile-role">
                                         Chargement...
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Tabs Navigation -->
-                            <ul class="nav nav-tabs nav-tabs-custom" id="profileTabs" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab">
-                                        <i class="fas fa-user-edit me-2"></i>Informations Personnelles
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" type="button" role="tab">
-                                        <i class="fas fa-lock me-2"></i>Mot de Passe
-                                    </button>
-                                </li>
-                            </ul>
+                                <!-- Tabs Navigation -->
+                                <ul class="nav nav-tabs nav-tabs-custom mb-4" id="profileTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab">
+                                            <i class="fas fa-user-edit me-2"></i>Informations Personnelles
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" type="button" role="tab">
+                                            <i class="fas fa-lock me-2"></i>Mot de Passe
+                                        </button>
+                                    </li>
+                                </ul>
 
-                            <!-- Tabs Content -->
-                            <div class="tab-content tab-content-custom" id="profileTabsContent">
-                                <!-- Tab Informations Personnelles -->
-                                <div class="tab-pane fade show active" id="info" role="tabpanel">
-                                    <form id="profileForm">
-                                        <input type="hidden" id="userId" name="Id" />
+                                <!-- Tabs Content -->
+                                <div class="tab-content" id="profileTabsContent">
+                                    <!-- Tab Informations Personnelles -->
+                                    <div class="tab-pane fade show active" id="info" role="tabpanel">
+                                        <form id="profileForm">
+                                            <input type="hidden" id="userId" name="Id" />
 
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="login">
-                                                        <i class="fas fa-at"></i>Nom d'utilisateur
-                                                    </label>
-                                                    <input type="text"
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label" for="login">
+                                                            <i class="fas fa-at"></i>Nom d'utilisateur
+                                                        </label>
+                                                        <input type="text"
+                                                               class="form-control"
+                                                               id="login"
+                                                               name="Login"
+                                                               placeholder="Ex: john.doe, marie.dupont..."
+                                                               required>
+                                                        <small class="form-text text-muted mt-2">
+                                                            <i class="fas fa-info-circle me-1"></i>
+                                                            Votre identifiant de connexion unique
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label" for="telephone">
+                                                            <i class="fas fa-phone"></i>Téléphone
+                                                        </label>
+                                                        <input type="tel"
+                                                               class="form-control"
+                                                               id="telephone"
+                                                               name="Telephone"
+                                                               placeholder="+33 1 23 45 67 89"
+                                                               required>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label" for="email">
+                                                            <i class="fas fa-envelope"></i>Email
+                                                        </label>
+                                                        <input type="email"
+                                                               class="form-control"
+                                                               id="email"
+                                                               name="Email"
+                                                               placeholder="votre@email.com">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label" for="entreprise">
+                                                            <i class="fas fa-building"></i>Entreprise
+                                                        </label>
+                                                        <input type="text"
+                                                               class="form-control"
+                                                               id="entreprise"
+                                                               name="Entreprise"
+                                                               readonly
+                                                               style="background-color: #f8f9fa;">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <button class="btn-back" type="button" id="btnCancelProfile">
+                                                    <i class="fas fa-times me-2"></i>Annuler
+                                                </button>
+                                                <button class="btn-custom"
+                                                        id="btnSaveProfile"
+                                                        type="button"
+                                                        data-url="/User/UpdateUser">
+                                                    <i class="fas fa-save me-2"></i>Enregistrer les modifications
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Tab Mot de Passe -->
+                                    <div class="tab-pane fade" id="password" role="tabpanel">
+                                        <form id="passwordForm">
+                                            <div class="form-group">
+                                                <label class="form-label" for="oldPassword">
+                                                    <i class="fas fa-lock"></i>Ancien mot de passe
+                                                </label>
+                                                <div class="input-group">
+                                                    <input type="password"
                                                            class="form-control"
-                                                           id="login"
-                                                           name="Login"
-                                                           placeholder="Ex: john.doe, marie.dupont..."
+                                                           id="oldPassword"
+                                                           name="OldPassword"
+                                                           placeholder="Saisissez votre ancien mot de passe"
                                                            required>
-                                                    <small class="form-text text-muted mt-2">
-                                                        <i class="fas fa-info-circle me-1"></i>
-                                                        Votre identifiant de connexion unique
-                                                    </small>
+                                                    <button type="button" class="btn btn-outline-secondary password-toggle" data-target="oldPassword">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="telephone">
-                                                        <i class="fas fa-phone"></i>Téléphone
-                                                    </label>
-                                                    <input type="tel"
+
+                                            <div class="form-group">
+                                                <label class="form-label" for="newPassword">
+                                                    <i class="fas fa-key"></i>Nouveau mot de passe
+                                                </label>
+                                                <div class="input-group">
+                                                    <input type="password"
                                                            class="form-control"
-                                                           id="telephone"
-                                                           name="Telephone"
-                                                           placeholder="+33 1 23 45 67 89"
+                                                           id="newPassword"
+                                                           name="NewPassword"
+                                                           placeholder="Saisissez votre nouveau mot de passe"
                                                            required>
+                                                    <button type="button" class="btn btn-outline-secondary password-toggle" data-target="newPassword">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
                                                 </div>
+                                                <small class="form-text text-muted mt-2">
+                                                    <i class="fas fa-info-circle me-1"></i>
+                                                    Minimum 8 caractères avec chiffres et lettres
+                                                </small>
                                             </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="email">
-                                                        <i class="fas fa-envelope"></i>Email
-                                                    </label>
-                                                    <input type="email"
+                                            <div class="form-group">
+                                                <label class="form-label" for="confirmPassword">
+                                                    <i class="fas fa-check-double"></i>Confirmer le mot de passe
+                                                </label>
+                                                <div class="input-group">
+                                                    <input type="password"
                                                            class="form-control"
-                                                           id="email"
-                                                           name="Email"
-                                                           placeholder="votre@email.com">
+                                                           id="confirmPassword"
+                                                           name="ConfirmPassword"
+                                                           placeholder="Confirmez votre nouveau mot de passe"
+                                                           required>
+                                                    <button type="button" class="btn btn-outline-secondary password-toggle" data-target="confirmPassword">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="entreprise">
-                                                        <i class="fas fa-building"></i>Entreprise
-                                                    </label>
-                                                    <input type="text"
-                                                           class="form-control readonly-field"
-                                                           id="entreprise"
-                                                           name="Entreprise"
-                                                           readonly>
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="btn-group">
-                                            <button class="btn-back" type="button" id="btnCancelProfile">
-                                                <i class="fas fa-times me-2"></i>Annuler
-                                            </button>
-                                            <button class="btn-custom"
-                                                    id="btnSaveProfile"
-                                                    type="button"
-                                                    data-url="/User/UpdateUser">
-                                                <i class="fas fa-save me-2"></i>Enregistrer les modifications
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <!-- Tab Mot de Passe -->
-                                <div class="tab-pane fade" id="password" role="tabpanel">
-                                    <form id="passwordForm">
-                                        <input type="hidden" id="pwdUserId" name="Id" />
-                                        <input type="hidden" id="pwdLogin" name="Login" />
-
-                                        <div class="form-group">
-                                            <label class="form-label" for="oldPassword">
-                                                <i class="fas fa-lock"></i>Ancien mot de passe
-                                            </label>
-                                            <div class="input-group">
-                                                <input type="password"
-                                                       class="form-control"
-                                                       id="oldPassword"
-                                                       name="OldPassword"
-                                                       placeholder="Saisissez votre ancien mot de passe"
-                                                       required>
-                                                <button type="button" class="password-toggle" data-target="oldPassword">
-                                                    <i class="fas fa-eye"></i>
+                                            <div class="btn-group">
+                                                <button class="btn-back" type="button" id="btnCancelPassword">
+                                                    <i class="fas fa-times me-2"></i>Annuler
+                                                </button>
+                                                <button class="btn-custom"
+                                                        id="btnChangePassword"
+                                                        type="button"
+                                                        data-url="/Home/ResetPassword">
+                                                    <i class="fas fa-key me-2"></i>Changer le mot de passe
                                                 </button>
                                             </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="form-label" for="newPassword">
-                                                <i class="fas fa-key"></i>Nouveau mot de passe
-                                            </label>
-                                            <div class="input-group">
-                                                <input type="password"
-                                                       class="form-control"
-                                                       id="newPassword"
-                                                       name="NewPassword"
-                                                       placeholder="Saisissez votre nouveau mot de passe"
-                                                       required>
-                                                <button type="button" class="password-toggle" data-target="newPassword">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                            </div>
-                                            <small class="form-text text-muted mt-2">
-                                                <i class="fas fa-info-circle me-1"></i>
-                                                Minimum 8 caractères avec chiffres et lettres
-                                            </small>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="form-label" for="confirmPassword">
-                                                <i class="fas fa-check-double"></i>Confirmer le mot de passe
-                                            </label>
-                                            <div class="input-group">
-                                                <input type="password"
-                                                       class="form-control"
-                                                       id="confirmPassword"
-                                                       name="ConfirmPassword"
-                                                       placeholder="Confirmez votre nouveau mot de passe"
-                                                       required>
-                                                <button type="button" class="password-toggle" data-target="confirmPassword">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <div class="btn-group">
-                                            <button class="btn-back" type="button" id="btnCancelPassword">
-                                                <i class="fas fa-times me-2"></i>Annuler
-                                            </button>
-                                            <button class="btn-custom"
-                                                    id="btnChangePassword"
-                                                    type="button"
-                                                    data-url="/Home/ResetPassword">
-                                                <i class="fas fa-key me-2"></i>Changer le mot de passe
-                                            </button>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -219,6 +217,78 @@
 </section>
 
 @section Scripts {
+    <style>
+        .profile-header {
+            padding: 20px 0;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .profile-role {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        .role-admin {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+        }
+
+        .role-gerant {
+            background: linear-gradient(135deg, #fd7e14, #e55a00);
+            color: white;
+        }
+
+        .role-user {
+            background: linear-gradient(135deg, #20c997, #17a2b8);
+            color: white;
+        }
+
+        .nav-tabs-custom {
+            border-bottom: 2px solid #e9ecef;
+        }
+
+            .nav-tabs-custom .nav-link {
+                border: none;
+                color: #6c757d;
+                font-weight: 600;
+                padding: 15px 25px;
+                margin-bottom: -2px;
+                border-radius: 0;
+                transition: var(--transition);
+            }
+
+                .nav-tabs-custom .nav-link.active {
+                    color: var(--primary-color);
+                    border-bottom: 3px solid var(--secondary-color);
+                    background: transparent;
+                }
+
+                .nav-tabs-custom .nav-link:hover {
+                    color: var(--primary-color);
+                    border-bottom: 3px solid var(--accent-color);
+                }
+
+        .password-toggle {
+            border-left: none;
+        }
+    </style>
+
     <script>
         $(document).ready(function () {
             console.log('Document ready - Début du chargement du profil');
@@ -239,74 +309,66 @@
                 }
             });
 
-            // Validation du formulaire de profil
-            $('#profileForm').validate({
-                rules: {
-                    Login: { required: true },
-                    Telephone: { required: true }
-                }
-            });
-
-            // Validation du formulaire de mot de passe
-            $('#passwordForm').validate({
-                rules: {
-                    OldPassword: { required: true },
-                    NewPassword: { required: true, minlength: 8 },
-                    ConfirmPassword: {
-                        required: true,
-                        equalTo: "#newPassword"
-                    }
-                },
-                messages: {
-                    ConfirmPassword: {
-                        equalTo: "Les mots de passe ne correspondent pas"
-                    }
-                }
-            });
-
             // Sauvegarde du profil
             $('#btnSaveProfile').click(function() {
-                if ($('#profileForm').valid()) {
-                    const formData = {
-                        Id: $('#userId').val(),
-                        Login: $('#login').val(),
-                        Email: $('#email').val(),
-                        Telephone: $('#telephone').val()
-                    };
+                const formData = {
+                    Id: $('#userId').val(),
+                    Login: $('#login').val(),
+                    Email: $('#email').val(),
+                    Telephone: $('#telephone').val()
+                };
 
-                    console.log('Envoi des données profil:', formData);
+                console.log('Envoi des données profil:', formData);
 
-                    ajaxManager('PUT', $(this).data('url'), formData,
-                        function(response) {
-                            console.log('Réponse sauvegarde profil:', response);
-                            if (response.success) {
-                                ToastR(response.message, "success", 15);
-                                // Mettre à jour le nom d'utilisateur affiché
-                                $('#profileUsername').text(formData.Login);
-                            } else {
-                                ToastR(response.message, "error", 15);
-                            }
-                        },
-                        function(error) {
-                            console.error('Erreur sauvegarde profil:', error);
-                            ToastR("Erreur lors de la modification du profil", "error", 15);
-                        }
-                    );
+                if (!formData.Login || !formData.Telephone) {
+                    ToastR("Veuillez remplir tous les champs obligatoires", "error", 15);
+                    return;
                 }
+
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function(response) {
+                        console.log('Réponse sauvegarde profil:', response);
+                        if (response.success) {
+                            ToastR(response.message, "success", 15);
+                            $('#profileUsername').text(formData.Login);
+                        } else {
+                            ToastR(response.message, "error", 15);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Erreur sauvegarde profil:', error);
+                        ToastR("Erreur lors de la modification du profil", "error", 15);
+                    }
+                });
             });
 
             // Changement de mot de passe
-                    $('#btnChangePassword').click(function() {
-            if ($('#passwordForm').valid()) {
+            $('#btnChangePassword').click(function() {
                 const formData = {
-                    Id: $('#pwdUserId').val(),
-                    Login: $('#pwdLogin').val(),
+                    Id: $('#userId').val(),
+                    Login: $('#login').val(),
                     OldPassword: $('#oldPassword').val(),
                     NewPassword: $('#newPassword').val(),
                     ConfirmPassword: $('#confirmPassword').val()
                 };
 
-                console.log('Envoi changement mot de passe:', formData);
+                // Validation côté client
+                if (!formData.OldPassword) {
+                    ToastR("Veuillez saisir votre ancien mot de passe", "error", 15);
+                    return;
+                }
+                if (!formData.NewPassword || formData.NewPassword.length < 8) {
+                    ToastR("Le nouveau mot de passe doit contenir au moins 8 caractères", "error", 15);
+                    return;
+                }
+                if (formData.NewPassword !== formData.ConfirmPassword) {
+                    ToastR("Les mots de passe ne correspondent pas", "error", 15);
+                    return;
+                }
 
                 $.ajax({
                     url: '/Home/ResetPassword',
@@ -314,44 +376,41 @@
                     contentType: 'application/json',
                     data: JSON.stringify(formData),
                     success: function(response) {
-                        console.log('Réponse changement mot de passe:', response);
+                        console.log('Réponse complète:', response);
+
                         if (response.success) {
-                            ToastR(response.message, "success", 15);
+                            ToastR("Mot de passe changé avec succès", "success", 15);
                             $('#passwordForm')[0].reset();
-                            setTimeout(() => { window.location.href = '/User/SignIn'; }, 2000);
                         } else {
-                            ToastR(response.message, "error", 15);
+                            if (response.errors) {
+                                let errorMessages = [];
+                                for (const field in response.errors) {
+                                    errorMessages.push(...response.errors[field]);
+                                }
+                                ToastR(errorMessages.join('. '), "error", 15);
+                            } else {
+                                ToastR(response.message || "Erreur inconnue", "error", 15);
+                            }
                         }
                     },
                     error: function(xhr, status, error) {
-                        console.error('Erreur changement mot de passe:', error);
-                        ToastR("Erreur lors du changement de mot de passe", "error", 15);
+                        console.error('Erreur technique:', error);
+                        ToastR("Erreur technique lors du changement de mot de passe", "error", 15);
                     }
                 });
-            }
-        });
-
+            });
 
             // Boutons d'annulation
             $('#btnCancelProfile').click(function() {
-                console.log('Annulation - Rechargement du profil');
                 loadUserProfile();
             });
 
             $('#btnCancelPassword').click(function() {
                 $('#passwordForm')[0].reset();
             });
-
-            // Support de la touche Entrée
-            $('#login').on('keypress', function(e) {
-                if (e.which === 13) {
-                    e.preventDefault();
-                    $('#btnSaveProfile').click();
-                }
-            });
         });
 
-               function loadUserProfile() {
+        function loadUserProfile() {
             console.log('loadUserProfile appelée');
 
             // Afficher un indicateur de chargement
@@ -360,16 +419,13 @@
             $('#telephone').val('Chargement...');
             $('#email').val('Chargement...');
 
-            // Utiliser $.ajax directement au lieu de ajaxManager
             $.ajax({
                 url: '/User/GetCurrentUser',
                 type: 'GET',
                 success: function(response) {
-                    console.log('Réponse API reçue via $.ajax:', response);
 
                     if (response && response.success && response.data) {
                         const user = response.data;
-                        console.log('Données utilisateur:', user);
 
                         // Remplir le formulaire de profil
                         $('#userId').val(user.id);
@@ -377,10 +433,6 @@
                         $('#telephone').val(user.telephone || '');
                         $('#email').val(user.email || '');
                         $('#entreprise').val(user.entreprise || 'Non spécifié');
-
-                        // Remplir le formulaire de mot de passe
-                        $('#pwdUserId').val(user.id);
-                        $('#pwdLogin').val(user.login || '');
 
                         // Mettre à jour l'affichage du profil
                         $('#profileUsername').text(user.login || 'Utilisateur');
@@ -397,42 +449,18 @@
                             roleBadge.addClass('role-user').text('UTILISATEUR');
                         }
 
-                        console.log('Profil chargé avec succès via $.ajax');
+                        console.log('Profil chargé avec succès');
                     } else {
                         console.error('Structure de réponse invalide:', response);
-                        ToastR("Erreur lors du chargement du profil: " + (response?.message || "Données non disponibles"), "error", 15);
+                        ToastR("Erreur lors du chargement du profil", "error", 15);
                         $('#profileRole').text('Erreur');
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('Erreur AJAX dans loadUserProfile:', error);
-                    console.error('Status:', status);
-                    console.error('XHR:', xhr);
                     ToastR("Erreur réseau lors du chargement du profil", "error", 15);
                     $('#profileRole').text('Erreur de chargement');
                 }
             });
         }
-
-        // Test direct pour debug
-        function testDirectAPI() {
-            console.log('Test direct de l API...');
-            $.ajax({
-                url: '/User/GetCurrentUser',
-                type: 'GET',
-                success: function(response) {
-                    console.log('Test direct - Réponse:', response);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Test direct - Erreur:', error);
-                }
-            });
-        }
-
-        // Lancer le test au chargement
-        $(window).on('load', function() {
-            console.log('Window loaded - test API');
-            testDirectAPI();
-        });
     </script>
 }
