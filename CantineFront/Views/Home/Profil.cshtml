@@ -11,6 +11,7 @@
 @section Styles {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/createCategorie.css" />
+    <link rel="stylesheet" href="~/css/profil.css" />
 }
 
 <section class="create-section">
@@ -107,18 +108,25 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="form-label" for="entreprise">
+                                                    @* <div class="form-group">
+                                                        <label class="form-label" for="entrepriseId">
                                                             <i class="fas fa-building"></i>Entreprise
                                                         </label>
                                                         <input type="text"
                                                                class="form-control"
-                                                               id="entreprise"
-                                                               name="Entreprise"
+                                                               id="entrepriseId"
+                                                               name="entrepriseId"
                                                                readonly
                                                                style="background-color: #f8f9fa;">
+                                                    </div> *@
+                                                    <div class="form-group">
+                                                        <label for="entrepriseDisplay">Entreprise</label>
+                                                        <input type="text" id="entrepriseDisplay" class="form-control" disabled>
+                                                        <input type="hidden" id="entrepriseId" name="EntrepriseId">
                                                     </div>
+
                                                 </div>
+
                                             </div>
 
                                             <div class="btn-group">
@@ -217,81 +225,10 @@
 </section>
 
 @section Scripts {
-    <style>
-        .profile-header {
-            padding: 20px 0;
-        }
-
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: var(--gradient-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-            color: white;
-            font-size: 2rem;
-        }
-
-        .profile-role {
-            display: inline-block;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            margin-top: 8px;
-        }
-
-        .role-admin {
-            background: linear-gradient(135deg, #dc3545, #c82333);
-            color: white;
-        }
-
-        .role-gerant {
-            background: linear-gradient(135deg, #fd7e14, #e55a00);
-            color: white;
-        }
-
-        .role-user {
-            background: linear-gradient(135deg, #20c997, #17a2b8);
-            color: white;
-        }
-
-        .nav-tabs-custom {
-            border-bottom: 2px solid #e9ecef;
-        }
-
-            .nav-tabs-custom .nav-link {
-                border: none;
-                color: #6c757d;
-                font-weight: 600;
-                padding: 15px 25px;
-                margin-bottom: -2px;
-                border-radius: 0;
-                transition: var(--transition);
-            }
-
-                .nav-tabs-custom .nav-link.active {
-                    color: var(--primary-color);
-                    border-bottom: 3px solid var(--secondary-color);
-                    background: transparent;
-                }
-
-                .nav-tabs-custom .nav-link:hover {
-                    color: var(--primary-color);
-                    border-bottom: 3px solid var(--accent-color);
-                }
-
-        .password-toggle {
-            border-left: none;
-        }
-    </style>
+    
 
     <script>
         $(document).ready(function () {
-            console.log('Document ready - Début du chargement du profil');
             loadUserProfile();
 
             // Gestionnaire de basculement de visibilité des mots de passe
@@ -315,7 +252,8 @@
                     Id: $('#userId').val(),
                     Login: $('#login').val(),
                     Email: $('#email').val(),
-                    Telephone: $('#telephone').val()
+                    Telephone: $('#telephone').val(),
+                    EntrepriseId:$('#entrepriseId').val()
                 };
 
                 console.log('Envoi des données profil:', formData);
@@ -327,7 +265,7 @@
 
                 $.ajax({
                     url: $(this).data('url'),
-                    type: 'PUT',
+                    type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(formData),
                     success: function(response) {
@@ -432,7 +370,11 @@
                         $('#login').val(user.login || '');
                         $('#telephone').val(user.telephone || '');
                         $('#email').val(user.email || '');
-                        $('#entreprise').val(user.entreprise || 'Non spécifié');
+                        // $('#entrepriseId').val(user.entreprise.nom || 'Non spécifié');
+                        if (user.entreprise) {
+                $('#entrepriseDisplay').val(user.entreprise.nom);
+                $('#entrepriseId').val(user.entreprise.id); // <--- l'ID est bien dans le hidden
+            }
 
                         // Mettre à jour l'affichage du profil
                         $('#profileUsername').text(user.login || 'Utilisateur');

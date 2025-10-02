@@ -306,7 +306,9 @@ namespace CantineBack.Controllers
             {
                 return NotFound();
             }
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.Include(u => u.Entreprise)
+                                            .Include(d => d.Department)
+                             .FirstOrDefaultAsync(u => u.Id == id);
 
             if (user == null)
             {
