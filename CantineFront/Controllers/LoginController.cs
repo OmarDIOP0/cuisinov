@@ -68,8 +68,6 @@ namespace CantineFront.Controllers
                     HttpContext.Session.SetObjectInSession("expire_at", expireAt);
                     HttpContext.Session.SetInt32("UserId", user.Id);
                     HttpContext.Session.SetString("Username", user.Login);
-                    HttpContext.Session.SetString("Matricule", user.Matricule ?? String.Empty);
-                    HttpContext.Session.SetString("UserQRCode", System.Web.HttpUtility.JavaScriptStringEncode(user.QrCode ?? String.Empty));
                     HttpContext.Session.SetInt32("Solde", user.Solde);
                     HttpContext.Session.SetString("IsAdmin", (user.Profile == "ADMIN").ToString());
                     HttpContext.Session.SetString("IsGerant", (user.Profile == "GERANT").ToString());
@@ -153,8 +151,6 @@ namespace CantineFront.Controllers
                         HttpContext.Session.SetInt32("UserId", user.Id);
                        
                         HttpContext.Session.SetString("Username", username);
-                        HttpContext.Session.SetString("Matricule", user.Matricule??String.Empty);
-                        HttpContext.Session.SetString("UserQRCode", System.Web.HttpUtility.JavaScriptStringEncode(user.QrCode ?? String.Empty) );
                         HttpContext.Session.SetInt32("Solde", user.Solde);
                         HttpContext.Session.SetString("IsAdmin", (user.Profile == "ADMIN").ToString());
                         HttpContext.Session.SetString("IsGerant", (user.Profile == "GERANT").ToString());
@@ -162,7 +158,7 @@ namespace CantineFront.Controllers
 
                         var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, user.Prenom+ " "+user.Nom),
+                        new Claim(ClaimTypes.Name, user.Login),
                         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                         new Claim(ClaimTypes.Role, "USER")
                     };

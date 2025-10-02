@@ -1,4 +1,5 @@
 ﻿using CantineBack.Models;
+using CantineBack.Models.Dtos;
 using CantineFront.Helpers;
 using CantineFront.Identity;
 using CantineFront.Models;
@@ -137,7 +138,38 @@ namespace CantineFront.Controllers
 
 
         }
-                [HttpDelete]
+        [HttpGet]
+        public async Task<JsonResult> GetCurrentUser()
+        {
+
+            var url = String.Format(ApiUrlGeneric.ReadOneURL<User>(), HttpContext.Session.GetInt32("UserId"));
+            var httpClient = _httpClientFactory.CreateClient("ClearanceApi");
+            HttpResponseMessage response = await httpClient.GetAsync(url);
+            var apiResponse = await ApiResultParser<User>.Parse(response);
+            return Json(apiResponse);
+        }
+        [HttpPost]
+        public async Task<JsonResult> ResetPassword(UserResetPwdRequest userResetPwdRequest)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(ModelErrorHandler<UserResetPwdRequest>.ModelStateError(ModelState));
+            }
+            var url = ApiUrlGeneric.ResetPasswordURL;
+
+            var apiResponse = await ApiService<UserResetPwdRequest>.CallApiPost(_httpClientFactory, url, userResetPwdRequest);
+
+            bool success = apiResponse.StatusCode == System.Net.HttpStatusCode.NoContent;
+            if (success)
+            {
+                await ApiService<String>.CallApiPost(_httpClientFactory, ApiUrlGeneric.RevokeTokenURL, null);
+            }
+            string msg = success ? "Mot de passe modifié avec succès!" : (apiResponse.Message ?? "Une erreur a été rencontrée.");
+
+            return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
+        }
+
+        [HttpDelete]
         public JsonResult DeleteArticleCart(int id)
         {
             try
