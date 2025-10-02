@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CantineFront")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b74536f31abb670bc59e6925d0960ff08518804c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1640386de01a9aad9693d0d0f2bfa6daefde008b")]
 [assembly: System.Reflection.AssemblyProductAttribute("CantineFront")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CantineFront")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
