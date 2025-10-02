@@ -1,6 +1,7 @@
 ﻿using CantineBack.Models;
 using CantineBack.Models.Dtos;
 using CantineFront.Helpers;
+using CantineFront.Models;
 using CantineFront.Models.Request;
 using CantineFront.ServiceFactory;
 using CantineFront.Services;
@@ -224,12 +225,14 @@ namespace CantineFront.Controllers
 
             var url = String.Format(ApiUrlGeneric.UpdateURL<User>(), userRequest.Id);
 
-            var apiResponse = await ApiService<String>.CallApiPut(_httpClientFactory, url, userRequest);
+            var apiResponse = await ApiService<ApiMessage>.CallApiPut(_httpClientFactory, url, userRequest);
 
-            bool success = apiResponse.StatusCode == System.Net.HttpStatusCode.NoContent;
-            string msg = success ? "User modifiée avec succès!" : (apiResponse.Message ?? "Une erreur a été rencontrée.");
+            bool success = apiResponse.StatusCode == System.Net.HttpStatusCode.OK;
+            string msg = success ? apiResponse.Data?.Message ?? "Utilisateur modifié avec succès"
+                                 : (apiResponse.Message ?? "Une erreur a été rencontrée.");
 
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
+
         }
 
 
