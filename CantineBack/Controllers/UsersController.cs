@@ -376,6 +376,41 @@ namespace CantineBack.Controllers
                 throw;
             }
         }
+        [HttpPut("profil/{id}")]
+        public async Task<IActionResult> PutProfilUser(int id, [FromBody] User user)
+        {
+            if (id != user.Id)
+                return BadRequest("L'identifiant de l'utilisateur ne correspond pas.");
+
+            // Vérifier si le login existe déjà pour un autre utilisateur
+            var userExist = await _context.Users
+                .FirstOrDefaultAsync(u => u.Login == user.Login && u.Id != id);
+
+            if (userExist != null)
+                return Problem("Ce nom d'utilisateur existe déjà.");
+
+            // Récupérer l'utilisateur depuis la base
+            var userBD = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (userBD == null)
+                return NotFound("Utilisateur introuvable.");
+
+            // Mise à jour des champs autorisés
+            userBD.Login = user.Login;
+            userBD.Telephone = user.Telephone;
+            userBD.Email = user.Email;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Profil mis à jour avec succès" });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(id))
+                    return NotFound("Utilisateur introuvable.");
+                throw;
+            }
+        }
 
         [Authorize]
         [HttpGet("GetSolde/{id}")]
