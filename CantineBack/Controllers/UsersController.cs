@@ -376,7 +376,7 @@ namespace CantineBack.Controllers
                 throw;
             }
         }
-        [HttpPut("profil/{id}")]
+        [HttpPut("Profil/{id}")]
         public async Task<IActionResult> PutProfilUser(int id, [FromBody] User user)
         {
             if (id != user.Id)

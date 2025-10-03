@@ -234,6 +234,25 @@ namespace CantineFront.Controllers
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
 
         }
+        public async Task<JsonResult> UpdateProfileUser(UserCURequest userRequest)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(ModelErrorHandler<User>.ModelStateError(ModelState));
+            }
+
+
+            vvar url = String.Format(ApiUrlGeneric.UpdateUserProfile, userRequest.Id);
+
+            var apiResponse = await ApiService<ApiMessage>.CallApiPut(_httpClientFactory, url, userRequest);
+
+            bool success = apiResponse.StatusCode == System.Net.HttpStatusCode.OK;
+            string msg = success ? apiResponse.Data?.Message ?? "Profile modifié avec succès"
+                                 : (apiResponse.Message ?? "Une erreur a été rencontrée.");
+
+            return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
+
+        }
 
 
         [Authorize(Policy = "AdminPolicy")]
