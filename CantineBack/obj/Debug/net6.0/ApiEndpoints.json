@@ -1470,6 +1470,22 @@
   },
   {
     "ContainingType": "CantineBack.Controllers.UsersController",
+    "Method": "UpdateProfileUser",
+    "RelativePath": "api/Users/UpdateProfileUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userRequest",
+        "Type": "CantineBack.Models.Dtos.UserProfilDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CantineBack.Controllers.UsersController",
     "Method": "GetUser",
     "RelativePath": "api/Users/UserByMatricule",
     "HttpMethod": "GET",

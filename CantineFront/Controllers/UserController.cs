@@ -234,15 +234,15 @@ namespace CantineFront.Controllers
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
 
         }
-        public async Task<JsonResult> UpdateProfileUser(UserCURequest userRequest)
+        public async Task<JsonResult> UpdateProfileUser(UserProfilDto userRequest)
         {
-            if (!ModelState.IsValid)
-            {
-                return Json(ModelErrorHandler<User>.ModelStateError(ModelState));
-            }
+                if (!ModelState.IsValid)
+                {
+                    return Json(ModelErrorHandler<User>.ModelStateError(ModelState));
+                }
 
 
-            vvar url = String.Format(ApiUrlGeneric.UpdateUserProfile, userRequest.Id);
+            var url = String.Format(ApiUrlGeneric.UpdateUserProfile, userRequest.Id);
 
             var apiResponse = await ApiService<ApiMessage>.CallApiPut(_httpClientFactory, url, userRequest);
 

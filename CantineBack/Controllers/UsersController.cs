@@ -341,6 +341,14 @@ namespace CantineBack.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, [FromBody] User user)
         {
+            if (user == null)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Les données sont nulles"
+                });
+            }
             if (id != user.Id)
                 return BadRequest("L'identifiant de l'utilisateur ne correspond pas.");
 
@@ -376,41 +384,42 @@ namespace CantineBack.Controllers
                 throw;
             }
         }
-        [HttpPut("Profil/{id}")]
-        public async Task<IActionResult> PutProfilUser(int id, [FromBody] User user)
+        [HttpPost("UpdateProfileUser")]
+        public async Task<IActionResult> UpdateProfileUser([FromBody] UserProfilDto userRequest)
         {
-            if (id != user.Id)
-                return BadRequest("L'identifiant de l'utilisateur ne correspond pas.");
-
-            // Vérifier si le login existe déjà pour un autre utilisateur
-            var userExist = await _context.Users
-                .FirstOrDefaultAsync(u => u.Login == user.Login && u.Id != id);
-
-            if (userExist != null)
-                return Problem("Ce nom d'utilisateur existe déjà.");
-
-            // Récupérer l'utilisateur depuis la base
-            var userBD = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if (userBD == null)
-                return NotFound("Utilisateur introuvable.");
-
-            // Mise à jour des champs autorisés
-            userBD.Login = user.Login;
-            userBD.Telephone = user.Telephone;
-            userBD.Email = user.Email;
-
-            try
+            if (!ModelState.IsValid)
             {
-                await _context.SaveChangesAsync();
-                return Ok(new { message = "Profil mis à jour avec succès" });
+                return BadRequest(new
+                {
+                    success = false,
+                    status = "error",
+                    errors = ModelState
+                        .Where(e => e.Value.Errors.Count > 0)
+                        .ToDictionary(
+                            kvp => kvp.Key,
+                            kvp => kvp.Value.Errors.Select(e => e.ErrorMessage)
+                        )
+                });
             }
-            catch (DbUpdateConcurrencyException)
+
+            var user = await _context.Users.FindAsync(userRequest.Id);
+            if (user == null)
+                return NotFound(new { success = false, message = "Utilisateur introuvable" });
+
+            user.Login = userRequest.Login;
+            user.Email = userRequest.Email;
+            user.Telephone = userRequest.Telephone;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
             {
-                if (!UserExists(id))
-                    return NotFound("Utilisateur introuvable.");
-                throw;
-            }
+                success = true,
+                message = "Profil mis à jour avec succès",
+                data = user
+            });
         }
+
 
         [Authorize]
         [HttpGet("GetSolde/{id}")]
