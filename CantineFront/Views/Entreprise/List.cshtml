@@ -1,162 +1,166 @@
-﻿<div class="container-fluid p-4">
+﻿@{
+    ViewData["Title"] = "Gestion des Entreprises";
+}
+
+<div class="container-fluid p-4">
+
+    <!-- Header -->
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body">
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <h2 class="h4 mb-0 text-primary">
-                        <i class="fas fa-building me-2"></i>Gestion des Emplacements
+                        <i class="fas fa-building me-2"></i>Gestion des Entreprises
                     </h2>
-                    <p class="text-muted mb-0">Gérez les emplacements de votre entreprise</p>
+                    <p class="text-muted mb-0">Gérez les informations de vos entreprises</p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <a class="btn btn-primary btn-lg px-4" href="/Emplacement/Create">
-                        <i class="fas fa-plus-circle me-2"></i>Nouveau Emplacement
+                    <a class="btn btn-primary btn-lg px-4" href="/Entreprise/Create">
+                        <i class="fas fa-plus-circle me-2"></i>Nouvelle Entreprise
                     </a>
                 </div>
             </div>
         </div>
     </div>
 
-<!-- DataTable Card -->
-<div class="card shadow-sm border-0">
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover mb-0" id="tbEmplacements">
-                <thead> 
-                    <tr>
-                        <th scope="col" width="5%">#</th>
-                        <th scope="col" width="30%">Nom</th>
-                        <th scope="col" width="15%" class="text-center">Statut</th>
-                        <th scope="col" width="25%" class="text-center">Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <!-- Data will be populated by DataTable -->
-                </tbody>
-            </table>
+    <!-- Tableau des entreprises -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="tbEntreprises">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" width="5%">#</th>
+                            <th scope="col" width="20%">Nom</th>
+                            <th scope="col" width="20%">Adresse</th>
+                            <th scope="col" width="10%">Téléphone</th>
+                            <th scope="col" width="15%">Email</th>
+                            <th scope="col" width="10%" class="text-center">Code</th>
+                            <th scope="col" width="10%" class="text-center">Statut</th>
+                            <th scope="col" width="20%" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data remplie par DataTable -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
-</div>
 
-<!-- Loading Spinner -->
-<div id="loadingSpinner" class="text-center py-5">
-    <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Chargement...</span>
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="text-center py-5 d-none">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Chargement...</span>
+        </div>
+        <p class="text-muted mt-2">Chargement des entreprises...</p>
     </div>
-    <p class="text-muted mt-2">Chargement des emplacements...</p>
 </div>
 
 @section Styles {
     <link rel="stylesheet" href="~/css/categorie.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 }
 
-
-@section Scripts{
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+@section Scripts {
     <script type="text/javascript">
-
-
         $(function () {
-         //   $("#tbEmplacements").DataTable();
-            var successHandler = function (res) {
-                console.log(JSON.stringify(res))
-                if (res) {
 
-                    if (res.success) {
-                        ToastR(res.message, res.status, 15);
-                       
-                     $('#tbEmplacements').DataTable({
-                            data: res.data,
-                            responsive: true,
-                            destroy: true,
-                            language: {
-                                "zeroRecords": "<div class='dataTables_empty'><i class='fas fa-inbox'></i><br>Aucun emplacement trouvé</div>",
-                                "emptyTable": "<div class='dataTables_empty'><i class='fas fa-inbox'></i><br>Aucune donnée disponible</div>",
-                                "info": "Affichage de _START_ à _END_ sur _TOTAL_ emplacements",
-                                "infoEmpty": "Affichage de 0 à 0 sur 0 emplacements",
-                                "infoFiltered": "(filtrées depuis _MAX_ emplacements au total)",
-                                "lengthMenu": "Afficher _MENU_ emplacements",
-                                "search": "<i class='fas fa-search'></i>",
-                                "paginate": {
-                                    "first": "<i class='fas fa-angle-double-left'></i>",
-                                    "last": "<i class='fas fa-angle-double-right'></i>",
-                                    "next": "<i class='fas fa-angle-right'></i>",
-                                    "previous": "<i class='fas fa-angle-left'></i>"
-                                }
-                            },
+            // Chargement des entreprises
+            ajaxManager('GET', '/Entreprise/GetEntreprises', successHandler, errorHandler);
 
-                            columns: [
-                                {
-                                    width: '5%',
-                                    data: null,
-                                    render: function (data, type, row, meta) {
-                                        return '<span class="text-muted">' + (meta.row + 1) + '</span>';
-                                    }
-                                },
-                                {
-                                    width: '60%',
-                                    data: 'name',
-                                    defaultContent: '',
-                                },
-                                
-                                {
+            // Gestion du succès
+            function successHandler(res) {
+                console.log("Résultat API:", res);
 
-                                    data: "actif",
-                                    width: '7%',
-                                    defaultContent: "",
-                                    render: function (data, type, row) {
-
-                                        var className = (data == true ? "badge-success" : "badge-danger");
-                                        var status = (data == true ? "actif" : "inactif");
-
-                                        return `<span class="badge badge-pill ${className}">${status}</span>`;
-                                    }
-                                },
-                                 {
-                                    data: null,
-                                    width: '25%',
-                                    className: 'text-center',
-                                    render: function (data, type, row) {
-                                        var btnEdit = '<a class="btn btn-action btn-edit me-2" href="/Emplacement/Update/' + row.id + '" title="Modifier">' +
-                                                     '<i class="fas fa-edit me-1"></i>Modifier</a>';
-
-                                        var btnDelete = '<button type="button" class="btn btn-action btn-delete" ' +
-                                                       'data-method="DELETE" ' +
-                                                       'data-message="Voulez-vous vraiment supprimer cet emplacement <b>' + row.name + '</b> ?" ' +
-                                                       'data-url="/Emplacement/DeleteEmplacement/' + row.id + '" ' +
-                                                       'data-toggle="modal" data-target="#confirmModal" ' +
-                                                       'title="Supprimer">' +
-                                                       '<i class="fas fa-trash me-1"></i>Supprimer</button>';
-
-                                        return '<div class="d-flex justify-content-center">' + btnEdit + btnDelete + '</div>';
-                                    }
-                                },
-                            ]
-                            
-                        });
-
-
-                    } else {
-                      
-                        ToastR(res.message, res.status, 15);
-                    }
+                if (!res) {
+                    ToastR("Aucune donnée reçue du serveur", "error", 15);
+                    return;
                 }
+
+                if (!res.success) {
+                    ToastR(res.message || "Erreur serveur", "error", 15);
+                    return;
+                }
+
+                // Cache le spinner
+                $("#loadingSpinner").addClass("d-none");
+
+                // Création du tableau dynamique
+                $('#tbEntreprises').DataTable({
+                    data: res.data,
+                    responsive: true,
+                    destroy: true,
+                    language: {
+                        "zeroRecords": "<div class='dataTables_empty'><i class='fas fa-inbox'></i><br>Aucune entreprise trouvée</div>",
+                        "emptyTable": "<div class='dataTables_empty'><i class='fas fa-inbox'></i><br>Aucune donnée disponible</div>",
+                        "info": "Affichage de _START_ à _END_ sur _TOTAL_ entreprises",
+                        "infoEmpty": "Affichage de 0 à 0 sur 0 entreprise",
+                        "infoFiltered": "(filtré depuis _MAX_ entreprises au total)",
+                        "lengthMenu": "Afficher _MENU_ entreprises",
+                        "search": "<i class='fas fa-search'></i>",
+                        "paginate": {
+                            "first": "<i class='fas fa-angle-double-left'></i>",
+                            "last": "<i class='fas fa-angle-double-right'></i>",
+                            "next": "<i class='fas fa-angle-right'></i>",
+                            "previous": "<i class='fas fa-angle-left'></i>"
+                        }
+                    },
+                    columns: [
+                        {
+                            width: '5%',
+                            data: null,
+                            render: (data, type, row, meta) => `<span class="text-muted">${meta.row + 1}</span>`
+                        },
+                        { data: 'nom', defaultContent: '' },
+                        { data: 'addresse', defaultContent: '' },
+                        { data: 'phone', defaultContent: '' },
+                        { data: 'email', defaultContent: '' },
+                        { data: 'code', className: "text-center", defaultContent: '-' },
+                        {
+                            data: 'actif',
+                            className: 'text-center',
+                            render: (data) => {
+                                const badgeClass = data ? "badge-success" : "badge-danger";
+                                const label = data ? "Actif" : "Inactif";
+                                return `<span class="badge ${badgeClass} px-3 py-1">${label}</span>`;
+                            }
+                        },
+                        {
+                            data: null,
+                            className: 'text-center',
+                            render: (data, type, row) => {
+                                const editUrl = `/Entreprise/Update/${row.id}`;
+                                const deleteUrl = `/Entreprise/DeleteEntreprise/${row.id}`;
+                                return `
+                                    <div class="d-flex justify-content-center">
+                                        <a class="btn btn-action btn-edit me-2" href="${editUrl}" title="Modifier">
+                                            <i class="fas fa-edit me-1"></i>Modifier
+                                        </a>
+                                        <button type="button" class="btn btn-action btn-delete"
+                                                data-method="DELETE"
+                                                data-message="Voulez-vous vraiment supprimer <b>${row.nom}</b> ?"
+                                                data-url="${deleteUrl}"
+                                                data-toggle="modal"
+                                                data-target="#confirmModal"
+                                                title="Supprimer">
+                                            <i class="fas fa-trash me-1"></i>Supprimer
+                                        </button>
+                                    </div>`;
+                            }
+                        }
+                    ]
+                });
+
+                ToastR(res.message || "Entreprises chargées avec succès", "success", 8);
             }
 
-            var errorHandler = (err) => {
-              
-                ToastR("Une erreur a été rencontré", "error", 15);
+            // Gestion des erreurs
+            function errorHandler(err) {
+                $("#loadingSpinner").removeClass("d-none");
+                console.error("Erreur API:", err);
+                ToastR("Une erreur est survenue lors du chargement des entreprises", "error", 15);
             }
-
-
-            ajaxManager('GET', '/Emplacement/GetEmplacements', successHandler, errorHandler);
-
-
-
-
         });
-
     </script>
-            }
+}
