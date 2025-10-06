@@ -1,10 +1,9 @@
-﻿@section Styles{
+﻿@section Styles {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
     <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="~/css/createCategorie.css"/>
+    <link rel="stylesheet" href="~/css/createCategorie.css" />
 }
 
-<!-- book section -->
 <section class="create-section">
     <div class="container-fluid">
         <div class="row justify-content-center">
@@ -12,8 +11,8 @@
                 <div class="create-card">
                     <!-- Header -->
                     <div class="card-header">
-                        <h2><i class="fas fa-plus-circle me-2"></i>Créer un Emplacement</h2>
-                        <div class="subtitle">Ajoutez un nouveau emplacement</div>
+                        <h2><i class="fas fa-building me-2"></i>Créer une Entreprise</h2>
+                        <div class="subtitle">Ajoutez une nouvelle entreprise au système</div>
                     </div>
 
                     <div class="row g-0">
@@ -22,33 +21,80 @@
                             <div class="form-container">
                                 <form id="form">
                                     <div class="row g-3">
-                                        <!-- Nom du Emplacement -->
+                                        <!-- Nom -->
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label class="form-label" for="Name">
-                                                    <i class="fas fa-tag"></i> Nom de l'Emplacement
+                                                <label class="form-label" for="Nom">
+                                                    <i class="fas fa-tag"></i> Nom de l'entreprise
                                                 </label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       id="Name"
-                                                       name="Name"
-                                                       placeholder="Ex: Departement IT Bureau 5..."
-                                                       required>
-                                                <small class="form-text text-muted mt-2">
-                                                    <i class="fas fa-info-circle me-1"></i>
-                                                    Choisissez un nom clair et descriptif pour votre emplacement
-                                                </small>
+                                                <input type="text" class="form-control" id="Nom" name="Nom"
+                                                       placeholder="Ex: DP World Dakar" required />
+                                            </div>
+                                        </div>
+
+                                        <!-- Adresse -->
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="Addresse">
+                                                    <i class="fas fa-map-marker-alt"></i> Adresse
+                                                </label>
+                                                <input type="text" class="form-control" id="Addresse" name="Addresse"
+                                                       placeholder="Ex: Zone Portuaire Dakar" required />
+                                            </div>
+                                        </div>
+
+                                        <!-- Téléphone -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="Phone">
+                                                    <i class="fas fa-phone-alt"></i> Téléphone
+                                                </label>
+                                                <input type="tel" class="form-control" id="Phone" name="Phone"
+                                                       placeholder="Ex: 781234567" required />
+                                            </div>
+                                        </div>
+
+                                        <!-- Email -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="Email">
+                                                    <i class="fas fa-envelope"></i> Email
+                                                </label>
+                                                <input type="email" class="form-control" id="Email" name="Email"
+                                                       placeholder="Ex: contact@entreprise.sn" required />
+                                            </div>
+                                        </div>
+
+                                        <!-- Code entreprise -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="Code">
+                                                    <i class="fas fa-barcode"></i> Code
+                                                </label>
+                                                <input type="text" class="form-control" id="Code" name="Code"
+                                                       placeholder="Ex: ENT-2025" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Actif -->
+                                        <div class="col-md-6 d-flex align-items-center">
+                                            <div class="form-check mt-4">
+                                                <input class="form-check-input" type="checkbox" id="Actif" name="Actif" checked>
+                                                <label class="form-check-label" for="Actif">
+                                                    <i class="fas fa-toggle-on"></i> Actif
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="btn-group">
+                                    <!-- Buttons -->
+                                    <div class="btn-group mt-4">
                                         <button class="btn-custom"
                                                 id="btnCreate"
                                                 type="button"
-                                                data-redirectroute="/Emplacement/List"
-                                                data-url="/Emplacement/CreateEmplacement">
-                                            <i class="fas fa-save me-2"></i>Créer un Emplacement
+                                                data-redirectroute="/Entreprise/List"
+                                                data-url="/Entreprise/CreateEntreprise">
+                                            <i class="fas fa-save me-2"></i>Créer l'entreprise
                                         </button>
 
                                         <button class="btn-back" type="button" onclick="history.back()">
