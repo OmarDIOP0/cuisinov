@@ -112,5 +112,15 @@ namespace CantineFront.Controllers
 
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
         }
+        [HttpDelete]
+        [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
+        public async Task<JsonResult> DeleteEntreprise(int id)
+        {
+            var url = String.Format(ApiUrlGeneric.DeleteURL<Entreprise>(), id);
+
+            var apiResponse = await ApiService<String>.CallApiDelete(_httpClientFactory, url);
+            apiResponse.Success = apiResponse.StatusCode == System.Net.HttpStatusCode.NoContent;
+            return Json(apiResponse);
+        }
     }
 }
