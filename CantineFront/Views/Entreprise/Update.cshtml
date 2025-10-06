@@ -1,76 +1,114 @@
-﻿@model  CantineFront.ViewModels.EmplacementViewModel
-@section Styles{
+﻿@model CantineFront.ViewModels.EntrepriseViewModel
+
+@section Styles {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
     <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="~/css/createCategorie.css" />
 }
+
 @{
-    string actif = (Model.Emplacement?.Actif ?? false) ? "checked" : "";
+    string actif = (Model.Entreprise?.Actif ?? false) ? "checked" : "";
 }
-<!-- book section -->
+
 <section class="create-section">
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-lg-6">
                 <div class="create-card">
+
                     <!-- Header -->
                     <div class="card-header">
-                        <h2><i class="fas fa-edit me-2"></i>Modifier l'Emplacement</h2>
-                        <div class="subtitle">Modifiez les informations de l'emplacement</div>
+                        <h2><i class="fas fa-edit me-2"></i>Modifier une Entreprise</h2>
+                        <div class="subtitle">Mettez à jour les informations de votre entreprise</div>
                     </div>
 
                     <div class="row g-0">
-                        <!-- Form Section -->
                         <div class="col-lg-12">
                             <div class="form-container">
                                 <form id="form">
-                                    <input type="hidden" name="Id" value="@Model.Emplacement.Id" />
+                                    <input type="hidden" name="Id" value="@Model.Entreprise.Id" />
 
                                     <div class="row g-3">
 
-                                        <!-- Nom du Emplacement -->
+                                        <!-- Nom -->
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label class="form-label" for="Name">
-                                                    <i class="fas fa-tag"></i> Nom du Département
+                                                <label class="form-label">
+                                                    <i class="fas fa-building me-2"></i>Nom de l'entreprise
                                                 </label>
-                                                <input type="text"
-                                                       class="form-control"
-                                                       id="Name"
-                                                       name="Name"
-                                                       @* placeholder="Ex: BUreau, Ressources Humaines..." *@
-                                                       value="@Model.Emplacement.Name"
-                                                       required>
-                                                <small class="form-text text-muted mt-2">
-                                                    <i class="fas fa-info-circle me-1"></i>
-                                                    Modifiez le nom du département selon vos besoins
-                                                </small>
+                                                <input type="text" class="form-control" id="Nom" name="Nom"
+                                                       value="@Model.Entreprise.Nom" placeholder="Ex : Entreprise IT Services" required>
                                             </div>
                                         </div>
 
-                                        <!-- Statut Actif -->
+                                        <!-- Adresse -->
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="actif" name="Actif" @actif>
-                                                    <label class="form-check-label" for="actif">
+                                                <label class="form-label">
+                                                    <i class="fas fa-map-marker-alt me-2"></i>Adresse
+                                                </label>
+                                                <input type="text" class="form-control" id="Addresse" name="Addresse"
+                                                       value="@Model.Entreprise.Addresse" placeholder="Ex : Dakar, Plateau">
+                                            </div>
+                                        </div>
+
+                                        <!-- Téléphone -->
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-phone me-2"></i>Téléphone
+                                                </label>
+                                                <input type="tel" class="form-control" id="Phone" name="Phone"
+                                                       value="@Model.Entreprise.Phone" placeholder="Ex : 78 123 45 67">
+                                            </div>
+                                        </div>
+
+                                        <!-- Email -->
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-envelope me-2"></i>Email
+                                                </label>
+                                                <input type="email" class="form-control" id="Email" name="Email"
+                                                       value="@Model.Entreprise.Email" placeholder="Ex : contact@entreprise.sn">
+                                            </div>
+                                        </div>
+
+                                        <!-- Code -->
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-barcode me-2"></i>Code (facultatif)
+                                                </label>
+                                                <input type="text" class="form-control" id="Code" name="Code"
+                                                       value="@Model.Entreprise.Code" placeholder="Ex : ENT-2025">
+                                            </div>
+                                        </div>
+
+                                        <!-- Statut -->
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <div class="form-check mt-2">
+                                                    <input type="checkbox" class="form-check-input" id="Actif" name="Actif" @actif>
+                                                    <label class="form-check-label" for="Actif">
                                                         <i class="fas fa-check-circle me-1"></i>Actif
                                                     </label>
                                                 </div>
                                                 <small class="form-text text-muted">
                                                     <i class="fas fa-info-circle me-1"></i>
-                                                    Un emplacement inactif ne sera pas disponible dans les sélections
+                                                    Si désactivé, l’entreprise ne sera plus visible dans les sélections.
                                                 </small>
                                             </div>
                                         </div>
+
                                     </div>
 
                                     <div class="btn-group">
                                         <button class="btn-custom"
                                                 id="btnUpdate"
                                                 type="button"
-                                                data-redirectroute="/Emplacement/List"
-                                                data-url="/Emplacement/UpdateEmplacement">
+                                                data-redirectroute="/Entreprise/List"
+                                                data-url="/Entreprise/UpdateEntreprise">
                                             <i class="fas fa-save me-2"></i>Enregistrer les modifications
                                         </button>
 
