@@ -36,10 +36,31 @@ namespace CantineFront.Controllers
         {
             return View();
         }
-
-        public ActionResult Update(int id)
+        [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
+        public async Task<IActionResult> Update(int? id)
         {
-            return View();
+
+            if (id.HasValue)
+            {
+                if (EntrepriseVM == null) EntrepriseVM = new EntrepriseViewModel();
+                var url = String.Format(ApiUrlGeneric.ReadOneURL<Entreprise>(), id);
+                var httpClient = _httpClientFactory.CreateClient("ClearanceApi");
+                HttpResponseMessage response = await httpClient.GetAsync(url);
+                var apiResponse = await ApiResultParser<Entreprise>.Parse(response);
+
+                var categorie = apiResponse.Data;
+                if (categorie != null)
+                {
+                    EntrepriseVM.Entreprise = categorie;
+                    return View(EntrepriseVM);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+
+            return NotFound();
         }
         [HttpGet]
         public async Task<JsonResult> GetEntreprises()
@@ -67,32 +88,6 @@ namespace CantineFront.Controllers
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
         }
 
-        [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
-        public async Task<IActionResult> Update(int? id)
-        {
-
-            if (id.HasValue)
-            {
-                if (EntrepriseVM == null) EntrepriseVM = new EntrepriseViewModel();
-                var url = String.Format(ApiUrlGeneric.ReadOneURL<Entreprise>(), id);
-                var httpClient = _httpClientFactory.CreateClient("ClearanceApi");
-                HttpResponseMessage response = await httpClient.GetAsync(url);
-                var apiResponse = await ApiResultParser<Entreprise>.Parse(response);
-
-                var categorie = apiResponse.Data;
-                if (categorie != null)
-                {
-                    EntrepriseVM.Entreprise = categorie;
-                    return View(EntrepriseVM);
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-
-            return NotFound();
-        }
         [HttpPost]
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
         public async Task<JsonResult> UpdateEntreprise(Entreprise request)
