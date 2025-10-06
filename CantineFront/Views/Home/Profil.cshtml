@@ -244,13 +244,12 @@
 
             // Sauvegarde du profil
             $('#btnSaveProfile').click(function() {
-
+                console.log("user id" + $('#userId').val());
                 const formData = {
-                    Id:parseInt($('#userId').val()),
-                    Login: $('#login').val(),
-                    Email: $('#email').val(),
-                    Telephone: $('#telephone').val()?.trim(),
-                    EntrepriseId:$('#entrepriseId').val()
+                    id:parseInt($('#userId').val()),
+                    login: $('#login').val(),
+                    email: $('#email').val(),
+                    telephone: $('#telephone').val()?.trim()
                 };
 
                 console.log('Envoi des données profil:', formData);
@@ -309,6 +308,7 @@
                     url: '/Home/ResetPassword',
                     type: 'POST',
                     contentType: 'application/json',
+                    dataType: 'json',
                     data: JSON.stringify(formData),
                     success: function(response) {
                         console.log('Réponse complète:', response);
