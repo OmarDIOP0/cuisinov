@@ -54,8 +54,6 @@ namespace CantineFront.Controllers
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
         public IActionResult List()
         {
-
-
             return View();
         }
         [HttpPost]
@@ -66,20 +64,11 @@ namespace CantineFront.Controllers
             {
                 return Json(ModelErrorHandler<Department>.ModelStateError(ModelState));
             }
-
-
-
             var url = ApiUrlGeneric.CreateURL<Department>();
-
             var apiResponse = await ApiService<Department>.CallApiPost(_httpClientFactory, url, catRequest);
-
             bool success = apiResponse.Data != null;
             string msg = success ? "Department crée avec succès!" : "Une erreur a été rencontrée!";
-
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
-
-
-
         }
 
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
@@ -129,9 +118,6 @@ namespace CantineFront.Controllers
             string msg = success ? "Department modifiée avec succès!" : "Une erreur a été rencontrée!";
 
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
-
-
-
 
         }
 
