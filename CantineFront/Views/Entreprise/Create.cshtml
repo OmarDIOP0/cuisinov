@@ -1,0 +1,66 @@
+﻿@section Styles{
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
+    <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="~/css/createCategorie.css"/>
+}
+
+<!-- book section -->
+<section class="create-section">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="create-card">
+                    <!-- Header -->
+                    <div class="card-header">
+                        <h2><i class="fas fa-plus-circle me-2"></i>Créer un Emplacement</h2>
+                        <div class="subtitle">Ajoutez un nouveau emplacement</div>
+                    </div>
+
+                    <div class="row g-0">
+                        <!-- Form Section -->
+                        <div class="col-lg-12">
+                            <div class="form-container">
+                                <form id="form">
+                                    <div class="row g-3">
+                                        <!-- Nom du Emplacement -->
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="Name">
+                                                    <i class="fas fa-tag"></i> Nom de l'Emplacement
+                                                </label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="Name"
+                                                       name="Name"
+                                                       placeholder="Ex: Departement IT Bureau 5..."
+                                                       required>
+                                                <small class="form-text text-muted mt-2">
+                                                    <i class="fas fa-info-circle me-1"></i>
+                                                    Choisissez un nom clair et descriptif pour votre emplacement
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="btn-group">
+                                        <button class="btn-custom"
+                                                id="btnCreate"
+                                                type="button"
+                                                data-redirectroute="/Emplacement/List"
+                                                data-url="/Emplacement/CreateEmplacement">
+                                            <i class="fas fa-save me-2"></i>Créer un Emplacement
+                                        </button>
+
+                                        <button class="btn-back" type="button" onclick="history.back()">
+                                            <i class="fas fa-arrow-left me-2"></i>Retour
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
