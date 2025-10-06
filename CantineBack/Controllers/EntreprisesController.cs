@@ -79,7 +79,7 @@ namespace CantineBack.Controllers
             {
                 Entreprise entreprise = new Entreprise()
                 {
-                    Actif = true,
+                    Actif = request.Actif,
                     Addresse = request.Addresse,
                     Email = request.Email,
                     Nom = request.Nom,
@@ -88,7 +88,7 @@ namespace CantineBack.Controllers
                 };
                 _context.Entreprises.Add(entreprise);
                 await _context.SaveChangesAsync();
-                return Ok("Entreprise " + request.Nom.ToUpper() + " créee avec success");
+                return Ok(entreprise);
             }
             catch (Exception ex)
             {

@@ -65,24 +65,20 @@
                                             </div>
                                         </div>
 
-                                        <!-- Code entreprise -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="Code">
-                                                    <i class="fas fa-barcode"></i> Code
-                                                </label>
-                                                <input type="text" class="form-control" id="Code" name="Code"
-                                                       placeholder="Ex: ENT-2025" />
-                                            </div>
-                                        </div>
-
                                         <!-- Actif -->
                                         <div class="col-md-6 d-flex align-items-center">
-                                            <div class="form-check mt-4">
-                                                <input class="form-check-input" type="checkbox" id="Actif" name="Actif" checked>
-                                                <label class="form-check-label" for="Actif">
-                                                    <i class="fas fa-toggle-on"></i> Actif
+                                            <!-- Remplacer votre champ Actif par : -->
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input"
+                                                       type="checkbox"
+                                                       id="actif"
+                                                       name="Actif"
+                                                       value="true"
+                                                       checked>
+                                                <label class="form-check-label" for="actif">
+                                                    Actif
                                                 </label>
+                                                <input type="hidden" name="Actif" value="false">
                                             </div>
                                         </div>
                                     </div>
