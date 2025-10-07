@@ -1,0 +1,162 @@
+﻿<div class="container-fluid p-4">
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h2 class="h4 mb-0 text-primary">
+                        <i class="fas fa-building me-2"></i>Gestion des Emplacements
+                    </h2>
+                    <p class="text-muted mb-0">Gérez les emplacements de votre entreprise</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <a class="btn btn-primary btn-lg px-4" href="/Emplacement/Create">
+                        <i class="fas fa-plus-circle me-2"></i>Nouveau Emplacement
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- DataTable Card -->
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0" id="tbEmplacements">
+                <thead> 
+                    <tr>
+                        <th scope="col" width="5%">#</th>
+                        <th scope="col" width="30%">Nom</th>
+                        <th scope="col" width="15%" class="text-center">Statut</th>
+                        <th scope="col" width="25%" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <!-- Data will be populated by DataTable -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Loading Spinner -->
+<div id="loadingSpinner" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
+    </div>
+    <p class="text-muted mt-2">Chargement des emplacements...</p>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/categorie.css" />
+}
+
+
+@section Scripts{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="text/javascript">
+
+
+        $(function () {
+         //   $("#tbEmplacements").DataTable();
+            var successHandler = function (res) {
+                console.log(JSON.stringify(res))
+                if (res) {
+
+                    if (res.success) {
+                        ToastR(res.message, res.status, 15);
+                       
+                     $('#tbEmplacements').DataTable({
+                            data: res.data,
+                            responsive: true,
+                            destroy: true,
+                            language: {
+                                "zeroRecords": "<div class='dataTables_empty'><i class='fas fa-inbox'></i><br>Aucun emplacement trouvé</div>",
+                                "emptyTable": "<div class='dataTables_empty'><i class='fas fa-inbox'></i><br>Aucune donnée disponible</div>",
+                                "info": "Affichage de _START_ à _END_ sur _TOTAL_ emplacements",
+                                "infoEmpty": "Affichage de 0 à 0 sur 0 emplacements",
+                                "infoFiltered": "(filtrées depuis _MAX_ emplacements au total)",
+                                "lengthMenu": "Afficher _MENU_ emplacements",
+                                "search": "<i class='fas fa-search'></i>",
+                                "paginate": {
+                                    "first": "<i class='fas fa-angle-double-left'></i>",
+                                    "last": "<i class='fas fa-angle-double-right'></i>",
+                                    "next": "<i class='fas fa-angle-right'></i>",
+                                    "previous": "<i class='fas fa-angle-left'></i>"
+                                }
+                            },
+
+                            columns: [
+                                {
+                                    width: '5%',
+                                    data: null,
+                                    render: function (data, type, row, meta) {
+                                        return '<span class="text-muted">' + (meta.row + 1) + '</span>';
+                                    }
+                                },
+                                {
+                                    width: '60%',
+                                    data: 'name',
+                                    defaultContent: '',
+                                },
+                                
+                                {
+
+                                    data: "actif",
+                                    width: '7%',
+                                    defaultContent: "",
+                                    render: function (data, type, row) {
+
+                                        var className = (data == true ? "badge-success" : "badge-danger");
+                                        var status = (data == true ? "actif" : "inactif");
+
+                                        return `<span class="badge badge-pill ${className}">${status}</span>`;
+                                    }
+                                },
+                                 {
+                                    data: null,
+                                    width: '25%',
+                                    className: 'text-center',
+                                    render: function (data, type, row) {
+                                        var btnEdit = '<a class="btn btn-action btn-edit me-2" href="/Emplacement/Update/' + row.id + '" title="Modifier">' +
+                                                     '<i class="fas fa-edit me-1"></i>Modifier</a>';
+
+                                        var btnDelete = '<button type="button" class="btn btn-action btn-delete" ' +
+                                                       'data-method="DELETE" ' +
+                                                       'data-message="Voulez-vous vraiment supprimer cet emplacement <b>' + row.name + '</b> ?" ' +
+                                                       'data-url="/Emplacement/DeleteEmplacement/' + row.id + '" ' +
+                                                       'data-toggle="modal" data-target="#confirmModal" ' +
+                                                       'title="Supprimer">' +
+                                                       '<i class="fas fa-trash me-1"></i>Supprimer</button>';
+
+                                        return '<div class="d-flex justify-content-center">' + btnEdit + btnDelete + '</div>';
+                                    }
+                                },
+                            ]
+                            
+                        });
+
+
+                    } else {
+                      
+                        ToastR(res.message, res.status, 15);
+                    }
+                }
+            }
+
+            var errorHandler = (err) => {
+              
+                ToastR("Une erreur a été rencontré", "error", 15);
+            }
+
+
+            ajaxManager('GET', '/Emplacement/GetEmplacements', successHandler, errorHandler);
+
+
+
+
+        });
+
+    </script>
+            }
