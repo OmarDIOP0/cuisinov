@@ -4,13 +4,13 @@
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <h2 class="h4 mb-0 text-primary">
-                        <i class="fas fa-building me-2"></i>Gestion des Emplacements
+                        <i class="fas fa-building me-2"></i>Gestion des PaymentMethods
                     </h2>
-                    <p class="text-muted mb-0">Gérez les emplacements de votre entreprise</p>
+                    <p class="text-muted mb-0">Gérez les PaymentMethods de votre entreprise</p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <a class="btn btn-primary btn-lg px-4" href="/Emplacement/Create">
-                        <i class="fas fa-plus-circle me-2"></i>Nouveau Emplacement
+                    <a class="btn btn-primary btn-lg px-4" href="/PaymentMethod/Create">
+                        <i class="fas fa-plus-circle me-2"></i>Nouveau PaymentMethod
                     </a>
                 </div>
             </div>
@@ -21,7 +21,7 @@
 <div class="card shadow-sm border-0">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover mb-0" id="tbEmplacements">
+            <table class="table table-hover mb-0" id="tbPaymentMethods">
                 <thead> 
                     <tr>
                         <th scope="col" width="5%">#</th>
@@ -45,7 +45,7 @@
     <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Chargement...</span>
     </div>
-    <p class="text-muted mt-2">Chargement des emplacements...</p>
+    <p class="text-muted mt-2">Chargement des PaymentMethods...</p>
 </div>
 
 @section Styles {
@@ -59,7 +59,7 @@
 
 
         $(function () {
-         //   $("#tbEmplacements").DataTable();
+         //   $("#tbPaymentMethods").DataTable();
             var successHandler = function (res) {
                 console.log(JSON.stringify(res))
                 if (res) {
@@ -67,17 +67,17 @@
                     if (res.success) {
                         ToastR(res.message, res.status, 15);
                        
-                     $('#tbEmplacements').DataTable({
+                     $('#tbPaymentMethods').DataTable({
                             data: res.data,
                             responsive: true,
                             destroy: true,
                             language: {
-                                "zeroRecords": "<div class='dataTables_empty'><i class='fas fa-inbox'></i><br>Aucun emplacement trouvé</div>",
+                                "zeroRecords": "<div class='dataTables_empty'><i class='fas fa-inbox'></i><br>Aucun PaymentMethod trouvé</div>",
                                 "emptyTable": "<div class='dataTables_empty'><i class='fas fa-inbox'></i><br>Aucune donnée disponible</div>",
-                                "info": "Affichage de _START_ à _END_ sur _TOTAL_ emplacements",
-                                "infoEmpty": "Affichage de 0 à 0 sur 0 emplacements",
-                                "infoFiltered": "(filtrées depuis _MAX_ emplacements au total)",
-                                "lengthMenu": "Afficher _MENU_ emplacements",
+                                "info": "Affichage de _START_ à _END_ sur _TOTAL_ PaymentMethods",
+                                "infoEmpty": "Affichage de 0 à 0 sur 0 PaymentMethods",
+                                "infoFiltered": "(filtrées depuis _MAX_ PaymentMethods au total)",
+                                "lengthMenu": "Afficher _MENU_ PaymentMethods",
                                 "search": "<i class='fas fa-search'></i>",
                                 "paginate": {
                                     "first": "<i class='fas fa-angle-double-left'></i>",
@@ -119,13 +119,13 @@
                                     width: '25%',
                                     className: 'text-center',
                                     render: function (data, type, row) {
-                                        var btnEdit = '<a class="btn btn-action btn-edit me-2" href="/Emplacement/Update/' + row.id + '" title="Modifier">' +
+                                        var btnEdit = '<a class="btn btn-action btn-edit me-2" href="/PaymentMethod/Update/' + row.id + '" title="Modifier">' +
                                                      '<i class="fas fa-edit me-1"></i>Modifier</a>';
 
                                         var btnDelete = '<button type="button" class="btn btn-action btn-delete" ' +
                                                        'data-method="DELETE" ' +
-                                                       'data-message="Voulez-vous vraiment supprimer cet emplacement <b>' + row.name + '</b> ?" ' +
-                                                       'data-url="/Emplacement/DeleteEmplacement/' + row.id + '" ' +
+                                                       'data-message="Voulez-vous vraiment supprimer cet PaymentMethod <b>' + row.name + '</b> ?" ' +
+                                                       'data-url="/PaymentMethod/DeletePaymentMethod/' + row.id + '" ' +
                                                        'data-toggle="modal" data-target="#confirmModal" ' +
                                                        'title="Supprimer">' +
                                                        '<i class="fas fa-trash me-1"></i>Supprimer</button>';
@@ -151,7 +151,7 @@
             }
 
 
-            ajaxManager('GET', '/Emplacement/GetEmplacements', successHandler, errorHandler);
+            ajaxManager('GET', '/PaymentMethod/GetPaymentMethods', successHandler, errorHandler);
 
 
 
