@@ -71,7 +71,6 @@
 
             // Gestion du succès
             function successHandler(res) {
-                console.log("Résultat API:", res);
 
                 if (!res) {
                     ToastR("Aucune donnée reçue du serveur", "error", 15);
@@ -149,11 +148,23 @@
                                     </div>`;
                             }
                         }
-                    ]
-                });
+                    ],
+                            createdRow: function(row, data, dataIndex) {
+                            // Colonne "code" = index 5
+                            $('td', row).eq(5).css('cursor', 'pointer').attr('title', 'Cliquez pour copier')
+                                .on('click', function() {
+                                    navigator.clipboard.writeText(data.code)
+                                        .then(() => {
+                                            $(this).fadeOut(100).fadeIn(100); // petit effet visuel
+                                            ToastR(`Code copié : ${data.code}`, 'success', 3);
+                                        })
+                                        .catch(err => console.error('Erreur copie :', err));
+                                });
+                        }
+                                });
 
-                ToastR(res.message || "Entreprises chargées avec succès", "success", 8);
-            }
+                                // ToastR(res.message || "Entreprises chargées avec succès", "success", 8);
+                            }
 
             // Gestion des erreurs
             function errorHandler(err) {

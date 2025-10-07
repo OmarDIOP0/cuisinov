@@ -102,7 +102,9 @@ namespace CantineFront.Controllers
 
             var apiResponse = await ApiService<String>.CallApiPut(_httpClientFactory, url, request);
 
-            bool success = apiResponse.StatusCode == System.Net.HttpStatusCode.NoContent;
+            bool success = apiResponse.StatusCode == System.Net.HttpStatusCode.OK
+             || apiResponse.StatusCode == System.Net.HttpStatusCode.NoContent;
+
             string msg = success ? "Entreprise modifiée avec succès!" : "Une erreur a été rencontrée!";
 
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
@@ -114,7 +116,9 @@ namespace CantineFront.Controllers
             var url = String.Format(ApiUrlGeneric.DeleteURL<Entreprise>(), id);
 
             var apiResponse = await ApiService<String>.CallApiDelete(_httpClientFactory, url);
-            apiResponse.Success = apiResponse.StatusCode == System.Net.HttpStatusCode.NoContent;
+            apiResponse.Success = apiResponse.StatusCode == System.Net.HttpStatusCode.OK
+                     || apiResponse.StatusCode == System.Net.HttpStatusCode.NoContent;
+
             return Json(apiResponse);
         }
     }
