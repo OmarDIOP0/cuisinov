@@ -68,7 +68,7 @@ function GetPendingCommandes(colClass="col-12") {
                 }
                 $("#messagesList").html("");
                 res.data.forEach((command, index) => {
-                    var fullname = command.userNavigation ? (command.userNavigation.prenom + " " + command.userNavigation.nom) : "";
+                    var fullname = command.userNavigation ? (command.userNavigation.login) : "";
                     var emplacement = command.emplacementNavigation ? command.emplacementNavigation.name : "";
                     var paymentMethod = command.paymentMethodNavigation ? command.paymentMethodNavigation.name : "";
                     var emplacementId = command.emplacementNavigation ? command.emplacementNavigation.id : 0;
@@ -87,7 +87,7 @@ function GetPendingCommandes(colClass="col-12") {
 
 
                         <div class="card border border-warning shadow-0 mb-3 ${colClass} all emplacement_${emplacementId}" id="command_${command.id}" >
-                            <div class="card-header fullname">${fullname}</div>
+                            <div class="card-header fullname text-center">${fullname}</div>
                             <div class="card-body ">
                                <p class="text-danger medium mb-1"> Emplacement: <span class=" bold">${emplacement}</span></p>
                                  <div class="d-flex justify-content-between align-items-start">

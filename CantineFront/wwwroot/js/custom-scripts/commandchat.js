@@ -13,7 +13,7 @@ connection.on("ReceiveMessage", function (user, message) {
     }
 
     var command = JSON.parse(message);
-    var fullname = command.userNavigation ? (command.userNavigation.prenom + " " + command.userNavigation.nom) : "";
+    var fullname = command.userNavigation ? (command.userNavigation.login) : "";
     var emplacement = command.emplacementNavigation ? command.emplacementNavigation.name : "";
     var emplacementId = command.emplacementNavigation ? command.emplacementNavigation.id : 0;
    
@@ -183,7 +183,7 @@ function initLocalCommandeValidation(messagejsonString) {
             $("#userId").val(user.id);
             $("#solde").text(`${user.solde} XOF`);
             $("#soldeRestant").val(user.solde);
-            $("#client").text(user.prenom + " " + user.nom);
+            $("#client").text(user.login);
 
         } else {
             ToastR("Utilisateur inconnu du système", "error", 10, "toast-bottom-right");
