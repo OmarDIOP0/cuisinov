@@ -7,6 +7,7 @@
     var paymentMethods = Accessor.HttpContext?.Session.GetListObjectFromSession<PaymentMethod>("PaymentMethods") ?? new List<PaymentMethod>();
 
 }
+
 @section Styles{
 
 
@@ -24,12 +25,6 @@
 <!-- book section -->
 <section class="book_section layout_padding">
     <div class="container-fluid px-lg-5 px-sm-1">
-        @*<div class="heading_container">
-        <h2>
-        Book A Table
-        </h2>
-        </div>*@
-
         <div class="">
             <form action="" id="formBooking">
                 <input type="hidden" id="formSeted" value="false"/>
