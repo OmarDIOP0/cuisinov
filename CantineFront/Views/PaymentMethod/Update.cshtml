@@ -11,12 +11,12 @@
 <section class="create-section">
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <div class="create-card">
                     <!-- Header -->
                     <div class="card-header">
-                        <h2><i class="fas fa-edit me-2"></i>Modifier l'PaymentMethod</h2>
-                        <div class="subtitle">Modifiez les informations de l'PaymentMethod</div>
+                        <h2><i class="fas fa-edit me-2"></i>Modifier la Methode de Paiement</h2>
+                        <div class="subtitle">Modifiez les informations du methode de paiement</div>
                     </div>
 
                     <div class="row g-0">
@@ -25,26 +25,31 @@
                             <div class="form-container">
                                 <form id="form">
                                     <input type="hidden" name="Id" value="@Model.PaymentMethod.Id" />
-
                                     <div class="row g-3">
-
-                                        <!-- Nom du PaymentMethod -->
-                                        <div class="col-12">
+                                        <div class="col-6">
                                             <div class="form-group">
                                                 <label class="form-label" for="Name">
-                                                    <i class="fas fa-tag"></i> Nom du Département
+                                                    <i class="fas fa-tag"></i> Nom du paiement
                                                 </label>
                                                 <input type="text"
                                                        class="form-control"
                                                        id="Name"
                                                        name="Name"
-                                                       @* placeholder="Ex: BUreau, Ressources Humaines..." *@
                                                        value="@Model.PaymentMethod.Name"
                                                        required>
-                                                <small class="form-text text-muted mt-2">
-                                                    <i class="fas fa-info-circle me-1"></i>
-                                                    Modifiez le nom du département selon vos besoins
-                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="Name">
+                                                    <i class="fas fa-tag"></i> Code
+                                                </label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="Code"
+                                                       name="Code"
+                                                       value="@Model.PaymentMethod.Code"
+                                                       >
                                             </div>
                                         </div>
 

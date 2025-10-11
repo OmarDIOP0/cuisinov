@@ -998,7 +998,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "categorie",
+        "Name": "request",
         "Type": "CantineBack.Models.PaymentMethod",
         "IsRequired": true
       }
@@ -1055,7 +1055,7 @@
         "IsRequired": true
       },
       {
-        "Name": "categorie",
+        "Name": "payment",
         "Type": "CantineBack.Models.PaymentMethod",
         "IsRequired": true
       }

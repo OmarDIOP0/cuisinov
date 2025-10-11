@@ -1,42 +1,63 @@
-﻿@section Styles{
+﻿@section Styles {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
     <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="~/css/createCategorie.css"/>
+    <link rel="stylesheet" href="~/css/createCategorie.css" />
 }
 
 <!-- book section -->
 <section class="create-section">
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <div class="create-card">
                     <!-- Header -->
                     <div class="card-header">
-                        <h2><i class="fas fa-plus-circle me-2"></i>Créer un PaymentMethod</h2>
-                        <div class="subtitle">Ajoutez un nouveau PaymentMethod</div>
+                        <h2><i class="fas fa-plus-circle me-2"></i>Créer une Methode de Paiement</h2>
+                        <div class="subtitle">Ajoutez une nouvelle methode de paiement</div>
                     </div>
 
                     <div class="row g-0">
-                        <!-- Form Section -->
                         <div class="col-lg-12">
                             <div class="form-container">
                                 <form id="form">
                                     <div class="row g-3">
-                                        <!-- Nom du PaymentMethod -->
-                                        <div class="col-12">
+                                        <div class="col-6">
                                             <div class="form-group">
                                                 <label class="form-label" for="Name">
-                                                    <i class="fas fa-tag"></i> Nom de l'PaymentMethod
+                                                    <i class="fas fa-tag"></i> Nom du paiement
                                                 </label>
                                                 <input type="text"
                                                        class="form-control"
                                                        id="Name"
                                                        name="Name"
-                                                       placeholder="Ex: Departement IT Bureau 5..."
+                                                       placeholder="Ex: Wave, Orange Money, Free..."
                                                        required>
-                                                <small class="form-text text-muted mt-2">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="Code">
+                                                    <i class="fas fa-tag"></i> Code
+                                                </label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="Code"
+                                                       name="Code"
+                                                       placeholder="Ex: CASH,Wav, OM, Free...">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <div class="form-check">
+                                                    <input type="hidden" name="Actif" value="false" />
+                                                    <input type="checkbox" class="form-check-input" id="Actif" name="Actif" value="true">
+                                                    <label class="form-check-label" for="actif">
+                                                        <i class="fas fa-check-circle me-1"></i>Actif
+                                                    </label>
+                                                </div>
+                                                <small class="form-text text-muted">
                                                     <i class="fas fa-info-circle me-1"></i>
-                                                    Choisissez un nom clair et descriptif pour votre PaymentMethod
+                                                    Un PaymentMethod inactif ne sera pas disponible dans les sélections
                                                 </small>
                                             </div>
                                         </div>
@@ -48,7 +69,7 @@
                                                 type="button"
                                                 data-redirectroute="/PaymentMethod/List"
                                                 data-url="/PaymentMethod/CreatePaymentMethod">
-                                            <i class="fas fa-save me-2"></i>Créer un PaymentMethod
+                                            <i class="fas fa-save me-2"></i>Enregistrer
                                         </button>
 
                                         <button class="btn-back" type="button" onclick="history.back()">

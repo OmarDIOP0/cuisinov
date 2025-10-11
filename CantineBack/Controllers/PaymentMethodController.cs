@@ -62,14 +62,14 @@ namespace CantineBack.Controllers
         // PUT: api/PaymentMethods/5
         [HttpPut("{id}")]
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
-        public async Task<IActionResult> PutPaymentMethod(int id, PaymentMethod categorie)
+        public async Task<IActionResult> PutPaymentMethod(int id, PaymentMethod payment)
         {
-            if (id != categorie.Id)
+            if (id != payment.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(categorie).State = EntityState.Modified;
+            _context.Entry(payment).State = EntityState.Modified;
 
             try
             {
@@ -93,16 +93,26 @@ namespace CantineBack.Controllers
         // POST: api/PaymentMethods
         [HttpPost]
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
-        public async Task<ActionResult<PaymentMethod>> PostPaymentMethod(PaymentMethod categorie)
+        public async Task<ActionResult<PaymentMethod>> PostPaymentMethod(PaymentMethod request)
         {
           if (_context.PaymentMethods == null)
           {
               return Problem("Entity set 'ApplicationDbContext.PaymentMethods'  is null.");
           }
-            _context.PaymentMethods.Add(categorie);
+            PaymentMethod payment = new PaymentMethod()
+            {
+                Name = request.Name.ToUpper(),
+                Code = request.Code.ToUpper(),
+                Actif = request.Actif,
+            };
+            if(request.Code == null)
+            {
+                payment.Code = GenerateCode(request.Code);
+            }
+            _context.PaymentMethods.Add(payment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPaymentMethod", new { id = categorie.Id }, categorie);
+            return CreatedAtAction("GetPaymentMethod", new { id = payment.Id }, payment);
         }
 
         // DELETE: api/PaymentMethods/5
@@ -114,13 +124,13 @@ namespace CantineBack.Controllers
             {
                 return NotFound();
             }
-            var categorie = await _context.PaymentMethods.FindAsync(id);
-            if (categorie == null)
+            var payment = await _context.PaymentMethods.FindAsync(id);
+            if (payment == null)
             {
                 return NotFound();
             }
 
-            _context.PaymentMethods.Remove(categorie);
+            _context.PaymentMethods.Remove(payment);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -129,6 +139,15 @@ namespace CantineBack.Controllers
         private bool PaymentMethodExists(int id)
         {
             return (_context.PaymentMethods?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+        private string GenerateCode(string nomPayment)
+        {
+            string cleaned = new string(nomPayment
+                          .Where(char.IsLetter)
+                          .ToArray())
+                           .ToUpper();
+
+            return cleaned.Length >= 3 ? cleaned.Substring(0,3) : cleaned;
         }
     }
 }

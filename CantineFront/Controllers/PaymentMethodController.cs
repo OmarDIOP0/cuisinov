@@ -63,9 +63,6 @@ namespace CantineFront.Controllers
             string msg = success ? "PaymentMethod crée avec succès!" : "Une erreur a été rencontrée!";
 
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
-
-
-
         }
 
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
