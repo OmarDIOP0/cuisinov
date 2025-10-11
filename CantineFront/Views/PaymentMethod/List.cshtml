@@ -24,15 +24,15 @@
             <table class="table table-hover mb-0" id="tbPaymentMethods">
                 <thead> 
                     <tr>
-                        <th scope="col" width="5%">#</th>
-                        <th scope="col" width="30%">Nom</th>
-                        <th scope="col" width="15%" class="text-center">Statut</th>
-                        <th scope="col" width="25%" class="text-center">Actions</th>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Code</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <!-- Data will be populated by DataTable -->
                 </tbody>
             </table>
         </div>
@@ -52,12 +52,9 @@
     <link rel="stylesheet" href="~/css/categorie.css" />
 }
 
-
 @section Scripts{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script type="text/javascript">
-
-
         $(function () {
          //   $("#tbPaymentMethods").DataTable();
             var successHandler = function (res) {
@@ -96,7 +93,7 @@
                                     }
                                 },
                                 {
-                                    width: '50%',
+                                    width: '20%',
                                     data: 'name',
                                     defaultContent: '',
                                 },
@@ -121,7 +118,7 @@
                                 },
                                  {
                                     data: null,
-                                    width: '25%',
+                                    width: '20%',
                                     className: 'text-center',
                                     render: function (data, type, row) {
                                         var btnEdit = '<a class="btn btn-action btn-edit me-2" href="/PaymentMethod/Update/' + row.id + '" title="Modifier">' +

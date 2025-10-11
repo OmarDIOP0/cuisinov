@@ -26,6 +26,7 @@
                                                 <label class="form-label" for="Name">
                                                     <i class="fas fa-tag"></i> Nom du paiement
                                                 </label>
+
                                                 <input type="text"
                                                        class="form-control"
                                                        id="Name"
@@ -46,10 +47,11 @@
                                                        placeholder="Ex: CASH,Wav, OM, Free...">
                                             </div>
                                         </div>
-                                        <div class="col-12">
+                                        <input type="hidden" name="Actif" value="true" />
+                                        @* <div class="col-12">
                                             <div class="form-group">
                                                 <div class="form-check">
-                                                    <input type="hidden" name="Actif" value="false" />
+                                                    <input type="hidden" name="Actif" value="true" /> 
                                                     <input type="checkbox" class="form-check-input" id="Actif" name="Actif" value="true">
                                                     <label class="form-check-label" for="actif">
                                                         <i class="fas fa-check-circle me-1"></i>Actif
@@ -60,7 +62,7 @@
                                                     Un PaymentMethod inactif ne sera pas disponible dans les sélections
                                                 </small>
                                             </div>
-                                        </div>
+                                        </div> *@
                                     </div>
 
                                     <div class="btn-group">
