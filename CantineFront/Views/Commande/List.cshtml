@@ -50,7 +50,7 @@
             <thead>
                 <tr>
                     <th scope="col"></th>
-                    <th scope="col">Mat.</th>
+                    @* <th scope="col">Mat.</th> *@
                     <th scope="col">Nom Complet</th>
                     <th scope="col">Montant</th>
                     <th scope="col">Payée avec </th>
@@ -96,8 +96,6 @@
                         if (dataList) {
                             const formatter = new Intl.NumberFormat("fr-FR");
                             var totalAmount = dataList.reduce((accumulator, currentValue) => {
-
-                            //    console.log(currentValue)
                                 if (currentValue.isDelivered == true && currentValue.isDeleted != true && currentValue.isRejected!=true) {
                                     return accumulator + currentValue.montant;
                                     }
@@ -115,9 +113,6 @@
                     order: [[6, "desc"]],
                     destroy: true,
                             dom: 'Bfrtip',
-                    //dom: "<'row mt-2'<'col-sm-6 col-xs-6 col-md-4 mt-2'B><'col-sm-6 col-md-4 mt-2 'l><'col-sm-12 col-md-4'f>>" +
-                    //    "<'row'<'col-sm-12'tr>>" +
-                    //    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                     text: 'Export',
                     buttons: [
 
@@ -141,8 +136,6 @@
                                             endDateString = moment(endDate).format("DDMMYYYY HHmm");
                                        }
                                       
-                                //var m = new Date();
-                                //var dateString = m.getUTCFullYear() + "-" + (m.getUTCMonth() + 1) + "-" + m.getUTCDate() + " " + m.getUTCHours() + m.getUTCMinutes();
      
                                 return 'SNACK_CONTAINERS_REPORT' + "_" + startDateString+"_"+endDateString;
                             }
@@ -158,20 +151,20 @@
 
 
                         },
-                        {
-                            data: "userNavigation",
-                            width: '5%',
-                            defaultContent: '',
+                        // {
+                        //     data: "userNavigation",
+                        //     width: '5%',
+                        //     defaultContent: '',
 
-                            render: function (data, type, row) {
+                        //     render: function (data, type, row) {
 
-                                if (data == null) {
-                                    return "";
-                                }
-                                return `<b>${data.matricule}</b>`
-                            }
-                        }
-                        ,
+                        //         if (data == null) {
+                        //             return "";
+                        //         }
+                        //         return `<b>${data.matricule}</b>`
+                        //     }
+                        // }
+                        // ,
                         {
                             data: "userNavigation",
                             width: '15%',
