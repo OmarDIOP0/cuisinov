@@ -309,7 +309,7 @@
             </table>
         </div>
     </div>
-</div>
+</div>  
 
 <div class="modal fade modal-lg" id="documentPartial">
 </div>
@@ -398,7 +398,7 @@
                         },
                         {
                             data: "userNavigation",
-                            width: '15%',
+                            width: '10%',
                             defaultContent: '',
 
                             render: function (data, type, row) {
@@ -462,7 +462,7 @@
                         {
 
                             data: "isDelivered",
-                            width: '10%',
+                            width: '15%',
                             defaultContent: "",
                             render: function (data, type, row, meta) {
                                 var btnRateDetail = "";
@@ -486,29 +486,23 @@
                                     var checked3 = row.rate == 3 ? "checked" : "";
                                     var checked2 = row.rate == 2 ? "checked" : "";
                                     var checked1 = row.rate == 1 ? "checked" : "";
-
-                                    console.log("checked5 = ", checked5)
-                                    console.log("checked4 = ", checked4)
-                                    console.log("checked3 = ", checked3)
-                                    console.log("checked2 = ", checked2)
-                                    console.log("checked1 = ", checked1)
                                     var note = `<div class='rating' disabled style='max-width:100px;pointer-events: none !important'>
-                                                                                                                      <input type='radio' name='rating${row.id}' ${checked5} value='5' id='5ll${row.id}'><label for='5ll${row.id}' style='font-size:1vw;'>☆</label>
-                                                                                                                      <input type='radio' name='rating${row.id}' ${checked4} value='4' id='4ll${row.id}'><label for='4ll${row.id}' style='font-size:1vw;'>☆</label>
-                                                                                                                      <input type='radio' name='rating${row.id}' ${checked3} value='3' id='3ll${row.id}'><label for='3ll${row.id}' style='font-size:1vw;'>☆</label>
-                                                                                                                      <input type='radio' name='rating${row.id}' ${checked2} value='2' id='2ll${row.id}'><label for='2ll${row.id}' style='font-size:1vw;'>☆</label>
-                                                                                                                      <input type='radio' name='rating${row.id}' ${checked1} value='1' id='1ll${row.id}'><label for='1ll${row.id}' style='font-size:1vw;'>☆</label>
-                                                                                                                    </div>`;
+                                                    <input type='radio' name='rating${row.id}' ${checked5} value='5' id='5ll${row.id}'><label for='5ll${row.id}' style='font-size:1vw;'>☆</label>
+                                                    <input type='radio' name='rating${row.id}' ${checked4} value='4' id='4ll${row.id}'><label for='4ll${row.id}' style='font-size:1vw;'>☆</label>
+                                                    <input type='radio' name='rating${row.id}' ${checked3} value='3' id='3ll${row.id}'><label for='3ll${row.id}' style='font-size:1vw;'>☆</label>
+                                                    <input type='radio' name='rating${row.id}' ${checked2} value='2' id='2ll${row.id}'><label for='2ll${row.id}' style='font-size:1vw;'>☆</label>
+                                                    <input type='radio' name='rating${row.id}' ${checked1} value='1' id='1ll${row.id}'><label for='1ll${row.id}' style='font-size:1vw;'>☆</label>
+                                                </div>`;
                                     btnRateDetail = `
 
-                                                                                            <button type="button" data-method="GET"
-                                                                                                                                         data-modaltitle="Commentaire et note du client"
-                                                                                                                                                          data-modalbody="${note}<br>${row.customerFeedback}"
-                                                                                                                                         data-toggle="modal"
-                                                                                                                                          data-target="#genericModal" rel="tooltip"
-                                                                                                                                        class="btn btn-primary btn-sm m-2" data-original-title="" title="">
-                                                                                                                                    Avis du client
-                                                                                             </button>
+                                                    <button type="button" data-method="GET"
+                                                            data-modaltitle="Commentaire et note du client"
+                                                                            data-modalbody="${note}<br>${row.customerFeedback}"
+                                                            data-toggle="modal"
+                                                            data-target="#genericModal" rel="tooltip"
+                                                        class="btn btn-primary btn-sm m-2" data-original-title="" title="">
+                                                    Avis du client
+                                                        </button>
                                                                             `;
                                 }
 
@@ -517,12 +511,12 @@
                                     return `<span  class="badge badge-danger"> rejetée</span>
 
                                                                                     <button type="button" data-method="GET"
-                                                                                                                                 data-modaltitle="Motif du rejet"
-                                                                                                                                          data-modalbody="${row.rejectComment}"
-                                                                                                                                 data-toggle="modal"
-                                                                                                                                  data-target="#genericModal" rel="tooltip"
-                                                                                                                                class="btn btn-primary btn-sm m-2" data-original-title="" title="">
-                                                                                                                            Motif
+                                                                                        data-modaltitle="Motif du rejet"
+                                                                                                data-modalbody="${row.rejectComment}"
+                                                                                        data-toggle="modal"
+                                                                                        data-target="#genericModal" rel="tooltip"
+                                                                                    class="btn btn-primary btn-sm m-2" data-original-title="" title="">
+                                                                                Motif
                                                                                      </button>
                                                             `;
                                 }
@@ -535,33 +529,33 @@
                                 if (data != true) {
                                     if (row.userId != null && row.userId > 0) {
                                         btnReject = `
-                                                                                                                <button type="button" data-method="POST"
-                                                                                                                         data-modaltitle="Rejeter une commande"
-                                                                                                                                         data-successhandler="rejetSuccessHandler"
-                                                                                                                                 data-errorhandler="errorHandler"
-                                                                                                                                 data-callback="updateStatusCell"
-                                                                                                                                         data-forward="rejectFormValid()"
-                                                                                                                                 data-getdata="getDataForm(${row.id})"
-                                                                                                                                                                                data-modalbody="Motif du rejet<br><textarea class='form-control' name='motif' id='motif' ></textarea>"
-                                                                                                                                        data-url="/Commande/Reject" data-toggle="modal"
-                                                                                                                                data-target="#genericModal" rel="tooltip"
-                                                                                                                                class="btn btn-danger btn-sm mx-2" data-original-title="" title="">
-                                                                                                                   Rejeter
-                                                                                                                </button>`;
+                                                <button type="button" data-method="POST"
+                                                            data-modaltitle="Rejeter une commande"
+                                                                            data-successhandler="rejetSuccessHandler"
+                                                                    data-errorhandler="errorHandler"
+                                                                    data-callback="updateStatusCell"
+                                                                            data-forward="rejectFormValid()"
+                                                                    data-getdata="getDataForm(${row.id})"
+                                                                                                                data-modalbody="Motif du rejet<br><textarea class='form-control' name='motif' id='motif' ></textarea>"
+                                                                        data-url="/Commande/Reject" data-toggle="modal"
+                                                                data-target="#genericModal" rel="tooltip"
+                                                                class="btn btn-danger btn-sm mx-2" data-original-title="" title="">
+                                                    Rejeter
+                                                </button>`;
                                     }
 
                                 }
 
                                 var btnDelivery = `<a class="btn btn-primary btn-sm float-end "
                                                                    data-method="POST"
-                                                                           data-callback="DeliveryCallback"
-                                                                                                                                data-message="Veuillez confirmer?"
-                                                                                                                                data-url="/Commande/Delivery/${row.id}" data-toggle="modal"
-                                                                                                                        data-target="#confirmModal"
+                                                                   data-callback="DeliveryCallback"     
+                                                                    data-message="Veuillez confirmer?"
+                                                                    data-url="/Commande/Delivery/${row.id}" data-toggle="modal"
+                                                                    data-target="#confirmModal"
                                                                  data-commandid="${row.id}"  href="#!">Livrer</a>
                                                                 `
 
-                                return btnDelivery + btnReject + btnRateDetail
+                                return `<div class="d-flex">${btnDelivery}  ${btnReject}  ${btnRateDetail}</div>` 
                                 // return `<a class="btn btn-primary btn-sm float-end btnDelivery"  data-commandid="${row.id}"  href="#!">Livrer</a>`;
 
 
