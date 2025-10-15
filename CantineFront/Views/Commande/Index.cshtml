@@ -83,14 +83,21 @@
 
                                 $("#emplacementsFilterList").append(`<li id="li_filter_${item.id}" data-filter=".emplacement_${item.id}">${item.name.toUpperCase()}</li>`);
                             }
+
+                           
                         })
+
+
+
                     }
                 }
             }
 
             ajaxManager('GET', '/Emplacement/GetEmplacements', successEmplacementsHandler, errorHandler);
+
             GetPendingCommandes();
+
         })
-     
+        co
     </script>
 }
