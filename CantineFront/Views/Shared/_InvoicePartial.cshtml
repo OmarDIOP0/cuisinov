@@ -13,20 +13,17 @@
             <td colspan="4">
                 <table style="width:100%">
                     <tr>
-                        <td class="title" style="width:80%">
+                        @* <td class="title" style="width:80%">
 
                             <img alt="Logo" src="~/images/DPWorldLogo.png" width="130" height="96" class=" logo-default" />
-                        </td>
+                        </td> *@
                       
                         <td class="address" style="font-size:8px!important">
-                            DP World Dakar<br />
-                            Terminal à Conteneurs,<br />
-                            Zone Nord,<br />
-                            Port Autonome de Dakar<br />
+                            Cuisinov<br />
                             Dakar, SENEGAL<br />
-                            Tél : +221 33 889 08 20<br />
-                            Fax : +221 33 889 08 20<br />
-                            www.dpworld.com
+                            Tél : +221 33 000 00 00<br />
+                            Fax : +221 33 000 00 00<br />
+                            www.cuisinov.com
                         </td>
                     </tr>
                 </table>
@@ -49,7 +46,7 @@
                     <tbody>
                         <tr class="invoicenumber">
                        
-                            <td colspan="3" style="width:100%;text-align:center;font-weight:bold">SNACK CONTAINER : RAPPORT DES VENTES  </td>
+                            <td colspan="3" style="width:100%;text-align:center;font-weight:bold">CUISINOV : RAPPORT DES VENTES  </td>
                         
 
                         </tr>
@@ -59,13 +56,6 @@
                                 <td style="width:50%"> Date de Début:  @Model.StartDate.ToString("dd/MM/yyyy HH:mm:ss")<br /></td>
                                 <td style="width:50%"> Date de Fin:  @Model.EndDate.ToString("dd/MM/yyyy HH:mm:ss")<br /></td>
                             </tr>
-                          @*  <tr class="date">
-                                <td style="width:50%" colspan="2"></td>
-                                <td colspan="2">
-                                    Date Fin:  @Model.EndDate.ToString("dd/MM/yyyy HH:mm:ss")<br />
-
-                                </td>
-                            </tr>*@
                         }
                         else
                         {
@@ -74,13 +64,6 @@
                                 <td style="width:50%" > Date de Fin:  @Model.EndDate.ToString("dd/MM/yyyy")<br /></td>
                                
                             </tr>
-                           @* <tr class="date">
-                                <td style="width:50%" colspan="2"></td>
-                                <td colspan="2">
-                                    Date Fin:  @Model.EndDate.ToString("dd/MM/yyyy")<br />
-
-                                </td>
-                            </tr>*@
                         }
                         
 
@@ -138,13 +121,13 @@
                 </tr>
 
             }
-            <tr>
-                <td colspan="4" style="width:100%">
+            // <tr>
+            //     <td colspan="4" style="width:100%">
 
-                    <img alt="Logo" src="~/images/invoicefooter.png" width="100%" class=" logo-default" />
-                </td>
+            //         <img alt="Logo" src="~/images/invoicefooter.png" width="100%" class=" logo-default" />
+            //     </td>
 
-            </tr>
+            // </tr>
         }
     </table>
 </div>
