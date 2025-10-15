@@ -22,8 +22,6 @@ function DeleteCommandItem(btn, data) {
 }
 function GetPendingCommandes(colClass="col-12") {
     var successCommandeHandler = function (res) {
-        // console.log(JSON.stringify(res))
-        //endLoadingById("#messagesList");
         if (res) {
 
             if (res.success) {
@@ -77,7 +75,6 @@ function GetPendingCommandes(colClass="col-12") {
                         colClass = "col-md-6 col-lg-4 col-xl-3 col-sm-12 m-1";
                     }
                     paymentMethod = paymentMethod == "SOLDE" ? "DOTATION" : paymentMethod;
-                    console.log(command)
                     var paymentMethod = paymentMethod ? `<div class=" small my-2"  style="font-size:11px;font-weight:bold"> Moyen de paiement: <span class=" bold text-primary">${paymentMethod}</span></div>` : '';
                     var commandeADistance = command.commandeADistance ? `<span class="badge badge-success" style="font-size:10px">commande à distance.</span>` : '';
                     var commentaire = command.comment;
@@ -162,8 +159,6 @@ function GetPendingCommandes(colClass="col-12") {
 
                         }
 
-
-
                         $('.filters_menu li').off("click").on("click", function () {
                             console.log("click filter")
                             $('.filters_menu li').removeClass('active');
@@ -193,38 +188,6 @@ function GetPendingCommandes(colClass="col-12") {
                                 $("#noItemsAlert").hide();
                             }
                         });
-                        //$(".btnDelivery").off().on("click", function () {
-
-                        //    var commandId = $(this).data("commandid");
-                        //    if (!commandId || commandId <= 0) return;
-                        //    var successHandler = (response) => {
-                        //        if (response) {
-                        //            if (response.success) {
-                                        
-                                        
-                        //                    $("#command_" + commandId).remove();
-                        //                var activeFilters = $('.filters_menu li.active');
-                        //                console.log("activeFilters ", activeFilters.length)
-                        //                if (activeFilters.length > 0) {
-
-
-                        //                    element = activeFilters[0];
-                        //                    $(element).addClass('active');
-                        //                    var $grid = $("#messagesList");
-                        //                    var data = $(element).attr('data-filter');
-                        //                    $grid.isotope({
-                        //                        filter: data
-                        //                    })
-                        //                    console.log("refresh")
-                        //                }
-                        //            }
-                        //        }
-                        //    }
-                        //    ajaxManager("POST", "/Commande/Delivery", successHandler, errorHandler, { id: commandId });
-                        //});
-
-
-
                     }
 
                 })
