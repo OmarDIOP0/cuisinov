@@ -899,7 +899,8 @@
             // ToastR("bonjour", "success", 10, "toast-top-right mt-5")
 
             $('#confirmModal').on('hidden.bs.modal', function (event) {
-                modal.unbind("click.ConfirmModal");
+                // modal.unbind("click.ConfirmModal");
+                $(this).find("#btnConfirmation").unbind("click.ConfirmModal");
             });
             $('#confirmModal').on('shown.bs.modal', function (event) {
                 let button = $(event.relatedTarget) // Button that triggered the modal

@@ -234,56 +234,56 @@ namespace CantineBack.Controllers
                 var user = await _context.Users.FindAsync(commande.UserId);
                 string userPhoneNumber = user?.Telephone;
                 string userEmail = user?.Email;
-                string userFullName = user?.Prenom + " " + user.Nom;
+                string userFullName = user?.Login;
 
 
-                if (!String.IsNullOrWhiteSpace(userPhoneNumber))
-                {
-                    try
-                    {
-                        SmsManager.SendSMS(userPhoneNumber, $"Bonjour {userFullName} votre commande du  {commande.Date?.ToString("dd-MM-yyyy HH:mm")} a ete livree Montant Total : {commande.Montant}. Votre nouveau solde est : {Functions.FormatMonetaire(user.Solde).Replace("\t", " ")} F CFA");
-                    }
-                    catch (Exception ex)
-                    {
+                //if (!String.IsNullOrWhiteSpace(userPhoneNumber))
+                //{
+                //    try
+                //    {
+                //        SmsManager.SendSMS(userPhoneNumber, $"Bonjour {userFullName} votre commande du  {commande.Date?.ToString("dd-MM-yyyy HH:mm")} a ete livree Montant Total : {commande.Montant}. Votre nouveau solde est : {Functions.FormatMonetaire(user.Solde).Replace("\t", " ")} F CFA");
+                //    }
+                //    catch (Exception ex)
+                //    {
 
-                    }
+                //    }
 
-                }
+                //}
 
-                if (!String.IsNullOrWhiteSpace(userEmail))
-                {
-                    try
-                    {
-                        var listAriclesStr = "";
+                //if (!String.IsNullOrWhiteSpace(userEmail))
+                //{
+                //    try
+                //    {
+                //        var listAriclesStr = "";
 
-                        var lignesCommands = await _context.LigneCommandes.Where(lc=>lc.CommandeId==commande.Id).AsNoTracking().Include(lc=>lc.ArticleNavigation).ToListAsync();
-                        if (lignesCommands?.Any()??false)
-                        {
-                            listAriclesStr = $"\n\nArticle                             Quantité    Prix        Prix*Quantite     \n";
-                            listAriclesStr += "-------------------------------------------------------------------------------\n";
-                            foreach (var ligneCommand in lignesCommands)
-                            {
-                                int totalLength= ligneCommand.ArticleNavigation?.Title?.Length??0;
-                                int len = Math.Min(totalLength, 30);
-                                string concat = totalLength > 30 ? "..." : "";
-                                //int prixPad=
-                                string articleStr = (ligneCommand.ArticleNavigation.Title.Substring(0, len - concat.Length) + concat).ToLower().PadRight(30);
-                                listAriclesStr += $"{articleStr}{ligneCommand.Quantite.ToString().PadRight(12)}{ligneCommand.ArticleNavigation.PrixDeVente.ToString().PadRight(12)} {ligneCommand.PrixTotal} F CFA \n";
+                //        var lignesCommands = await _context.LigneCommandes.Where(lc=>lc.CommandeId==commande.Id).AsNoTracking().Include(lc=>lc.ArticleNavigation).ToListAsync();
+                //        if (lignesCommands?.Any()??false)
+                //        {
+                //            listAriclesStr = $"\n\nArticle                             Quantité    Prix        Prix*Quantite     \n";
+                //            listAriclesStr += "-------------------------------------------------------------------------------\n";
+                //            foreach (var ligneCommand in lignesCommands)
+                //            {
+                //                int totalLength= ligneCommand.ArticleNavigation?.Title?.Length??0;
+                //                int len = Math.Min(totalLength, 30);
+                //                string concat = totalLength > 30 ? "..." : "";
+                //                //int prixPad=
+                //                string articleStr = (ligneCommand.ArticleNavigation.Title.Substring(0, len - concat.Length) + concat).ToLower().PadRight(30);
+                //                listAriclesStr += $"{articleStr}{ligneCommand.Quantite.ToString().PadRight(12)}{ligneCommand.ArticleNavigation.PrixDeVente.ToString().PadRight(12)} {ligneCommand.PrixTotal} F CFA \n";
            
-                            }
-                            listAriclesStr += $"{" ".PadRight(43)} Montant Total = {commande.Montant} F CFA \n";
-                        }
+                //            }
+                //            listAriclesStr += $"{" ".PadRight(43)} Montant Total = {commande.Montant} F CFA \n";
+                //        }
                
-                        string nouveauSolde = $"\n Votre nouveau solde est : {Functions.FormatMonetaire( user.Solde)} F CFA";
+                //        string nouveauSolde = $"\n Votre nouveau solde est : {Functions.FormatMonetaire( user.Solde)} F CFA";
 
-                        EmailManager.SendEmail(userEmail, "COMMANDE LIVREÉ", $"Bonjour {userFullName} votre commande du  {commande.Date?.ToString("dd-MM-yyyy HH:mm")} a été livrée Montant Total : {commande.Montant} {listAriclesStr} {nouveauSolde}", null, null);
-                    }
-                    catch (Exception ex)
-                    {
+                //        EmailManager.SendEmail(userEmail, "COMMANDE LIVREÉ", $"Bonjour {userFullName} votre commande du  {commande.Date?.ToString("dd-MM-yyyy HH:mm")} a été livrée Montant Total : {commande.Montant} {listAriclesStr} {nouveauSolde}", null, null);
+                //    }
+                //    catch (Exception ex)
+                //    {
 
-                    }
+                //    }
 
-                }
+                //}
 
             }
 

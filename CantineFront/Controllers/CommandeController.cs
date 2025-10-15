@@ -323,14 +323,16 @@ namespace CantineFront.Controllers
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
         public async Task<JsonResult> Delivery(int id)
         {
-            var url = String.Format(ApiUrlGeneric.ChangeStateCommandeURL, id);
-
-            var apiResponse = await ApiService<String>.CallApiPut(_httpClientFactory, url,new {});
-
+            var url = string.Format(ApiUrlGeneric.ChangeStateCommandeURL, id);
+            var apiResponse = await ApiService<string>.CallApiPut(_httpClientFactory, url, new { });
             apiResponse.Success = apiResponse.StatusCode == System.Net.HttpStatusCode.NoContent;
-            apiResponse.Message = apiResponse.Success ? "Commande livrée" : (apiResponse.Message ?? "Une erreur a été rencontrée!");
-            return Json(apiResponse);
-        } 
+            var status = apiResponse.Success ? "success" : "error";
+            apiResponse.Message = apiResponse.Success
+                ? "Commande livrée avec succès."
+                : (apiResponse.Message ?? "Une erreur a été rencontrée lors de la livraison de la commande.");
+            return Json(new { apiResponse.Success, Status = status, apiResponse.Message, apiResponse.Data });
+        }
+
         [HttpPost]
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
         public async Task<JsonResult> Reject(int commandId,string motif)
