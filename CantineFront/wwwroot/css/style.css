@@ -147,7 +147,7 @@ a:focus {
   padding-left: 25px;
 }
 
-.navbar-brand {
+/*.navbar-brand {
   font-family: 'Dancing Script', cursive;
 }
 
@@ -165,16 +165,16 @@ a:focus {
   padding-left: 18%;
 }
 
-    .custom_nav-container .navbar-nav .nav-item .nav-link, .nav-link.logout {
-        padding: 5px 20px;
-        color: #ffffff;
-        text-align: center;
-        /*text-transform: uppercase;*/
-        border-radius: 5px;
-        -webkit-transition: all 0.3s;
-        transition: all 0.3s;
-        font-size: small;
-    }
+.custom_nav-container .navbar-nav .nav-item .nav-link, .nav-link.logout {
+    padding: 5px 20px;
+    color: #ffffff;
+    text-align: center;*/
+    /*text-transform: uppercase;*/
+    /*border-radius: 5px;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    font-size: small;
+}
 
 .custom_nav-container .navbar-nav .nav-item:hover .nav-link, .custom_nav-container .navbar-nav .nav-item.active .nav-link {
   color: #ffbe33;
@@ -191,7 +191,7 @@ a:focus {
 
 .custom_nav-container .nav_search-btn:hover {
   color: #ffbe33;
-}
+}*/
 
 .user_option {
   display: -webkit-box;
@@ -252,7 +252,7 @@ a:focus {
   background-color: #e69c00;
 }
 
-.custom_nav-container .navbar-toggler {
+/*.custom_nav-container .navbar-toggler {
   outline: none;
 }
 
@@ -307,7 +307,7 @@ a:focus {
 .custom_nav-container .navbar-toggler[aria-expanded="true"] span::before, .custom_nav-container .navbar-toggler[aria-expanded="true"] span::after {
   -webkit-transform: rotate(90deg);
           transform: rotate(90deg);
-  top: 0;
+  top: 0;*/
 }
 
 /*end header section*/
