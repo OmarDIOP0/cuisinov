@@ -60,9 +60,6 @@ namespace CantineFront.Controllers
             {
                 return Json(ModelErrorHandler<Article>.ModelStateError(ModelState));
             }
-            // commandRequest.UserId = HttpContext.Session.GetInt32("UserId")??1;
-
-            //Supprimer les articles avec quantité=0
             commandRequest.LigneCommands = commandRequest.LigneCommands?.Where(a => a.Quantite > 0).ToList();
            if( (commandRequest.LigneCommands?.Count() ?? 0) <= 0)
             {
@@ -83,8 +80,6 @@ namespace CantineFront.Controllers
 
             }
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
-
-
 
         }
         [HttpPost]
