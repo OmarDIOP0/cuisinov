@@ -52,9 +52,9 @@
                                 <a class="nav-link" href="/Commande/Index">Commandes en attentes</a>
                             </li>
 
-                            <li class="nav-item">
+                            @* <li class="nav-item">
                                 <a class="nav-link" href="/Home/BookValidation">Validation</a>
-                            </li>
+                            </li> *@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Autres
@@ -87,10 +87,10 @@
 
                 </ul>
                 <div class="user_option mr-2">
-                       @if (logged)
+                    @*    @if (logged)
                     {
                         <a class="nav-link text-white" href="#!" style="" id="soldeNav"></a>
-                    }
+                    } *@
                     @{
 
                         string urlBooking = logged ? "/Home/Book" : "/Home/BookShop";

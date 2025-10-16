@@ -509,14 +509,15 @@ namespace CantineBack.Controllers
 
             int amountCommand = 0;
 
+            // Validation des articles et calcul du montant
             foreach (var ligneCommand in commandDto.LigneCommands)
             {
                 var article = _context.Articles.FirstOrDefault(a => a.Id == ligneCommand.ArticleId);
                 if (article == null)
                 {
-
                     return Problem("Un des articles commandé est introuvable");
                 }
+
                 if ((article.QuantiteStock < ligneCommand.Quantite) && article.ControlStockQuantity)
                 {
                     return Problem($"La quantité en stock de l'article {article.Title} est insuffisant, quantité disponible = {article.QuantiteStock}");
@@ -524,45 +525,30 @@ namespace CantineBack.Controllers
                 else
                 {
                     article.QuantiteStock -= ligneCommand.Quantite;
-
-                    article.QuantiteStock= article.QuantiteStock < 0? 0:article.QuantiteStock;
+                    article.QuantiteStock = article.QuantiteStock < 0 ? 0 : article.QuantiteStock;
                 }
 
-
-                amountCommand += article.PrixDeVente * ligneCommand.Quantite;//   . ligneCommand.PrixTotal;
+                amountCommand += article.PrixDeVente * ligneCommand.Quantite;
             }
-         
 
-
+            // Validation de la méthode de paiement
             PaymentMethod? paymentMethod = await _context.PaymentMethods.FindAsync(commandDto.PaymentMethodId);
             if (paymentMethod == null)
             {
                 return Problem("Payment Method for this command is unknown");
             }
-            bool isQrCodePM = paymentMethod.Code?.ToUpper()?.Trim() == "QRCODE";
+
+            // SUPPRESSION de la logique QR Code
             User? user = null;
             if (commandDto.UserId.HasValue)
             {
                 user = await _context.Users.FindAsync(commandDto.UserId);
             }
 
-            if (user == null)
-            {
+            // Si vous avez besoin de valider l'utilisateur pour d'autres méthodes de paiement,
+            // ajoutez ici votre logique spécifique
 
-                if (isQrCodePM)
-                    return Problem("L'utilisateur de cette commande est inconnue.");
-            }
-
-            if (isQrCodePM)
-            {
-                if (user.Solde < amountCommand)
-                {
-                    return Problem("L'utilisateur ne dispose pas de fonds suffisants pour traiter cette commande");
-                }
-            }
-
-            //Si c'est une commande à distance SHOP id=1
-            //EmplacementId = commandDto.CommandeADistance ? commandDto.EmplacementId : 1,
+            // Création de la commande
             Commande newCommande = new()
             {
                 Date = DateTime.Now,
@@ -576,21 +562,14 @@ namespace CantineBack.Controllers
             };
 
             _context.Commandes.Add(newCommande);
+
             if (await _context.SaveChangesAsync() > 0)
             {
-                if (user != null)
-                {
-                    if (isQrCodePM)
-                    {
-                        user.Solde -= amountCommand;
-                    }
+                // SUPPRESSION de la logique de déduction du solde pour QR Code
+                // Si vous avez d'autres méthodes de paiement qui nécessitent une gestion de solde,
+                // ajoutez la logique conditionnelle ici
 
-
-                    _context.Users.Update(user);
-                }
-
-                await _context.SaveChangesAsync();
-
+                // Mise à jour des quantités en stock
                 foreach (var ligneCommand in commandDto.LigneCommands)
                 {
                     LigneCommande ligneCommande = new()
@@ -602,12 +581,11 @@ namespace CantineBack.Controllers
                     };
 
                     _context.LigneCommandes.Add(ligneCommande);
-                    await _context.SaveChangesAsync();
                 }
 
+                await _context.SaveChangesAsync();
             }
 
-            //return CreatedAtAction("GetCommande", new { id = newCommande.Id }, newCommande);
             return Ok((await GetCommande(newCommande.Id))?.Value);
         }
 

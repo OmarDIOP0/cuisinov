@@ -89,95 +89,36 @@ namespace CantineFront.Controllers
         }
         [HttpPost]
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
-        public async Task<JsonResult> CreateCommandeByPartner(string? QrCode, string PaymentMethodeCode, PostCommandDto commandRequest)
+        public async Task<JsonResult> CreateCommandeByPartner(string PaymentMethodeCode, PostCommandDto commandRequest)
         {
-
             if (!ModelState.IsValid)
             {
                 return Json(ModelErrorHandler<PostCommandDto>.ModelStateError(ModelState));
             }
 
-            // commandRequest.UserId = HttpContext.Session.GetInt32("UserId")??1;
-
-            //Supprimer les articles avec quantité=0
             commandRequest.LigneCommands = commandRequest.LigneCommands?.Where(a => a.Quantite > 0).ToList();
             if ((commandRequest.LigneCommands?.Count() ?? 0) <= 0)
             {
-                return Json(new FormResponse { Success = false, Object = null, Message = "Commande invalide , aucune ligne de commande n'est définie." });
-            }
-            User user = null;
-
-            if (PaymentMethodeCode.ToUpper() == "QRCODE")
-            {
-                string matricule = String.Empty;
-                var decryptInfo = DPWorldEncryption.SecurityManager.DecryptAES(QrCode) ?? String.Empty;
-                // QrCodeStaff? qrCodeStaff=JsonConvert.DeserializeObject<QrCodeStaff>(decryptInfo!);
-                if (!String.IsNullOrWhiteSpace(decryptInfo))
-                {
-                    matricule = decryptInfo.Substring(0, decryptInfo.Length - 1);
-
-                }
-
-                if (String.IsNullOrWhiteSpace(matricule))
-                {
-                    return Json(new FormResponse { Success = false, Message = "Utilisateur inconnu ou inexistant! Le paiement par solde nécessite l'identification du client" });
-                }
-                //Descript qrCode
-                //Get User By matricule
-
-                var urlGetUser = String.Format(ApiUrlGeneric.GetUserByMatriculeURL, matricule);
-
-                var apiResponseGetUser = await ApiService<User>.CallGet(_httpClientFactory, urlGetUser);
-                user = apiResponseGetUser.Data;
-                if(user == null)
-                {
-                    return Json(new FormResponse { Success = false, Message = "Utilisateur inconnu ou inexistant! Le paiement par solde nécessite l'identification du client" });
-
-                }
-
-                commandRequest.UserId = user.Id;
-
+                return Json(new FormResponse { Success = false, Object = null, Message = "Commande invalide, aucune ligne de commande n'est définie." });
             }
 
-
-
-
-
-
-
-
-
-
-            //if (!ModelState.IsValid)
-            //{
-            //    return Json(ModelErrorHandler<Article>.ModelStateError(ModelState));
-            //}
-            //// commandRequest.UserId = HttpContext.Session.GetInt32("UserId")??1;
-
-            ////Supprimer les articles avec quantité=0
-            //commandRequest.LigneCommands = commandRequest.LigneCommands?.Where(a => a.Quantite > 0).ToList();
-            //if ((commandRequest.LigneCommands?.Count() ?? 0) <= 0)
-            //{
-            //    return Json(new FormResponse { Success = false, Object = null, Message = "Commande invalide , aucune ligne de commande n'est définie." });
-            //}
+            // Suppression de la logique QR Code
+            // Le UserId doit maintenant être fourni directement dans commandRequest
+            // ou géré différemment selon votre logique métier
 
             var url = ApiUrlGeneric.CreateURL<Commande>();
-
             var apiResponse = await ApiService<Commande>.CallApiPost(_httpClientFactory, url, commandRequest);
-
 
             bool success = (apiResponse.Data?.Id ?? 0) > 0;
             string msg = success ? "Commande enregistrée avec succès!" : (apiResponse.Message ?? "Une erreur a été rencontrée!");
+
             if (success)
             {
                 HttpContext.Session.SetListInSession<Article>("ArticlesCart", null);
                 HttpContext.Session.SetInt32("CartBadgeCount", 0);
-
             }
+
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
-
-
-
         }
 
         [HttpPost]
