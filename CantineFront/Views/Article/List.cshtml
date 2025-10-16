@@ -34,18 +34,18 @@
                 <table class="table table-hover mb-0" id="tbArticles" style="width:100%">
                     <thead class="table-light">
                         <tr>
-                            <th scope="col" width="1%">#</th>
-                            <th scope="col" width="5%">Image</th>
-                            <th scope="col" width="15%">Nom</th>
-                            <th scope="col" width="8%">Prix de vente</th>
-                            <th scope="col" width="5%">Qté</th>
-                            <th scope="col" width="8%">Contrôle Stock</th>
-                            <th scope="col" width="8%">Catégorie</th>
-                            <th scope="col" width="10%">Visibilité</th>
-                            <th scope="col" width="10%">Approuvé</th>
-                            <th scope="col" width="5%">Actif</th>
-                            <th scope="col" width="17%">Actions</th>
-                            <th scope="col" width="15%">Description</th>
+                            <th scope="col">#</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Prix de vente</th>
+                            <th scope="col">Qté</th>
+                            <th scope="col">Contrôle Stock</th>
+                            <th scope="col">Catégorie</th>
+                            <th scope="col">Visibilité</th>
+                            <th scope="col">Approuvé</th>
+                            <th scope="col">Actif</th>
+                            <th scope="col">Actions</th>
+                            <th scope="col">Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -250,7 +250,7 @@
                                 },
                                 {
                                     data: null,
-                                    width: '17%',
+                                    width: '15%',
                                     className: 'text-center',
                                     render: function (data, type, row) {
                                         var btnEdit = `<a class="btn btn-action btn-edit me-2" href="/Article/Update/${row.id}" title="Modifier">

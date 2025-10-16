@@ -40,15 +40,13 @@
     margin-bottom: 0;
 }
 
-.table thead th {
-    border-bottom: 2px solid var(--primary-color);
-/*    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);*/
-    color: var(--primary-dark); /* ✅ Texte lisible */
-    font-weight: 600;
-    padding: 16px 12px;
-    vertical-align: middle;
-}
-
+    .table thead th {
+        border-bottom: 2px solid var(--primary-color);
+        color: var(--primary-dark);
+        font-weight: 600;
+        padding: 16px 12px;
+        vertical-align: middle;
+    }
 
     .table tbody tr {
         transition: var(--transition);
@@ -56,7 +54,7 @@
 
         .table tbody tr:hover {
             background-color: rgba(30, 20, 80, 0.05);
-            transform: translateX(4px);
+            /* Problème résolu : suppression du translateX */
         }
 
     .table tbody td {
@@ -187,5 +185,3 @@
         margin-bottom: 1rem;
         opacity: 0.5;
     }
-
-
