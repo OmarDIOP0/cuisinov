@@ -109,7 +109,7 @@ namespace CantineBack.Controllers
         [AllowAnonymous]
         [HttpPost("Register")]
         public async Task<ActionResult<UserRegisterResponse>> Register(User request)
-        {
+            {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
