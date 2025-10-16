@@ -3,6 +3,230 @@
 *@
 @{
 }
+@section Styles{
+    <style>
+        .command-card {
+            background: #ffffff;
+            border: 1px solid #e3f2fd;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+            .command-card:hover {
+                box - shadow: 0 4px 20px rgba(0,0,0,0.12);
+                transform: translateY(-2px);
+            }
+
+        .card-header {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            padding: 12px 16px;
+            border-bottom: none;
+        }
+
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .customer-icon {
+            font - size: 14px;
+        }
+
+        .customer-name {
+            font - weight: 600;
+            font-size: 16px;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+
+        .location-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .location-icon {
+            color: #ff6b6b;
+            font-size: 14px;
+        }
+
+        .payment-method {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .payment-icon {
+            font - size: 12px;
+        }
+
+        .command-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .timer-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .distance-badge {
+            background: #27ae60;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .deliver-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 12px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+            .deliver-btn:hover {
+                background: linear-gradient(135deg, #45a049, #3d8b40);
+                transform: translateY(-1px);
+                box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+                color: white;
+                text-decoration: none;
+            }
+
+        .articles-section {
+            margin: 12px 0;
+        }
+
+        .articles-list {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 8px;
+        }
+
+        .article-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+            .article-item:last-child {
+                border - bottom: none;
+            }
+
+        .article-name {
+            font - size: 13px;
+            color: #495057;
+            flex: 1;
+        }
+
+        .article-quantity {
+            background: #2196F3;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .comment-section {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border-radius: 4px;
+        }
+
+        .comment-label {
+            font - weight: 600;
+            color: #e65100;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .comment-icon {
+            font - size: 12px;
+        }
+
+        .comment-text {
+            font - size: 12px;
+            color: #e65100;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        @@media (max-width: 768px) {
+            .command - card
+
+        {
+            margin - bottom: 12px;
+        }
+
+        .card-header {
+            padding: 10px 12px;
+        }
+
+        .card-body {
+            padding: 12px;
+        }
+
+        .command-actions {
+            flex - direction: column;
+            gap: 8px;
+            align-items: stretch;
+        }
+
+        .deliver-btn {
+            justify - content: center;
+        }
+
+        }
+    </style>
+}
 <section class="food_section ">
     <div class="container" style="width:100%;margin-left:0;margin-right:0;max-width:100%;">
         <div class="heading_container">
