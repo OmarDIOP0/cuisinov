@@ -36,7 +36,7 @@ namespace CantineBack.Controllers
           {
               return NotFound();
           }
-            var l =await _context.Emplacement.ToListAsync();
+            var l =await _context.Emplacement.Include(d => d.Entreprise).ToListAsync();
 
             return Ok(_mapper.Map<IEnumerable<EmplacementReadDto>>( l));   
         }
