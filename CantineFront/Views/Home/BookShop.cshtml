@@ -432,22 +432,22 @@
             }
 
             $("#totalPrice").text(`${totalPrice} XOF`);
-            if (setUserSolde) {
-                if (totalPrice > userSolde) {
-                    $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
-                    if (showMessage) {
-                        ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
-                        $("#messageSolde").text("Solde insuffisant.");
-                    }
+            // if (setUserSolde) {
+            //     if (totalPrice > userSolde) {
+            //         $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
+            //         if (showMessage) {
+            //             ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
+            //             $("#messageSolde").text("Solde insuffisant.");
+            //         }
 
-                    $("#btnCommand").prop("disabled", true);
-                } else {
-                    $("#btnCommand").prop("disabled", false);
-                    $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-                    $("#messageSolde").text("");
-                }
+            //         $("#btnCommand").prop("disabled", true);
+            //     } else {
+            //         $("#btnCommand").prop("disabled", false);
+            //         $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
+            //         $("#messageSolde").text("");
+            //     }
 
-            }
+            // }
 
             return totalPrice;
         }
@@ -497,16 +497,16 @@
                     $("#messageSolde").text("");
                 } else {
                     let montantTotal = updateTotalPrice(false);
-                    if (montantTotal > userSolde) {
-                        $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
-                        ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
-                        $("#messageSolde").text("Solde insuffisant.");
-                        $("#btnCommand").prop("disabled", true);
-                    } else {
-                        $("#btnCommand").prop("disabled", false);
-                        $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-                        $("#messageSolde").text("");
-                    }
+                    // if (montantTotal > userSolde) {
+                    //     $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
+                    //     ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
+                    //     $("#messageSolde").text("Solde insuffisant.");
+                    //     $("#btnCommand").prop("disabled", true);
+                    // } else {
+                    //     $("#btnCommand").prop("disabled", false);
+                    //     $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
+                    //     $("#messageSolde").text("");
+                    // }
                 }
             });
 
@@ -529,28 +529,28 @@
                             return;
                         }
                         let montantTotal = updateTotalPrice(false);
-                        if (checkSolde) {
-                            if (montantTotal > user.solde) {
-                                $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
-                                ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
-                                $("#messageSolde").text("Solde insuffisant.");
-                                $("#btnCommand").prop("disabled", true);
-                            } else {
-                                $("#btnCommand").prop("disabled", false);
-                                $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-                                $("#messageSolde").text("");
-                            }
-                        } else {
+                        // if (checkSolde) {
+                        //     if (montantTotal > user.solde) {
+                        //         $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
+                        //         ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
+                        //         $("#messageSolde").text("Solde insuffisant.");
+                        //         $("#btnCommand").prop("disabled", true);
+                        //     } else {
+                        //         $("#btnCommand").prop("disabled", false);
+                        //         $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
+                        //         $("#messageSolde").text("");
+                        //     }
+                        // } else {
+
+                        //     $("#btnCommand").prop("disabled", false);
+                        //     $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
+                        //     $("#messageSolde").text("");
+                        // }
 
 
-                            $("#btnCommand").prop("disabled", false);
-                            $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-                            $("#messageSolde").text("");
-                        }
 
-
-
-                    } else {
+                    } 
+                    else {
 
                         ToastR("Utilisateur introuvable ", "error", 10, "toast-bottom-right");
                     }

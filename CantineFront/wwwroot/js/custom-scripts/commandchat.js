@@ -194,19 +194,19 @@ function initLocalCommandeValidation(messagejsonString) {
         $("#clientDiv").removeClass("d-flex").hide();
         $("#soldeDiv").removeClass("d-flex").hide();
     }
-    if (paymentMethodCode == "QRCODE") {
-        if (montantTotal > user.solde) {
-            $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
-            ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
-            $("#messageSolde").text("Solde insuffisant.");
-        } else {
-            $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-            $("#messageSolde").text("");
-        }
-    } else {
-        $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-        $("#messageSolde").text("");
-    }
+    //if (paymentMethodCode == "QRCODE") {
+    //    if (montantTotal > user.solde) {
+    //        $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
+    //        ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
+    //        $("#messageSolde").text("Solde insuffisant.");
+    //    } else {
+    //        $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
+    //        $("#messageSolde").text("");
+    //    }
+    //} else {
+    //    $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
+    //    $("#messageSolde").text("");
+    //}
 
     $("#selectedArticlesCount").text(articlesBooking.length);
     $("#totalPrice").text(`${montantTotal} XOF`);

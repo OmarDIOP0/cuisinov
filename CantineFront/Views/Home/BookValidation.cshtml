@@ -173,20 +173,19 @@
             $("#totalPrice").text(`${totalPrice} XOF`);
             var solde = $("#soldeRestant").val();
             console.log(solde)
-            if (totalPrice>solde){
-                $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
-                if (showMessage) {
-                    ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
+            // if (totalPrice>solde){
+            //     $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
+            //     if (showMessage) {
+            //         ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
+            //     }
 
-                }
-
-                $("#messageSolde").text("Solde insuffisant.");
-                $("#btnCommand").prop("disabled",true);
-            }else{
-                $("#btnCommand").prop("disabled", false);
-                $("#messageSolde").text("")
-                $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-            }
+            //     $("#messageSolde").text("Solde insuffisant.");
+            //     $("#btnCommand").prop("disabled",true);
+            // }else{
+            //     $("#btnCommand").prop("disabled", false);
+            //     $("#messageSolde").text("")
+            //     $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
+            // }
         }
        $(function(){
            

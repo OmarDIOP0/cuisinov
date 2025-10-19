@@ -274,25 +274,25 @@
 
             $("#totalPrice").text(`${totalPrice} XOF`);
 
-            if (!checkSolde) {
-                $("#btnCommand").prop("disabled", false);
-                $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-                $("#messageSolde").text("");
-            } else {
-                if (totalPrice > UserSolde) {
-                    $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
-                    if (showMessage) {
-                        ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
+            // if (!checkSolde) {
+            //     $("#btnCommand").prop("disabled", false);
+            //     $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
+            //     $("#messageSolde").text("");
+            // } else {
+            //     if (totalPrice > UserSolde) {
+            //         $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
+            //         if (showMessage) {
+            //             ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
 
-                    }
-                    $("#messageSolde").text("Solde insuffisant.");
-                    $("#btnCommand").prop("disabled", true);
-                } else {
-                    $("#btnCommand").prop("disabled", false);
-                    $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-                    $("#messageSolde").text("");
-                }
-            }
+            //         }
+            //         $("#messageSolde").text("Solde insuffisant.");
+            //         $("#btnCommand").prop("disabled", true);
+            //     } else {
+            //         $("#btnCommand").prop("disabled", false);
+            //         $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
+            //         $("#messageSolde").text("");
+            //     }
+            // }
 
             return totalPrice;
 
@@ -498,19 +498,19 @@
                         $("#userId").val(user.id);
                         $("#solde").text(`${user.solde} XOF`);
                         $("#soldeRestant").val(user.solde);
-                        UserSolde = user.solde;
+                        // UserSolde = user.solde;
 
                     } else {
                         return;
                     }
-                    if (totalPrice > user.solde) {
-                        $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
-                        ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
-                        $("#messageSolde").text("Solde insuffisant.");
-                    } else {
-                        $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-                        $("#messageSolde").text("");
-                    }
+                    // if (totalPrice > user.solde) {
+                    //     $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
+                    //     ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
+                    //     $("#messageSolde").text("Solde insuffisant.");
+                    // } else {
+                    //     $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
+                    //     $("#messageSolde").text("");
+                    // }
                 }
 
             };
