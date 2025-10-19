@@ -544,13 +544,26 @@ namespace CantineBack.Controllers
             {
                 user = await _context.Users.FindAsync(commandDto.UserId);
             }
+            var emplacement = await _context.Emplacement
+                        .FirstOrDefaultAsync(e => EF.Functions.Like(e.Name, "%CUISINOV%"));
 
-            Commande newCommande = new()
+            if (emplacement == null && commandDto.CommandeADistance)
+            {
+                return Problem("L'emplacement nommé 'CUISINOV' est introuvable.");
+            }
+
+            var emplacementId = commandDto.CommandeADistance ? emplacement.Id : Common.ShopID;
+
+            var emplacementExists = await _context.Emplacement.AnyAsync(e => e.Id == emplacementId);
+            if (!emplacementExists)
+                return Problem($"Emplacement {emplacementId} not found.");
+
+            Commande newCommande = new Commande
             {
                 Date = DateTime.Now,
                 IsDelivered = false,
                 CommandeADistance = commandDto.CommandeADistance,
-                EmplacementId = commandDto.CommandeADistance ? commandDto.EmplacementId : Common.ShopID,
+                EmplacementId = emplacementId,
                 UserId = commandDto.UserId,
                 PaymentMethodId = commandDto.PaymentMethodId,
                 Montant = amountCommand,
@@ -558,37 +571,40 @@ namespace CantineBack.Controllers
             };
 
             _context.Commandes.Add(newCommande);
-
-            if (await _context.SaveChangesAsync() > 0)
+            try
             {
-                // SUPPRESSION de la logique de déduction du solde pour QR Code
-                // Si vous avez d'autres méthodes de paiement qui nécessitent une gestion de solde,
-                // ajoutez la logique conditionnelle ici
-
-                // Mise à jour des quantités en stock
-                foreach (var ligneCommand in commandDto.LigneCommands)
+                if (await _context.SaveChangesAsync() > 0)
                 {
-                    LigneCommande ligneCommande = new()
+                    foreach (var ligneCommand in commandDto.LigneCommands)
                     {
-                        ArticleId = ligneCommand.ArticleId,
-                        CommandeId = newCommande.Id,
-                        PrixTotal = ligneCommand.PrixTotal,
-                        Quantite = ligneCommand.Quantite
-                    };
+                        LigneCommande ligneCommande = new()
+                        {
+                            ArticleId = ligneCommand.ArticleId,
+                            CommandeId = newCommande.Id,
+                            PrixTotal = ligneCommand.PrixTotal,
+                            Quantite = ligneCommand.Quantite
+                        };
 
-                    _context.LigneCommandes.Add(ligneCommande);
-                }
+                        _context.LigneCommandes.Add(ligneCommande);
+                    }
 
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    return Problem(detail: $"Erreur interne : {ex.Message}", statusCode: StatusCodes.Status500InternalServerError);
-                }
+                    try
+                    {
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        return Problem(detail: $"Erreur interne : {ex.Message}", statusCode: StatusCodes.Status500InternalServerError);
+                    }
 
+                }
             }
+            catch (Exception ex)
+            {
+                return Problem($"Erreur lors de la sauvegarde initiale : {ex.Message}");
+            }
+
+
 
             return Ok((await GetCommande(newCommande.Id))?.Value);
         }
