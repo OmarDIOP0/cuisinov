@@ -545,7 +545,7 @@ namespace CantineBack.Controllers
                 user = await _context.Users.FindAsync(commandDto.UserId);
             }
             var emplacement = await _context.Emplacement
-                        .FirstOrDefaultAsync(e => EF.Functions.Like(e.Name, "%CUISINOV%"));
+                        .FirstOrDefaultAsync(e => EF.Functions.Like(e.Name, "%SURPLACE%"));
 
             if (emplacement == null && commandDto.CommandeADistance)
             {
@@ -553,10 +553,6 @@ namespace CantineBack.Controllers
             }
 
             var emplacementId = commandDto.CommandeADistance ? emplacement.Id : Common.ShopID;
-
-            var emplacementExists = await _context.Emplacement.AnyAsync(e => e.Id == emplacementId);
-            if (!emplacementExists)
-                return Problem($"Emplacement {emplacementId} not found.");
 
             Commande newCommande = new Commande
             {
