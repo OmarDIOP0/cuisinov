@@ -26,6 +26,7 @@
                     <tr>
                         <th scope="col" width="5%">#</th>
                         <th scope="col" width="30%">Nom</th>
+                            <th scope="col" width="30%">Entreprise</th>
                         <th scope="col" width="15%" class="text-center">Statut</th>
                         <th scope="col" width="25%" class="text-center">Actions</th>
                     </tr>
@@ -96,9 +97,19 @@
                                     }
                                 },
                                 {
-                                    width: '60%',
+                                    width: '30%',
                                     data: 'name',
                                     defaultContent: '',
+                                },
+                                 {
+                                    width: '30%',
+                                    data: 'entreprise.nom',
+                                    render: function (data, type, row) {
+                                        return '<div class="d-flex align-items-center">' +
+                                               '<i class="fas fa-building text-primary me-3"></i>' +
+                                               '<span class="fw-semibold">' + (data || '') + '</span>' +
+                                               '</div>';
+                                    }
                                 },
                                 
                                 {

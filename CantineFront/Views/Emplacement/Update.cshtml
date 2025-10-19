@@ -38,7 +38,7 @@
                                                     {
                                                         foreach (var ent in Model.Entreprises)
                                                         {
-                                                            <option value="@ent.Id" selected="@(ent.Id == Model.Department.EntrepriseId ? "selected" : null)">
+                                                            <option value="@ent.Id" selected="@(ent.Id == Model.Emplacement.EntrepriseId ? "selected" : null)">
                                                                 @ent.Nom (@ent.Code)
                                                             </option>
                                                         }
