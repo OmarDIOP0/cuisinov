@@ -23,6 +23,23 @@
                                 <form id="form">
                                     <div class="row g-3">
                                         <!-- Nom du Emplacement -->
+                                        <div class="col-12 mb-3">
+                                            <div class="form-group">
+                                                <label class="form-label" for="EntrepriseId">
+                                                    <i class="fas fa-building"></i> Entreprise
+                                                </label>
+                                                <select class="form-control w-100" name="EntrepriseId" id="EntrepriseId" required>
+                                                    <option disabled selected>Sélectionnez une entreprise</option>
+                                                    @if (ViewBag.Entreprises != null)
+                                                    {
+                                                        foreach (var ent in ViewBag.Entreprises)
+                                                        {
+                                                            <option value="@ent.Id">@ent.Nom (@ent.Code)</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label class="form-label" for="Name">

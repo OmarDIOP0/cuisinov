@@ -41,7 +41,7 @@ namespace CantineFront.Controllers
             return Json(apiResponse);
         }
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
-        public async IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var urlEntreprise = ApiUrlGeneric.ReadAllURL<Entreprise>();
             var apiResponseListEntreprises = await ApiService<Entreprise>.CallGetList(_httpClientFactory, urlEntreprise);
@@ -92,11 +92,14 @@ namespace CantineFront.Controllers
                 var httpClient = _httpClientFactory.CreateClient("ClearanceApi");
                 HttpResponseMessage response = await httpClient.GetAsync(url);
                 var apiResponse = await ApiResultParser<Emplacement>.Parse(response);
+                var urlEntreprise = ApiUrlGeneric.ReadAllURL<Entreprise>();
+                var apiResponseListEntreprises = await ApiService<Entreprise>.CallGetList(_httpClientFactory, urlEntreprise);
 
                 var categorie = apiResponse.Data;
                 if (categorie != null)
                 {
                     EmplacementVM.Emplacement = categorie;
+                    EmplacementVM.Entreprises = apiResponseListEntreprises?.Data;
                     return View(EmplacementVM);
                 }
                 else
