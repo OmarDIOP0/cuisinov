@@ -540,6 +540,7 @@ namespace CantineBack.Controllers
 
             // SUPPRESSION de la logique QR Code
             User? user = null;
+            user.Id = HttpContext.Session.GetInt32("UserId") ?? 0;
             if (commandDto.UserId.HasValue)
             {
                 user = await _context.Users.FindAsync(commandDto.UserId);
@@ -552,7 +553,7 @@ namespace CantineBack.Controllers
                 return Problem("L'emplacement nommé 'CUISINOV' est introuvable.");
             }
 
-            var emplacementId = commandDto.CommandeADistance ? emplacement.Id : Common.ShopID;
+            var emplacementId = commandDto.CommandeADistance ? Common.ShopID : emplacement.Id;
 
             Commande newCommande = new Commande
             {

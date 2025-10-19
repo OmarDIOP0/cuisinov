@@ -28,6 +28,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddTransient<ITokenService, TokenService>();   
 Common.ShopID = builder.Configuration.GetValue<int>("ShopID");
+Common.EntrepriseID = builder.Configuration.GetValue<int>("EntrepriseID");
 Common.EnvironmentMode = builder.Configuration.GetValue<string>("EnvironmentMode");
 Common.CreateAccountMessage = builder.Configuration.GetValue<string>("CreateAccountMessage");
 Common.PasswordResetMessage = builder.Configuration.GetValue<string>("PasswordResetMessage");
