@@ -68,6 +68,7 @@ namespace CantineFront.Controllers
                     HttpContext.Session.SetObjectInSession("expire_at", expireAt);
                     HttpContext.Session.SetInt32("UserId", user.Id);
                     HttpContext.Session.SetString("Username", user.Login);
+                    HttpContext.Session.SetInt32("EntrepriseId", user.EntrepriseId ?? 0);
                     HttpContext.Session.SetInt32("Solde", user.Solde);
                     HttpContext.Session.SetString("IsAdmin", (user.Profile == "ADMIN").ToString());
                     HttpContext.Session.SetString("IsGerant", (user.Profile == "GERANT").ToString());
@@ -99,11 +100,14 @@ namespace CantineFront.Controllers
                     var apiEmplacements = tasks.Item1.Result;
                     var apiPaymentMethods = tasks.Item2.Result;
 
+                    var entrepriseId = user.EntrepriseId ?? 0;
 
                     if (apiEmplacements.Data != null)
                     {
-
-                        HttpContext.Session.SetListInSession("Emplacements", apiEmplacements.Data);
+                        var filteredEmplacements = apiEmplacements.Data
+                               .Where(e => !e.EntrepriseId.HasValue || e.EntrepriseId == entrepriseId)
+                               .ToList();
+                        HttpContext.Session.SetListInSession("Emplacements", filteredEmplacements);
                     }
 
                     if (apiPaymentMethods.Data != null)
@@ -152,6 +156,7 @@ namespace CantineFront.Controllers
                        
                         HttpContext.Session.SetString("Username", username);
                         HttpContext.Session.SetInt32("Solde", user.Solde);
+                        HttpContext.Session.SetInt32("EntrepriseId", user.EntrepriseId ?? 0);
                         HttpContext.Session.SetString("IsAdmin", (user.Profile == "ADMIN").ToString());
                         HttpContext.Session.SetString("IsGerant", (user.Profile == "GERANT").ToString());
                         HttpContext.Session.SetString("Logged", "true");
@@ -182,11 +187,13 @@ namespace CantineFront.Controllers
                         var apiEmplacements = tasks.Item1.Result;
                         var apiPaymentMethods = tasks.Item2.Result;
 
-
+                        var entrepriseId = user.EntrepriseId ?? 0;
                         if (apiEmplacements.Data != null)
                         {
-
-                            HttpContext.Session.SetListInSession("Emplacements", apiEmplacements.Data);
+                            var filteredEmplacements = apiEmplacements.Data
+                                .Where(e => !e.EntrepriseId.HasValue || e.EntrepriseId == entrepriseId)
+                                .ToList();
+                            HttpContext.Session.SetListInSession("Emplacements", filteredEmplacements);
                         }
 
                         if (apiPaymentMethods.Data != null)

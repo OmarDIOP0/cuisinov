@@ -41,8 +41,11 @@ namespace CantineFront.Controllers
             return Json(apiResponse);
         }
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
-        public IActionResult Create()
+        public async IActionResult Create()
         {
+            var urlEntreprise = ApiUrlGeneric.ReadAllURL<Entreprise>();
+            var apiResponseListEntreprises = await ApiService<Entreprise>.CallGetList(_httpClientFactory, urlEntreprise);
+            ViewBag.Entreprises = apiResponseListEntreprises?.Data;
 
             return View();
         }
