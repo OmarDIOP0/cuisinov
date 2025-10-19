@@ -579,7 +579,15 @@ namespace CantineBack.Controllers
                     _context.LigneCommandes.Add(ligneCommande);
                 }
 
-                await _context.SaveChangesAsync();
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    return Problem(detail: $"Erreur interne : {ex.Message}", statusCode: StatusCodes.Status500InternalServerError);
+                }
+
             }
 
             return Ok((await GetCommande(newCommande.Id))?.Value);

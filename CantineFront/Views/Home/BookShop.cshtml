@@ -258,7 +258,7 @@
                                         <div class="p-5">
                                             <h3 class="fw-bold mb-5 mt-2 pt-1">Résumé</h3>
                                             <hr class="my-4">
-                                            <input type="hidden" id="EmplacementId" value="1" />
+                                            @* <input type="hidden" id="EmplacementId" value="1" /> *@
                                             <div class="mb-4 pb-2 ">
                                                 <label class="mb-3">Méthode de paiement</label>
                                                 <div class="radio-inputs">
@@ -644,7 +644,7 @@
 
                         EmplacementId: $("#EmplacementId").val() || 1,
                         CommandeADistance: false,
-                        PaymentMethodId: $("input[type='radio'][name='PaymentMethodId']:checked").val(),
+                        PaymentMethodId: parseInt($("input[type='radio'][name='PaymentMethodId']:checked").val()),
                         PaymentMethodeCode: $("input[type='radio'][name='PaymentMethodId']:checked").data("code")
                         // PaymentMethodId: $("#PaymentMethodId").val(),
                         //PaymentMethodeCode: $("#PaymentMethodId option:selected").data("code")
@@ -657,7 +657,12 @@
 
                         var $quantite = $("#quantite_" + id)
                         var q = $quantite.length > 0 ? $quantite.val() : 0;
-                        lignesCommandes.push({ ArticleId: id, Quantite: q, PrixTotal: q * price })
+                        lignesCommandes.push({
+                                  ArticleId: parseInt(id),
+                                  Quantite: parseInt(q),
+                                  PrixTotal: parseInt(q) * price
+                                })
+
 
                     }
                     if (lignesCommandes.length == 0) {
