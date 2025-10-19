@@ -101,13 +101,21 @@ namespace CantineFront.Controllers
                     var apiPaymentMethods = tasks.Item2.Result;
 
                     var entrepriseId = user.EntrepriseId ?? 0;
+                    var filteredEmplacements = new List<Emplacement>();
 
                     if (apiEmplacements.Data != null)
                     {
-                        var filteredEmplacements = apiEmplacements.Data
-                               .Where(e => !e.EntrepriseId.HasValue || e.EntrepriseId == entrepriseId)
-                               .ToList();
-                        HttpContext.Session.SetListInSession("Emplacements", filteredEmplacements);
+                        if(entrepriseId > 0)
+                        {
+                             filteredEmplacements = apiEmplacements.Data
+                              .Where(e => !e.EntrepriseId.HasValue || e.EntrepriseId == entrepriseId)
+                              .ToList();
+                            HttpContext.Session.SetListInSession("Emplacements", filteredEmplacements);
+                        }
+                        else
+                        {
+                            HttpContext.Session.SetListInSession("Emplacements", apiEmplacements.Data);
+                        }
                     }
 
                     if (apiPaymentMethods.Data != null)
@@ -135,7 +143,7 @@ namespace CantineFront.Controllers
             if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
             {
 
-                Tuple<bool, List<string>> res = new Tuple<bool, List<string>>(true, new List<string>());  // LoginManager.AuthenticateUser(userID, password);
+                Tuple<bool, List<string>> res = new Tuple<bool, List<string>>(true, new List<string>()); 
                 bool resetPassword = false;
                 var url = String.Format(ApiUrlGeneric.AuthenticateURL, username, password);
                 var apiResponse = await ApiService<UserLoginResponse>.CallApiPost(_httpClientFactory, url,null);
@@ -188,12 +196,20 @@ namespace CantineFront.Controllers
                         var apiPaymentMethods = tasks.Item2.Result;
 
                         var entrepriseId = user.EntrepriseId ?? 0;
+                        var filteredEmplacements = new List<Emplacement>();
                         if (apiEmplacements.Data != null)
                         {
-                            var filteredEmplacements = apiEmplacements.Data
-                                .Where(e => !e.EntrepriseId.HasValue || e.EntrepriseId == entrepriseId)
-                                .ToList();
-                            HttpContext.Session.SetListInSession("Emplacements", filteredEmplacements);
+                            if (entrepriseId > 0)
+                            {
+                                filteredEmplacements = apiEmplacements.Data
+                                 .Where(e => !e.EntrepriseId.HasValue || e.EntrepriseId == entrepriseId)
+                                 .ToList();
+                                HttpContext.Session.SetListInSession("Emplacements", filteredEmplacements);
+                            }
+                            else
+                            {
+                                HttpContext.Session.SetListInSession("Emplacements", apiEmplacements.Data);
+                            }
                         }
 
                         if (apiPaymentMethods.Data != null)
