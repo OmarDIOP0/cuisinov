@@ -10,7 +10,7 @@
     var emplacements = Accessor.HttpContext?.Session.GetListObjectFromSession<Emplacement>("Emplacements") ?? new List<Emplacement>();
     var paymentMethods = Accessor.HttpContext?.Session.GetListObjectFromSession<PaymentMethod>("PaymentMethods") ?? new List<PaymentMethod>();
     PaymentMethod cashPay = paymentMethods.FirstOrDefault(p => p.Code == "CASH");
-    PaymentMethod qrCodePay = paymentMethods.FirstOrDefault(p => p.Code == "QRCODE");
+    // PaymentMethod qrCodePay = paymentMethods.FirstOrDefault(p => p.Code == "QRCODE");
     PaymentMethod wavePay = paymentMethods.FirstOrDefault(p => p.Code == "WAVE");
     PaymentMethod omPay = paymentMethods.FirstOrDefault(p => p.Code == "OM");
     IDictionary<int, int> articlePrixDict = new Dictionary<int, int>();
@@ -258,7 +258,7 @@
                                         <div class="p-5">
                                             <h3 class="fw-bold mb-5 mt-2 pt-1">Résumé</h3>
                                             <hr class="my-4">
-
+                                            <input type="hidden" id="EmplacementId" value="1" />
                                             <div class="mb-4 pb-2 ">
                                                 <label class="mb-3">Méthode de paiement</label>
                                                 <div class="radio-inputs">
@@ -271,7 +271,7 @@
                                                             <span class="radio-label font-weight-bold">CASH</span>
                                                         </span>
                                                     </label>
-                                                    <label>
+                                                    @* <label>
                                                         <input class="radio-input" type="radio" name="PaymentMethodId" value="@(qrCodePay?.Id??2)" id="qrCodePay" data-code="@(qrCodePay?.Code??"QRCODE")">
                                                         <span class="radio-tile">
                                                             <span class="radio-icon">
@@ -279,7 +279,7 @@
                                                             </span>
                                                             <span class="radio-label font-weight-bold">SOLDE</span>
                                                         </span>
-                                                    </label>
+                                                    </label> *@
                                                     <label>
                                                         <input class="radio-input" type="radio" name="PaymentMethodId" value="@(wavePay?.Id??3)" id="wavePay" data-code="@(wavePay?.Code ?? "WAVE")">
                                                         <span class="radio-tile">
@@ -642,10 +642,11 @@
                     btn.prop("disabled", true);
                     var postData = {
 
-                        EmplacementId: $("#EmplacementId").val(),
+                        EmplacementId: $("#EmplacementId").val() || 1,
+                        CommandeADistance: false,
                         PaymentMethodId: $("input[type='radio'][name='PaymentMethodId']:checked").val(),
                         PaymentMethodeCode: $("input[type='radio'][name='PaymentMethodId']:checked").data("code")
-                        //PaymentMethodId: $("#PaymentMethodId").val(),
+                        // PaymentMethodId: $("#PaymentMethodId").val(),
                         //PaymentMethodeCode: $("#PaymentMethodId option:selected").data("code")
                     }
 
@@ -708,9 +709,9 @@
                         }
                         setUserSolde = false;
                         userSolde = 0;
-                        //     sendDataCommand("shop", postData)
+                        console.log("PostData",postData);
                         if (isGerant || isAdmin) {
-                            ajaxManager("POST", "/Commande/CreateCommandeByPartner", successHandler, errorHandler, { QrCode: $("#qrCode").val(), ...postData });
+                            ajaxManager("POST", "/Commande/CreateCommandeByPartner", successHandler, errorHandler, {...postData });
                         }else{
                             ajaxManager("POST", "/Commande/PostLocalCommande", successHandler, errorHandler, { QrCode: $("#qrCode").val(), ...postData });
                         }

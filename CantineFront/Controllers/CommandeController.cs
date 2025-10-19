@@ -97,23 +97,39 @@ namespace CantineFront.Controllers
                 return Json(new FormResponse { Success = false, Object = null, Message = "Commande invalide, aucune ligne de commande n'est définie." });
             }
 
-            // Suppression de la logique QR Code
-            // Le UserId doit maintenant être fourni directement dans commandRequest
-            // ou géré différemment selon votre logique métier
-
             var url = ApiUrlGeneric.CreateURL<Commande>();
-            var apiResponse = await ApiService<Commande>.CallApiPost(_httpClientFactory, url, commandRequest);
-
-            bool success = (apiResponse.Data?.Id ?? 0) > 0;
-            string msg = success ? "Commande enregistrée avec succès!" : (apiResponse.Message ?? "Une erreur a été rencontrée!");
-
-            if (success)
+            try
             {
-                HttpContext.Session.SetListInSession<Article>("ArticlesCart", null);
-                HttpContext.Session.SetInt32("CartBadgeCount", 0);
+                var apiResponse = await ApiService<Commande>.CallApiPost(_httpClientFactory, url, commandRequest);
+
+                bool success = (apiResponse.Data?.Id ?? 0) > 0;
+                string msg = success ? "Commande enregistrée avec succès!" : (apiResponse.Message ?? "Une erreur a été rencontrée!");
+
+                if (success)
+                {
+                    HttpContext.Session.SetListInSession<Article>("ArticlesCart", null);
+                    HttpContext.Session.SetInt32("CartBadgeCount", 0);
+                }
+
+                return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
+            }
+            catch (Exception ex)
+            {
+                return Json(new FormResponse { Success = false, Message = $"Erreur API : {ex.Message}" });
             }
 
-            return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
+            //var apiResponse = await ApiService<Commande>.CallApiPost(_httpClientFactory, url, commandRequest);
+
+            //bool success = (apiResponse.Data?.Id ?? 0) > 0;
+            //string msg = success ? "Commande enregistrée avec succès!" : (apiResponse.Message ?? "Une erreur a été rencontrée!");
+
+            //if (success)
+            //{
+            //    HttpContext.Session.SetListInSession<Article>("ArticlesCart", null);
+            //    HttpContext.Session.SetInt32("CartBadgeCount", 0);
+            //}
+
+            //return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
         }
 
         [HttpPost]

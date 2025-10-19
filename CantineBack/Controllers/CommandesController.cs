@@ -545,10 +545,6 @@ namespace CantineBack.Controllers
                 user = await _context.Users.FindAsync(commandDto.UserId);
             }
 
-            // Si vous avez besoin de valider l'utilisateur pour d'autres méthodes de paiement,
-            // ajoutez ici votre logique spécifique
-
-            // Création de la commande
             Commande newCommande = new()
             {
                 Date = DateTime.Now,
