@@ -3225,6 +3225,9 @@
           },
           "actif": {
             "type": "boolean"
+          },
+          "entreprise": {
+            "$ref": "#/components/schemas/Entreprise"
           }
         },
         "additionalProperties": false
