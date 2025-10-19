@@ -12,5 +12,6 @@ namespace CantineBack.Models.Dtos
         public string? Name { get; set; }
         public int? EntrepriseId { get; set;  }
         public bool Actif { get; set; }
+        public Entreprise? Entreprise { get; set; }
     }
 }
