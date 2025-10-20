@@ -82,7 +82,7 @@ namespace CantineBack.Controllers
             // Commencer la requête
             IQueryable<Article> query = _context.Articles
                 .Include(a => a.CategorieNavigation)
-                .Where(a => a.IsArticleOnMenu && a.IsApproved);
+                .Where(a => a.IsArticleOnMenu && a.IsApproved && a.QuantiteStock > 0);
 
             if (currentUser.Profile == "USER" || currentUser.Profile == "GERANT")
             {

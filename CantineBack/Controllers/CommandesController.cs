@@ -538,12 +538,12 @@ namespace CantineBack.Controllers
                 return Problem("Payment Method for this command is unknown");
             }
 
-            int? userId = HttpContext.Session.GetInt32("UserId");
+            //int? userId = HttpContext.Session.GetInt32("UserId");
             User? user = null;
 
-            if (userId.HasValue && userId.Value > 0)
+            if (user != null )
             {
-                user = await _context.Users.FindAsync(userId.Value);
+                user = await _context.Users.FindAsync(user.Id);
             }
             if (commandDto.UserId.HasValue)
             {
