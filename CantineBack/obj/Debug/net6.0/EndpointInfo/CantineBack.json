@@ -2903,6 +2903,10 @@
           "controlStockQuantity": {
             "type": "boolean"
           },
+          "entrepriseId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "categorieNavigation": {
             "$ref": "#/components/schemas/Categorie"
           }

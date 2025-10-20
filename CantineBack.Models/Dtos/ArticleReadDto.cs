@@ -22,6 +22,7 @@ namespace CantineBack.Models.Dtos
         public bool IsApproved { get; set; }
 
         public bool ControlStockQuantity { get; set; } = true;
+        public int EntrepriseId { get; set; }
         public virtual Categorie? CategorieNavigation { get; set; }
     }
 }

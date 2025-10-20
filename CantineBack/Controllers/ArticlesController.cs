@@ -69,21 +69,44 @@ namespace CantineBack.Controllers
         public async Task<ActionResult<IEnumerable<ArticleReadDto>>> GetMenu(int? categorieId)
         {
             if (_context.Articles == null)
-            {
                 return NotFound();
-            }
-            if (categorieId == null)
-            {
 
-                //_mapper.ProjectTo < ArticleReadDto >()
-                return await _mapper.ProjectTo<ArticleReadDto>(_context.Articles.Where(a => a.IsArticleOnMenu == true && a.IsApproved).Include(a => a.CategorieNavigation)).ToListAsync();
-            //    return Ok(_mapper.Map<IEnumerable<CommandeReadDto>>(r));
-            }
-            else
+            var userLogin = User.Identity.Name; 
+            var currentUser = await _context.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Login == userLogin);
+
+            if (currentUser == null)
+                return Unauthorized();
+
+            // Commencer la requête
+            IQueryable<Article> query = _context.Articles
+                .Include(a => a.CategorieNavigation)
+                .Where(a => a.IsArticleOnMenu && a.IsApproved);
+
+            if (currentUser.Profile == "USER")
             {
-                return await _mapper.ProjectTo<ArticleReadDto>(_context.Articles.Where(a => a.CategorieId == categorieId && a.IsArticleOnMenu == true && a.IsApproved).Include(a => a.CategorieNavigation)).ToListAsync();
+                if (currentUser.EntrepriseId.HasValue)
+                {
+                    query = query.Where(a => a.EntrepriseId == currentUser.EntrepriseId.Value);
+                }
+                else
+                {
+                    return Ok(new List<ArticleReadDto>());
+                }
             }
+
+            if (categorieId.HasValue)
+            {
+                query = query.Where(a => a.CategorieId == categorieId.Value);
+            }
+
+            // ProjectTo avec AutoMapper
+            var articlesDto = await _mapper.ProjectTo<ArticleReadDto>(query).ToListAsync();
+
+            return Ok(articlesDto);
         }
+
 
 
         // GET: api/Articles/5
