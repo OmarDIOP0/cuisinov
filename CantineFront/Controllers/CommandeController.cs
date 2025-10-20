@@ -50,6 +50,7 @@ namespace CantineFront.Controllers
             ViewBag.MaxDate = DateTime.Now.AddHours(1).ToString("yyyy-MM-ddTHH:mm");
             ViewBag.StartDate = DateTime.Now.AddDays(-1).ToString("yyyy-MM-ddT00:00");
             ViewBag.EndDate = DateTime.Now.AddHours(5).ToString("yyyy-MM-ddTHH:mm");
+
             return View();
         }
         [HttpPost]

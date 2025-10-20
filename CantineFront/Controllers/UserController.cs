@@ -234,7 +234,7 @@ namespace CantineFront.Controllers
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
 
         }
-        public async Task<JsonResult> UpdateProfileUser(UserProfilDto userRequest)
+        public async Task<JsonResult> UpdateProfileUser([FromBody] UserProfilDto userRequest)
         {
                 if (!ModelState.IsValid)
                 {
