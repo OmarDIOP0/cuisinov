@@ -84,7 +84,7 @@ namespace CantineBack.Controllers
                 .Include(a => a.CategorieNavigation)
                 .Where(a => a.IsArticleOnMenu && a.IsApproved);
 
-            if (currentUser.Profile == "USER")
+            if (currentUser.Profile == "USER" || currentUser.Profile == "GERANT")
             {
                 if (currentUser.EntrepriseId.HasValue)
                 {
