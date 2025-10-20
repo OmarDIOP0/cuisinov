@@ -31,9 +31,6 @@
                             <div class="form-container">
                                 <!-- Profile Info Header -->
                                 <div class="profile-header text-center mb-4">
-                                    <div class="profile-avatar mb-3">
-                                        <i class="fas fa-user"></i>
-                                    </div>
                                     <h3 id="profileUsername" class="h4 mb-2">@username</h3>
                                     <div id="profileRole" class="profile-role">
                                         Chargement...
@@ -128,13 +125,6 @@
                                                         data-url="/User/UpdateProfileUser">
                                                     <i class="fas fa-save me-2"></i>Enregistrer les modifications
                                                 </button>
-                                                @* <button class="btn-custom"
-                                                        id="btnCreate"
-                                                        type="button"
-                                                        data-redirectroute="/Home/Profil"
-                                                        data-url="/User/UpdateProfileUser">
-                                                    <i class="fas fa-save me-2"></i>Save
-                                                </button> *@
                                             </div>
                                         </form>
                                     </div>
@@ -158,44 +148,46 @@
                                                     </button>
                                                 </div>
                                             </div>
-
-                                            <div class="form-group">
-                                                <label class="form-label" for="newPassword">
-                                                    <i class="fas fa-key"></i>Nouveau mot de passe
-                                                </label>
-                                                <div class="input-group">
-                                                    <input type="password"
-                                                           class="form-control"
-                                                           id="newPassword"
-                                                           name="NewPassword"
-                                                           placeholder="Saisissez votre nouveau mot de passe"
-                                                           required>
-                                                    <button type="button" class="btn btn-outline-secondary password-toggle" data-target="newPassword">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label" for="newPassword">
+                                                        <i class="fas fa-key"></i>Nouveau mot de passe
+                                                    </label>
+                                                    <div class="input-group">
+                                                        <input type="password"
+                                                               class="form-control"
+                                                               id="newPassword"
+                                                               name="NewPassword"
+                                                               placeholder="Saisissez votre nouveau mot de passe"
+                                                               required>
+                                                        <button type="button" class="btn btn-outline-secondary password-toggle" data-target="newPassword">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                    </div>
+                                                    <small class="form-text text-muted mt-2">
+                                                        <i class="fas fa-info-circle me-1"></i>
+                                                        Minimum 8 caractères avec chiffres et lettres
+                                                    </small>
                                                 </div>
-                                                <small class="form-text text-muted mt-2">
-                                                    <i class="fas fa-info-circle me-1"></i>
-                                                    Minimum 8 caractères avec chiffres et lettres
-                                                </small>
+
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label" for="confirmPassword">
+                                                        <i class="fas fa-check-double"></i>Confirmer le mot de passe
+                                                    </label>
+                                                    <div class="input-group">
+                                                        <input type="password"
+                                                               class="form-control"
+                                                               id="confirmPassword"
+                                                               name="ConfirmPassword"
+                                                               placeholder="Confirmez votre nouveau mot de passe"
+                                                               required>
+                                                        <button type="button" class="btn btn-outline-secondary password-toggle" data-target="confirmPassword">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            <div class="form-group">
-                                                <label class="form-label" for="confirmPassword">
-                                                    <i class="fas fa-check-double"></i>Confirmer le mot de passe
-                                                </label>
-                                                <div class="input-group">
-                                                    <input type="password"
-                                                           class="form-control"
-                                                           id="confirmPassword"
-                                                           name="ConfirmPassword"
-                                                           placeholder="Confirmez votre nouveau mot de passe"
-                                                           required>
-                                                    <button type="button" class="btn btn-outline-secondary password-toggle" data-target="confirmPassword">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
 
                                             <div class="btn-group">
                                                 <button class="btn-back" type="button" id="btnCancelPassword">

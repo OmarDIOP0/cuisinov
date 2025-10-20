@@ -45,10 +45,6 @@
     padding: 40px;
 }
 
-.profile-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
 
 .profile-avatar {
     width: 100px;
@@ -108,75 +104,3 @@
     background-color: #f8f9fa;
     cursor: not-allowed;
 }
-
-
-/*.profile-header {
-    padding: 20px 0;
-}
-
-.profile-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: var(--gradient-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 15px;
-    color: white;
-    font-size: 2rem;
-}
-
-.profile-role {
-    display: inline-block;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    margin-top: 8px;
-}
-
-.role-admin {
-    background: linear-gradient(135deg, #dc3545, #c82333);
-    color: white;
-}
-
-.role-gerant {
-    background: linear-gradient(135deg, #fd7e14, #e55a00);
-    color: white;
-}
-
-.role-user {
-    background: linear-gradient(135deg, #20c997, #17a2b8);
-    color: white;
-}
-
-.nav-tabs-custom {
-    border-bottom: 2px solid #e9ecef;
-}
-
-    .nav-tabs-custom .nav-link {
-        border: none;
-        color: #6c757d;
-        font-weight: 600;
-        padding: 15px 25px;
-        margin-bottom: -2px;
-        border-radius: 0;
-        transition: var(--transition);
-    }
-
-        .nav-tabs-custom .nav-link.active {
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--secondary-color);
-            background: transparent;
-        }
-
-        .nav-tabs-custom .nav-link:hover {
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--accent-color);
-        }
-
-.password-toggle {
-    border-left: none;
-}
-*/
