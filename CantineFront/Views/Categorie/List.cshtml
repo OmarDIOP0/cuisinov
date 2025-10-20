@@ -22,7 +22,7 @@
     <div class="card shadow-sm border-0">
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover mb-0" id="tbCategories">
+                <table class="table table-hover mb-0" id="tbCategories" style="width:100%">
                     <thead class="table-light">
                         <tr>
                             <th scope="col">#</th>
@@ -38,7 +38,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Data will be populated by DataTable -->
                     </tbody>
                 </table>
             </div>
@@ -94,14 +93,14 @@
                             },
                             columns: [
                                 {
-                                    width: '5%',
+                                    // width: '5%',
                                     data: null,
                                     render: function (data, type, row, meta) {
                                         return '<span class="text-muted">' + (meta.row + 1) + '</span>';
                                     }
                                 },
                                 {
-                                    width: '40%',
+                                    // width: '40%',
                                     data: 'name',
                                     render: function (data, type, row) {
                                         return '<div class="d-flex align-items-center">' +
@@ -112,7 +111,7 @@
                                 },
                                 {
                                     data: "actif",
-                                    width: '15%',
+                                    // width: '15%',
                                     className: 'text-center',
                                     render: function (data, type, row) {
                                         var className = (data == true ? "badge-success" : "badge-danger");
@@ -131,7 +130,7 @@
                                     className: 'text-center',
                                     render: function (data, type, row) {
                                         var btnEdit = '<a class="btn btn-action btn-edit me-2" href="/Categorie/Update/' + row.id + '" title="Modifier">' +
-                                                     '<i class="fas fa-edit me-1"></i>Modifier</a>';
+                                                     '<i class="fas fa-edit me-1"></i></a>';
 
                                         var btnDelete = '<button type="button" class="btn btn-action btn-delete" ' +
                                                        'data-method="DELETE" ' +
@@ -139,11 +138,12 @@
                                                        'data-url="/Categorie/DeleteCategorie/' + row.id + '" ' +
                                                        'data-toggle="modal" data-target="#confirmModal" ' +
                                                        'title="Supprimer">' +
-                                                       '<i class="fas fa-trash me-1"></i>Supprimer</button>';
+                                                       '<i class="fas fa-trash me-1"></i></button>';
 
                                         return '<div class="d-flex justify-content-center">' + btnEdit + btnDelete + '</div>';
                                     }
                                 }
+
                             ],
                             initComplete: function () {
                                 // Add custom styling after table initialization
