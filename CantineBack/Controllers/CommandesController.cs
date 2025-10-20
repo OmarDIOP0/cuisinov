@@ -538,9 +538,13 @@ namespace CantineBack.Controllers
                 return Problem("Payment Method for this command is unknown");
             }
 
-            // SUPPRESSION de la logique QR Code
+            int? userId = HttpContext.Session.GetInt32("UserId");
             User? user = null;
-            user.Id = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+            if (userId.HasValue && userId.Value > 0)
+            {
+                user = await _context.Users.FindAsync(userId.Value);
+            }
             if (commandDto.UserId.HasValue)
             {
                 user = await _context.Users.FindAsync(commandDto.UserId);
