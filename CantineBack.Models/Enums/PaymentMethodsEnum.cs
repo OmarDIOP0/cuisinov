@@ -11,13 +11,10 @@ namespace CantineBack.Models.Enums
         /*CASH */
         CASH = 0,
 
-        /*Dotation DPWORLD*/
-        QRCODE = 1,
-
         /*WAVE */
-        WAVE = 2,
+        WAVE = 1,
 
         /*ORANGE MONEY */
-        OM = 3
+        OM = 2
     }
 }

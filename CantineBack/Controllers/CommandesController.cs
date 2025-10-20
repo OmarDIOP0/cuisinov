@@ -64,10 +64,10 @@ namespace CantineBack.Controllers
                             case PaymentMethodsEnum.CASH:
                                 label = item.ToString();
                                 break;
-                            case PaymentMethodsEnum.QRCODE:
-                                code = "DOTATION";
-                                label = "DOTATION DPWORLD";
-                                break;
+                            //case PaymentMethodsEnum.QRCODE:
+                            //    code = "DOTATION";
+                            //    label = "DOTATION DPWORLD";
+                            //    break;
                             case PaymentMethodsEnum.WAVE:
                                 label = item.ToString();
                                 break;
