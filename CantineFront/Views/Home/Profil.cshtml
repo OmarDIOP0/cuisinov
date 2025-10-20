@@ -238,10 +238,10 @@
             $('#btnSaveProfile').click(function() {
                 console.log("user id" + $('#userId').val());
                 const formData = {
-                    id:parseInt($('#userId').val()),
-                    login: $('#login').val(),
-                    email: $('#email').val(),
-                    telephone: $('#telephone').val()?.trim()
+                    Id:parseInt($('#userId').val()),
+                    Login: $('#login').val(),
+                    Email: $('#email').val(),
+                    Telephone: $('#telephone').val()?.trim()
                 };
 
                 console.log('Envoi des données profil:', formData);

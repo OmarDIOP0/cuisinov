@@ -244,7 +244,7 @@ namespace CantineFront.Controllers
 
             var url = String.Format(ApiUrlGeneric.UpdateUserProfile, userRequest.Id);
 
-            var apiResponse = await ApiService<ApiMessage>.CallApiPut(_httpClientFactory, url, userRequest);
+            var apiResponse = await ApiService<ApiMessage>.CallApiPost(_httpClientFactory, url, userRequest);
 
             bool success = apiResponse.StatusCode == System.Net.HttpStatusCode.OK;
             string msg = success ? apiResponse.Data?.Message ?? "Profile modifié avec succès"
