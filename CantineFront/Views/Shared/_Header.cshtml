@@ -99,13 +99,7 @@
 
                 <!-- Right side items -->
                 <div class="navbar-nav ml-auto">
-                    <!-- Cart icon -->
-                    <div class="nav-item position-relative mr-3">
-                        <a class="nav-link text-white" href="#" id="cartButton">
-                            <i class="fa fa-shopping-cart fa-lg"></i>
-                            <span class="badge badge-warning position-absolute" id="cartBadge" style="top: -8px; right: -8px; display: @isVisible">@CartBadgeCount</span>
-                        </a>
-                    </div>
+                   
 
                     @if (logged)
                     {
@@ -118,6 +112,13 @@
                                 </a>
                             </div> *@
                         }
+                        <!-- Cart icon -->
+                        <div class="nav-item position-relative mr-3">
+                            <a class="nav-link text-white" href="#" id="cartButton">
+                                <i class="fa fa-shopping-cart fa-lg"></i>
+                                <span class="badge badge-warning position-absolute" id="cartBadge" style="top: -8px; right: -8px; display: @isVisible">@CartBadgeCount</span>
+                            </a>
+                        </div>
 
                         <!-- User profile -->
                         <div class="nav-item dropdown">
