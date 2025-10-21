@@ -78,25 +78,27 @@
                             if (item.actif) {
                                 $("#filterList").append(`<li data-filter=".category_${item.id}">${item.name}</li>`);
                                 var active = index == 0 ? "active" : '';
-                                $("#sildeCarouselInner").append(`     <div class="carousel-item ${active}">
-                                                                                        <div class="container ">
-                                                                                            <div class="row">
-                                                                                                <div class="col-md-7 col-lg-6 ">
-                                                                                                    <div class="detail-box">
-                                                                                                        <h4>
-                                                                                                             ${item.name}
-                                                                                                        </h4>
-
-                                                                                                        <div class="btn-box">
-                                                                                                                    <a href="/Home/Index?categorieId=${item.id}" class="btn1">
-                                                                                                                Commander
-                                                                                                            </a>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>`);
+                                      $("#sildeCarouselInner").append(`
+            <div class="carousel-item ${active}">
+                <div class="container-fluid">
+                    <div class="row align-items-center min-vh-100">
+                        <div class="col-md-8 col-lg-6 mx-auto text-center text-white">
+                            <div class="carousel-content p-4 p-lg-5">
+                                <h2 class="display-4 font-weight-bold mb-4 text-shadow">
+                                    ${item.name}
+                                </h2>
+                                <p class="lead mb-4 text-shadow">Découvrez nos délicieuses spécialités</p>
+                                <div class="btn-container mt-4">
+                                    <a href="/Home/Index?categorieId=${item.id}" class="btn btn-warning btn-lg px-5 py-3 font-weight-bold text-uppercase">
+                                        <i class="fa fa-utensils mr-2"></i>Commander Maintenant
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
                             }
 
 
