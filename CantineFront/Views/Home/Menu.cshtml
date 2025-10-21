@@ -79,26 +79,26 @@
                                 $("#filterList").append(`<li data-filter=".category_${item.id}">${item.name}</li>`);
                                 var active = index == 0 ? "active" : '';
                                      $("#sildeCarouselInner").append(`
-            <div class="carousel-item ${active}">
-                <div class="container">
-                    <div class="row align-items-center justify-content-center">
-                        <div class="col-md-8 col-lg-6 text-center text-white">
-                            <div class="carousel-content py-4">
-                                <h2 class="h1 font-weight-bold mb-3 text-shadow">
-                                    ${item.name}
-                                </h2>
-                                <p class="mb-3 text-shadow">Découvrez nos délicieuses spécialités</p>
-                                <div class="btn-container">
-                                    <a href="/Home/Index?categorieId=${item.id}" class="btn btn-warning btn-lg px-4 py-2 font-weight-bold">
-                                        <i class="fa fa-utensils mr-2"></i>Commander
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `);
+                                        <div class="carousel-item ${active}">
+                                            <div class="container">
+                                                <div class="row align-items-center justify-content-center">
+                                                    <div class="col-md-8 col-lg-6 text-center text-white">
+                                                        <div class="carousel-content py-4">
+                                                            <h2 class="h1 font-weight-bold mb-3 text-shadow">
+                                                                ${item.name}
+                                                            </h2>
+                                                            <p class="mb-3 text-shadow">Découvrez nos délicieuses spécialités</p>
+                                                            <div class="btn-container">
+                                                                <a href="/Home/Index?categorieId=${item.id}" class="btn btn-warning btn-lg px-4 py-2 font-weight-bold">
+                                                                    <i class="fa fa-utensils mr-2"></i>Commander
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `);
                             }
 
 
