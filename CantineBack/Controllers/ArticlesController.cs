@@ -290,6 +290,16 @@ namespace CantineBack.Controllers
             {
                 article.IsApproved = false;
             }
+            if(profilUserAction == "gerant")
+            {
+                var userAction = await _context.Users
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(u => u.Id == userId);
+                if (userAction != null && userAction.EntrepriseId.HasValue)
+                {
+                    article.EntrepriseId = userAction.EntrepriseId.Value;
+                }
+            }
 
             _context.Articles.Add(article);
             await _context.SaveChangesAsync();
