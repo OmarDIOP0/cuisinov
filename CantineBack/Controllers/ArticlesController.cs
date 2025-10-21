@@ -65,7 +65,7 @@ namespace CantineBack.Controllers
             
         }
         [HttpGet("GetMenu")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<ActionResult<IEnumerable<ArticleReadDto>>> GetMenu(int? categorieId)
         {
             if (_context.Articles == null)
