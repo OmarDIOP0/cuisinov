@@ -6,6 +6,12 @@
 }
 @section Styles {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
+    <style>
+        .custom-btn {
+            background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
+        }
+    </style>
+
 }
 
 <section class="food_section layout_padding-bottom">
@@ -105,7 +111,7 @@
                                                                     </h2>
                                                                     <p class="mb-3 text-shadow">Découvrez nos délicieuses spécialités</p>
                                                                     <div class="btn-container">
-                                                                        <a href="/Home/Index?categorieId=${item.id}" class="btn btn-warning btn-lg px-4 py-2 font-weight-bold">
+                                                                        <a href="/Home/Index?categorieId=${item.id}" class="btn custom-btn btn-lg px-4 py-2 font-weight-bold">
                                                                             <i class="fa fa-utensils mr-2"></i>Commander
                                                                         </a>
                                                                     </div>
