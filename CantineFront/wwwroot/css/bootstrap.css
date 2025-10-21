@@ -153,7 +153,7 @@ sup {
 }
 
 a {
-  color:white;
+  color: #007bff;
   text-decoration: none;
   background-color: transparent;
 }
@@ -4177,10 +4177,20 @@ input[type="button"].btn-block {
   font-size: 1.25rem;
   line-height: inherit;
   white-space: nowrap;
+  color:white;
 }
 
 .navbar-brand:hover, .navbar-brand:focus {
-  text-decoration: none;
+    text-decoration: none;
+    color: rgb(255, 190, 51);
+        
+}
+.logout{
+    color:white;
+}
+.logout:hover {
+    color: rgb(255, 190, 51);
+        
 }
 
 .navbar-nav {
