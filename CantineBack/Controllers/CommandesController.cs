@@ -538,26 +538,42 @@ namespace CantineBack.Controllers
                 return Problem("Payment Method for this command is unknown");
             }
 
-            //int? userId = HttpContext.Session.GetInt32("UserId");
-            User? user = null;
+            string profilUserAction = User.FindFirstValue(ClaimTypes.Role);
+            int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId);
+            var userAction = await _context.Users
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(u => u.Id == userId);
 
-            if (user != null )
-            {
-                user = await _context.Users.FindAsync(user.Id);
-            }
-            if (commandDto.UserId.HasValue)
-            {
-                user = await _context.Users.FindAsync(commandDto.UserId);
-            }
-            var emplacement = await _context.Emplacement
-                        .FirstOrDefaultAsync(e => EF.Functions.Like(e.Name, "%SURPLACE%"));
+            //User? user = null;
 
-            if (emplacement == null && commandDto.CommandeADistance)
+            //if (user != null )
+            //{
+            //    user = await _context.Users.FindAsync(user.Id);
+            //}
+
+            //if (commandDto.UserId.HasValue)
+            //{
+            //    user = await _context.Users.FindAsync(commandDto.UserId);
+            //}
+            //var emplacement = await _context.Emplacement
+            //            .FirstOrDefaultAsync(e => EF.Functions.Like(e.Name, "%SURPLACE%"));
+            Emplacement? emplacement = null;
+
+            if (!commandDto.CommandeADistance)
             {
-                return Problem("L'emplacement nommé 'CUISINOV' est introuvable.");
+                emplacement = await _context.Emplacement
+                    .FirstOrDefaultAsync(e =>
+                        e.EntrepriseId == userAction.EntrepriseId &&
+                        EF.Functions.Like(e.Name.ToUpper(), "%SURPLACE%"));
+
+                if (emplacement == null)
+                {
+                    return Problem("L'emplacement nommé 'SURPLACE' est introuvable pour cette entreprise.");
+                }
             }
 
             var emplacementId = commandDto.CommandeADistance ? Common.ShopID : emplacement.Id;
+
 
             Commande newCommande = new Commande
             {
