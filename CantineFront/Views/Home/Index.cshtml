@@ -1,12 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
-@*@section bgBox{
-    <div class="bg-box">
-        <img src="~/images/hero-bg.jpg" alt="">
-    </div>
-}*@
 @section slide{
     <partial name="_SlideSection" />
 }
@@ -39,10 +33,6 @@
             </div>
     </div> 
         
-            @*<ul class="filters_menu" id="filterList">
-            <li class="active" data-filter="*">All</li>
-
-            </ul>*@
         <div class="d-flex justify-content-center">
             <div class="center my-3 justify-content-center align-self-center" id="noItemsAlert" style="display:none">Aucun article disponible pour cette catégorie</div>
         </div>
@@ -217,20 +207,9 @@
                                 } catch {
 
                                 }
-
-                                //console.log("len = ", len)
-                                //$('.filters_menu li').click(function () {
-                                //    $('.filters_menu li').removeClass('active');
-                                //    $(this).addClass('active');
-
-                                //    var data = $(this).attr('data-filter');
-                                //    $grid.isotope({
-                                //        filter: data
-                                //    })
-                                //});
                                 var $grid = $('.grid').isotope();
                                 if($grid){
-                                    $grid.isotope('destroy'); // destroy
+                                    $grid.isotope('destroy');
                                 }
                                
                                  $grid = $(".grid").isotope({
@@ -242,7 +221,6 @@
                                 });
                                 try {
                                     loadImageSuccessHandler = (res) => {
-                                        // console.log("images = ",res.id)
                                         if (res != null) {
                                             var imageId = res.id
                                             $(`#imageArticle_${imageId}`).attr("src", `data:image/png;base64,${res.image}`);

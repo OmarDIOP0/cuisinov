@@ -13,8 +13,6 @@
             <li class="active" data-filter="*">Toutes les catégories</li>
 
         </ul>
-
-
         <div class="filters-content">
             <div class="col-12">
                 <label class="form-label">Rechercher</label>
@@ -35,7 +33,6 @@
     </div>
 </section>
 
-<!-- end food section -->
 @section    Scripts{
 
 
@@ -43,7 +40,6 @@
         const ARTICLES_IDS = []
         $(function () {
             try {
-                //   openFullscreen();
             } catch {
 
 
@@ -53,9 +49,7 @@
             $("#searchText").on("input", function () {
                 var value = $(this).val()
                 $(".grid").isotope({
-                    // filter element with numbers greater than 50
                     filter: function () {
-                        // _this_ is the item element. Get text of element's .number
                         var articleTitle = $(this).find('.articleName').text();
                         articleTitle = articleTitle ? articleTitle : "";
                         value = value.toLowerCase();
@@ -146,11 +140,11 @@
                                 itemCart = JSON.stringify(itemCart);
                                 $("#gridArticles").append(`
 
-                                                        <div class="col-sm-6 col-lg-3 all addToCart category_${item.categorieId}"  data-itemcart='${itemCart}' >
-                                            <div class="box">
-                                                    <div>
+                                                       <div class="col-sm-6 col-lg-3 all addToCart category_${item.categorieId}"  data-itemcart='${itemCart}' >
+                                                            <div class="box">
+                                                            <div>
                                                             <div class="img-box">
-                                                                                                <img onerror="this.src='/images/default.png';" src="/images/default.png" id="imageArticle_${item.id}">
+                                                                 <img onerror="this.src='/images/default.png';" src="/images/default.png" id="imageArticle_${item.id}">
                                                             </div>
                                                             <div class="detail-box">
                                                                     <h6 class="articleName">
@@ -179,10 +173,8 @@
 
 
                                 initAddArticleToCartClick();
-                              //  console.log("len = ", len)
 
                                 try {
-                                    // Add hidden class if item hidden
                                     var itemReveal = Isotope.Item.prototype.reveal;
                                     Isotope.Item.prototype.reveal = function () {
                                         itemReveal.apply(this, arguments);
