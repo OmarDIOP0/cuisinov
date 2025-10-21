@@ -1,6 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
 @inject IHttpContextAccessor Accessor
 @{
 
@@ -10,13 +8,9 @@
     bool isGerant = Convert.ToBoolean(Accessor.HttpContext?.Session.GetString("IsGerant") ?? "false");
     string  username = Accessor.HttpContext?.Session.GetString("Username")??"";
     string isVisible = CartBadgeCount <= 0 ? "none" : "normal";
-    int soldeNav = Accessor.HttpContext?.Session.GetInt32("Solde")??0;
 }
-
-<!-- header section strats -->
 <header class="header_section">
     <div class="pl-5 pr-0 ">
-        @*container*@
         <nav class="navbar navbar-expand-lg custom_nav-container text-responsive">
             <a class="navbar-brand" href="/Home/Menu">
                 <span>
@@ -87,10 +81,6 @@
 
                 </ul>
                 <div class="user_option mr-2">
-                    @*    @if (logged)
-                    {
-                        <a class="nav-link text-white" href="#!" style="" id="soldeNav"></a>
-                    } *@
                     @{
 
                         string urlBooking = logged ? "/Home/Book" : "/Home/BookShop";
