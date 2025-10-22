@@ -515,6 +515,75 @@ a:focus {
     border-radius: 15px;
     overflow: hidden;
 }
+.food-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.article-card {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+    .article-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.15) !important;
+    }
+
+.card-img-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-pills .nav-link.active {
+    background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    padding: 8px 20px;
+}
+
+.nav-pills .nav-link {
+    color: #6c757d;
+    border-radius: 25px;
+    margin: 0 3px;
+    padding: 8px 20px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+    .nav-pills .nav-link:hover {
+        color: #495057;
+        background-color: #f8f9fa;
+    }
+
+.input-group .form-control {
+    border-radius: 0 8px 8px 0;
+    border-left: none;
+}
+
+.input-group-text {
+    border-radius: 8px 0 0 8px;
+    border-right: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .article-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-img-container {
+        min-height: 160px;
+    }
+
+    .card-body {
+        padding: 1rem !important;
+    }
+}
 
     .article-card:hover {
         transform: translateY(-5px);
