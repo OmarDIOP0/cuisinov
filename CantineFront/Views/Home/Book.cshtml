@@ -54,7 +54,7 @@
         .modern-cart-section {
             background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
             min-height: 100vh;
-            padding: 40px 0;
+            padding: 20px 0;
         }
 
         .cart-card {
@@ -65,9 +65,9 @@
         }
 
         .cart-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
             color: white;
-            padding: 2rem;
+            padding: 0.5rem;
         }
 
         .cart-item {
@@ -324,7 +324,7 @@
         }
 
         /* Animation pour le solde */
-        @keyframes pulse-solde {
+        @@keyframes pulse-solde {
             0%
 
         {
@@ -427,7 +427,7 @@
 
 <!-- Modern Cart Section -->
 <section class="modern-cart-section">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="cart-card">
@@ -527,13 +527,20 @@
                                 <div class="col-lg-4">
                                     <div class="summary-section h-100">
                                         <div class="summary-content">
-                                            <h3 class="fw-bold mb-4">📋 Récapitulatif</h3>
+                                            <!-- En-tête -->
+                                            <div class="text-center mb-4">
+                                                <h3 class="fw-bold mb-2">📋 Récapitulatif</h3>
+                                                <p class="text-white-50 mb-0">Vérifiez votre commande</p>
+                                            </div>
 
                                             <!-- Emplacement -->
-                                            <div class="mb-4">
-                                                <label class="form-label text-white-50 mb-2">📍 Emplacement</label>
-                                                <select class="form-control form-control-modern" required name="EmplacementId" id="EmplacementId">
-                                                    <option value="">Choisir un emplacement</option>
+                                            <div class="summary-item mb-4">
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <i class="fa fa-map-marker-alt me-2 text-warning"></i>
+                                                    <label class="form-label text-white mb-0 fw-semibold">Emplacement de livraison</label>
+                                                </div>
+                                                <select class="form-control summary-select" required name="EmplacementId" id="EmplacementId">
+                                                    <option value="">Sélectionnez un emplacement</option>
                                                     @foreach (var emp in emplacements)
                                                     {
                                                         if (CantineFront.Static.AppSettings.ShopID != emp.Id && emp.Actif)
@@ -544,19 +551,13 @@
                                                 </select>
                                             </div>
 
-                                            <!-- Solde -->
-                                            <div class="mb-4">
-                                                <div class="d-flex justify-content-between align-items-center text-warning">
-                                                    <h6 class="mb-0">💰 Solde disponible</h6>
-                                                    <h6 class="mb-0" id="solde">0 XOF</h6>
+                                            <!-- Méthode de paiement -->
+                                            <div class="summary-item mb-4">
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <i class="fa fa-credit-card me-2 text-info"></i>
+                                                    <label class="form-label text-white mb-0 fw-semibold">Méthode de paiement</label>
                                                 </div>
-                                                <span class="text-warning small" id="messageSolde"></span>
-                                            </div>
-
-                                            <!-- Payment Method -->
-                                            <div class="mb-4">
-                                                <label class="form-label text-white-50 mb-2">💳 Méthode de paiement</label>
-                                                <select class="form-control form-control-modern" required name="PaymentMethodId" id="PaymentMethodId">
+                                                <select class="form-control summary-select" required name="PaymentMethodId" id="PaymentMethodId">
                                                     @foreach (var pm in paymentMethods)
                                                     {
                                                         if (pm.Code == "QRCODE")
@@ -571,16 +572,29 @@
                                                 </select>
                                             </div>
 
+                                            <!-- Séparateur -->
+                                            <div class="summary-divider my-4">
+                                                <hr class="border-white-20">
+                                            </div>
+
                                             <!-- Total -->
-                                            <div class="border-top border-white-20 pt-3 mt-3">
-                                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                                    <h5 class="mb-0">Total</h5>
-                                                    <h3 class="price-highlight mb-0" id="totalPrice">@montantTotal XOF</h3>
+                                            <div class="summary-total">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h4 class="text-white mb-0">Total à payer</h4>
+                                                    <h2 class="total-amount mb-0" id="totalPrice">@montantTotal XOF</h2>
                                                 </div>
 
-                                                <button type="button" class="btn btn-command" id="btnCommand">
-                                                    <i class="fa fa-paper-plane me-2"></i>Finaliser la commande
+                                                <button type="button" class="btn btn-confirm-command w-100 py-3" id="btnCommand">
+                                                    <i class="fa fa-paper-plane me-2"></i>
+                                                    <span class="fw-bold">Finaliser la commande</span>
                                                 </button>
+
+                                                <div class="text-center mt-3">
+                                                    <small class="text-white-50">
+                                                        <i class="fa fa-lock me-1"></i>
+                                                        Paiement sécurisé
+                                                    </small>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
