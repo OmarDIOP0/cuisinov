@@ -182,8 +182,6 @@ var startLoadingById = function (elementId = "body") {
         spiner = $("<div class='modalspinner'></div>");
         spiner.css({ "overflow": "hidden", "display": "block" })
         $(elementId).addClass("loading").css({ "position": 'relative' })
-        //$(elementId + ".loading .modalspinner").css({ "overflow": "hidden" });
-        //$(elementId + ".loading .modalspinner").css({ "display": "block" });
         $(elementId).append(spiner);
     } catch (e) {
         console.log(e)
