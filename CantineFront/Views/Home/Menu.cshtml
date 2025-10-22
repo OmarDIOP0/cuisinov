@@ -4,70 +4,124 @@
         .custom-btn {
             background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
         }
+
+        .modern-food-section {
+            background: linear-gradient(135deg, #fafbfc 0%, #ffffff 100%);
+        }
+
+        .modern-filter-list .btn-filter {
+            background: transparent;
+            border: 2px solid #e9ecef;
+            color: #6c757d;
+            border-radius: 25px;
+            padding: 10px 24px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 5px 3px;
+        }
+
+            .modern-filter-list .btn-filter.active {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-color: transparent;
+                color: white;
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            }
+
+            .modern-filter-list .btn-filter:hover:not(.active) {
+                border-color: #667eea;
+                color: #667eea;
+                transform: translateY(-2px);
+            }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-icon {
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            z-index: 5;
+        }
+
+        .search-input {
+            border-radius: 50px;
+            border: 2px solid #e9ecef;
+            padding-left: 50px;
+            transition: all 0.3s ease;
+            background: #ffffff;
+        }
+
+            .search-input:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.1);
+                background: #ffffff;
+            }
+
+        .no-items-alert {
+            border-radius: 20px;
+            background: #ffffff;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .modern-filter-list .btn-filter
+
+        {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            margin: 3px 2px;
+        }
+
+        .search-input {
+            padding-left: 45px;
+        }
+
+        .search-icon {
+            left: 15px;
+        }
+
+        }
     </style>
 }
 @section slide{
     <partial name="_SlideSection" />
 }
-<section class="modern-food-section py-5">
+<section class="food_section layout_padding">
     <div class="container">
-        <!-- Header Section -->
-        <div class="text-center mb-5">
-            <h2 class="display-5 font-weight-bold text-dark mb-3">
-                Notre Carte
-            </h2>
-            <p class="text-muted lead">Découvrez nos délices culinaires</p>
+        <div class="heading_container heading_center">
+            <h4>
+                Articles disponibles
+            </h4>
         </div>
 
-        <!-- Filters Section -->
-        <div class="row justify-content-center mb-4">
-            <div class="col-12 text-center mb-4">
-                <div class="filter-container">
-                    <ul id="filterList" class="modern-filter-list list-inline mb-0">
-                        <li class="list-inline-item">
-                            <button class="btn btn-filter active" data-filter="*">
-                                Toutes les catégories
-                            </button>
-                        </li>
-                    </ul>
+        <ul id="filterList" class="filters_menu">
+            <li class="active" data-filter="*">Toutes les catégories</li>
+        </ul>
+
+        <div class="filters-content">
+            <div class="col-12">
+                <label class="form-label">Rechercher</label>
+                <input type="text" class="form-control" placeholder="" id="searchText" />
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <div class="center my-3 justify-content-center align-self-center" id="noItemsAlert" style="display:none">
+                    Aucun article disponible pour cette catégorie
                 </div>
             </div>
-        </div>
 
-        <!-- Search Section -->
-        <div class="row justify-content-center mb-5">
-            <div class="col-lg-6 col-md-8">
-                <div class="search-container position-relative">
-                    <i class="fa fa-search search-icon position-absolute"></i>
-                    <input type="text"
-                           class="form-control form-control-lg search-input ps-5"
-                           placeholder="Rechercher un article..."
-                           id="searchText">
-                </div>
+            <div id="gridArticles" class="row grid">
+                <!-- Le contenu dynamique reste ici -->
             </div>
         </div>
 
-        <!-- No Items Alert -->
-        <div class="text-center my-4">
-            <div class="no-items-alert alert alert-light border-0 py-4 px-4 shadow-sm"
-                 id="noItemsAlert"
-                 style="display:none">
-                <i class="fa fa-search fa-2x text-muted mb-3 d-block"></i>
-                <h5 class="text-muted mb-2">Aucun article trouvé</h5>
-                <p class="text-muted mb-0">Essayez de modifier vos critères de recherche</p>
-            </div>
-        </div>
-
-        <!-- Articles Grid -->
-        <div id="gridArticles" class="row g-4 justify-content-center">
-            <!-- Les articles seront ajoutés dynamiquement ici -->
-        </div>
-
-        <!-- Load More Button -->
-        <div class="text-center mt-5" style="display:none">
-            <a href="#" class="btn btn-outline-dark btn-lg px-5 py-3 rounded-pill">
+        <div class="btn-box" style="display:none">
+            <a href="">
                 Voir plus
-                <i class="fa fa-chevron-down ml-2"></i>
             </a>
         </div>
     </div>
