@@ -250,14 +250,6 @@
                 outline: none;
             }
 
-        .summary-divider hr {
-            border-width: 2px;
-            opacity: 0.3;
-        }
-
-        .summary-total {
-            margin-top: auto;
-        }
 
         .total-amount {
             font-size: 2rem;
@@ -558,6 +550,7 @@
                                                     <label class="form-label text-white mb-0 fw-semibold">Méthode de paiement</label>
                                                 </div>
                                                 <select class="form-control summary-select" required name="PaymentMethodId" id="PaymentMethodId">
+                                                    <option value="">Sélectionnez un moyen de paiement</option>
                                                     @foreach (var pm in paymentMethods)
                                                     {
                                                         if (pm.Code == "QRCODE")
@@ -570,11 +563,6 @@
                                                         }
                                                     }
                                                 </select>
-                                            </div>
-
-                                            <!-- Séparateur -->
-                                            <div class="summary-divider my-4">
-                                                <hr class="border-white-20">
                                             </div>
 
                                             <!-- Total -->
