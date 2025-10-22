@@ -1,0 +1,3 @@
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\wwwroot\images\DPWorldLogo.png
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\wwwroot\images\DPWorldLogoAnim.gif
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\wwwroot\images\DPWorldLogoSmal.svg
