@@ -6,7 +6,7 @@
 @inject IHttpContextAccessor Accessor
 @inject IMapper mapper;
 @{
-
+    // Votre logique C# reste identique
     var articlesInCart = Accessor.HttpContext?.Session.GetListObjectFromSession<Article>("ArticlesCart") ?? new List<Article>();
     var username = Accessor.HttpContext?.Session.GetString("Username");
     var userId = Accessor.HttpContext?.Session.GetInt32("UserId");
@@ -17,18 +17,16 @@
                               .Select(
                                   g =>
                                   {
-
                                       var a = new ArticleBooking
-                                              {
-                                                  Id = g.Key,
-                                                  Quantite = g.Sum(s => 1),
-                                              };
+                                      {
+                                          Id = g.Key,
+                                          Quantite = g.Sum(s => 1),
+                                      };
                                       a = mapper.Map<ArticleBooking>(g.First());
                                       a.Quantite = g.Sum(s => 1);
                                       articlePrixDict[a.Id] = a.PrixDeVente;
                                       return a;
                                   }
-
                               ).ToList();
     int montantTotal = 0;
     if (selectedArticles != null)
@@ -37,140 +35,392 @@
         {
             montantTotal += item.PrixDeVente * item.Quantite;
         }
-
     }
-
-
     var articlePrixDictJSON = JsonConvert.SerializeObject(articlePrixDict);
 }
-@section Styles{
 
-
+@section Styles {
     <style>
-
-        .btn-link .btn-link:hover {
+        .btn-link, .btn-link:hover {
             background-color: transparent;
+            border: none;
         }
 
         input[type=number] {
             min-width: 50px;
         }
+
+        /* Design moderne */
+        .modern-cart-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            min-height: 100vh;
+            padding: 40px 0;
+        }
+
+        .cart-card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .cart-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+        }
+
+        .cart-item {
+            border-bottom: 1px solid #f1f3f4;
+            padding: 1.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+            .cart-item:hover {
+                background: #fafbfc;
+                transform: translateX(5px);
+            }
+
+        /* CORRECTIONS DU STYLE */
+        .quantity-control {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 8px 12px;
+            border: 2px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+            .quantity-btn:hover {
+                background: #667eea;
+                border-color: #667eea;
+                color: white;
+            }
+
+        .quantity-input {
+            width: 50px !important;
+            text-align: center;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+        }
+
+        .cart-item-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .item-details {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .price-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Correction pour l'image */
+        .item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: #f8f9fa; /* Fond de secours */
+        }
+
+        /* Correction pour le prix highlight */
+        .price-highlight {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #FF6B35;
+            white-space: nowrap;
+        }
+
+        /* Responsive amélioré */
+        @@media (max-width: 768px) {
+            .cart-item-content
+
+        {
+            gap: 10px;
+        }
+
+        .price-section {
+            gap: 10px;
+        }
+
+        .quantity-control {
+            padding: 6px 8px;
+        }
+
+        .item-image {
+            width: 60px;
+            height: 60px;
+        }
+
+        }
+
+
+
+        .delete-btn {
+            color: #dc3545;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .delete-btn:hover {
+                background: #dc3545;
+                color: white;
+                transform: scale(1.1);
+            }
+
+        .summary-section {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            height: 100%;
+        }
+
+        .summary-content {
+            padding: 2rem;
+        }
+
+        .form-control-modern {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+            .form-control-modern:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.1);
+            }
+
+        .btn-command {
+            background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
+            border: none;
+            border-radius: 15px;
+            padding: 15px 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+            .btn-command:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+            }
+
+        .price-highlight {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FF6B35;
+        }
+
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+            .back-link:hover {
+                color: #5a67d8;
+                transform: translateX(-5px);
+            }
+
+        .comment-box {
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            resize: none;
+            min-height: 100px;
+        }
+
+            .comment-box:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.1);
+            }
+
+        .item-image-container {
+            flex-shrink: 0;
+        }
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .cart-header {
+                padding: 1.5rem;
+            }
+
+            .summary-content {
+                padding: 1.5rem;
+            }
+
+            .item-image {
+                width: 60px;
+                height: 60px;
+            }
+        }
     </style>
 }
-<!-- book section -->
-<section class="book_section layout_padding">
+
+<!-- Modern Cart Section -->
+<section class="modern-cart-section">
     <div class="container">
-        @*<div class="heading_container">
-        <h2>
-        Book A Table
-        </h2>
-        </div>*@
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="cart-card">
+                    <div class="cart-header text-center">
+                        <h1 class="display-5 fw-bold mb-3">🛒 Votre Panier</h1>
+                        <p class="lead mb-0 opacity-90"><span id="selectedArticlesCount">@selectedArticles.Count</span> article(s) sélectionné(s)</p>
+                    </div>
 
-        <div class="">
-            <form action="" id="formBooking">
-
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-12">
-                        <div class="card card-registration card-registration-2" style="border-radius: 15px;min-height:500px">
-                            <div class="card-body p-0">
-                                <div class="row g-0">
-                                    <div class="col-lg-8">
-                                        <div class="p-5">
-                                            <div class="d-flex justify-content-between align-items-center mb-5">
-                                                <h1 class="fw-bold mb-0 text-black">Panier de commande</h1>
-                                                <h6 class="mb-0 text-muted"><span id="selectedArticlesCount">@selectedArticles.Count</span> article(s)</h6>
-                                            </div>
-
-                                            @foreach (var item in selectedArticles)
-                                            {
-                                                <hr class="my-4" id="line_@item.Id">
-
-                                                <div class="row mb-4 d-flex justify-content-between align-items-center" id="row_@item.Id">
-                                                    <div class="col-md-2 col-lg-2 col-xl-2">
-                                                        <img src="data:image/png;base64,@item.Image" id="imageArticle_@item.Id" class="zoom rounded-circle" width="50" height="50" onerror="this.src='/images/default.png';">
-                                                        @* <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
-                                                    class="img-fluid rounded-3" alt="Cotton T-shirt">*@
+                    <form action="" id="formBooking">
+                        <div class="row g-0">
+                            <!-- Articles List -->
+                            <div class="col-lg-8">
+                                <div class="p-4 p-md-5">
+                                    @if (selectedArticles.Any())
+                                    {
+                                        foreach (var item in selectedArticles)
+                                        {
+                                            <div class="cart-item" id="row_@item.Id">
+                                                <div class="cart-item-content">
+                                                    <!-- Image -->
+                                                    <div class="item-image-container">
+                                                        <img src="data:image/png;base64,@item.Image"
+                                                             id="imageArticle_@item.Id"
+                                                             class="item-image"
+                                                             onerror="this.src='/images/default.png';"
+                                                             alt="@item.Title">
                                                     </div>
-                                                    <div class="col-md-3 col-lg-3 col-xl-3">
-                                                        <h6 class="text-muted">@item.Categorie?.Name</h6>
-                                                        <h6 class="text-black mb-0">@item.Title</h6>
-                                                    </div>
-                                                    <div class="col-md-3 col-lg-2 col-xl-2 d-flex">
-                                                        <button class="btn btn-link px-2 text-muted" type="button"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown();updateTotalPrice()">
-                                                            <i class="fa fa-minus"></i>
-                                                        </button>
 
-                                                        <input id="quantite_@item.Id" min="0" name="Quantite" value="@item.Quantite" type="number" onchange="updateTotalPrice()"
-                                                               class="form-control form-control-sm" />
+                                                    <!-- Détails -->
+                                                    <div class="item-details">
+                                                        <h6 class="text-primary mb-1">@item.Categorie?.Name</h6>
+                                                        <h5 class="text-dark fw-bold mb-2">@item.Title</h5>
+                                                    </div>
 
-                                                        <button class="btn btn-link px-2 text-muted" type="button"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp();updateTotalPrice()">
-                                                            <i class="fa fa-plus"></i>
-                                                        </button>
-                                                    </div>
-                                                    <div class="col-md-4 col-lg-3 col-xl-3 ">
-                                                        <h7 class="mb-0  " style="font-size:0.8rem">@item.Quantite * @item.PrixDeVente = <span id="prixTotal_@item.Id">@(item.Quantite * item.PrixDeVente)</span> XOF</h7>
-                                                    </div>
-                                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                                        <a href="#!" class="text-muted deleteArticleCart" data-articleid="@item.Id"><i class="fa fa-times"></i></a>
+                                                    <!-- Contrôle quantité et prix -->
+                                                    <div class="price-section">
+                                                        <div class="quantity-control">
+                                                            <button class="quantity-btn" type="button"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown();updateTotalPrice()">
+                                                                <i class="fa fa-minus"></i>
+                                                            </button>
+                                                            <input id="quantite_@item.Id"
+                                                                   min="1"
+                                                                   name="Quantite"
+                                                                   value="@item.Quantite"
+                                                                   type="number"
+                                                                   onchange="updateTotalPrice()"
+                                                                   class="quantity-input" />
+                                                            <button class="quantity-btn" type="button"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp();updateTotalPrice()">
+                                                                <i class="fa fa-plus"></i>
+                                                            </button>
+                                                        </div>
+
+                                                        <span class="price-highlight">
+                                                            <span id="prixTotal_@item.Id">@(item.Quantite* item.PrixDeVente)</span> XOF
+                                                        </span>
+
+                                                        <a href="#!" class="delete-btn deleteArticleCart" data-articleid="@item.Id">
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
                                                     </div>
                                                 </div>
-                                            }
-
-                                            <div class="col-12 ">
-                                                <label class="mb-3">Commentaire </label>
-                                                <textarea class="form-control   wide" name="Comment" id="Comment"></textarea>
-                                                 
-                                               
                                             </div>
+                                        }
 
-
-                                            <hr class="my-4">
-
-                                            <div class="pt-5">
-                                                <h6 class="mb-0">
-                                                    <a href="/Home/Menu" class="text-body">
-                                                        <i class="fa fa-arrow-left me-2"></i>Retour à la boutique
-                                                    </a>
-                                                </h6>
-                                            </div>
+                                        <!-- Comment Section -->
+                                        <div class="mt-4">
+                                            <label class="form-label fw-bold text-dark mb-3">💬 Commentaire</label>
+                                            <textarea class="form-control form-control-modern comment-box" name="Comment" id="Comment" placeholder="Ajoutez un commentaire pour votre commande..."></textarea>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-4 bg-grey">
-                                        <div class="p-5">
-                                            <h3 class="fw-bold mb-5 mt-2 pt-1">Résumé</h3>
-                                            <hr class="my-4">
 
-                                            <div class="mb-4 pb-2 ">
-                                                <label class="mb-3">Emplacement</label>
-                                                <select class="form-control   wide" required name="EmplacementId" id="EmplacementId">
-                                                    <option selected />
+                                        <!-- Back to Shop -->
+                                        <div class="mt-4 pt-3">
+                                            <a href="/Home/Menu" class="back-link">
+                                                <i class="fa fa-arrow-left me-2"></i>Continuer mes achats
+                                            </a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-center py-5">
+                                            <i class="fa fa-shopping-cart fa-4x text-muted mb-4"></i>
+                                            <h4 class="text-muted">Votre panier est vide</h4>
+                                            <p class="text-muted mb-4">Découvrez nos délicieux articles</p>
+                                            <a href="/Home/Menu" class="btn btn-primary btn-lg">
+                                                <i class="fa fa-utensils me-2"></i>Explorer le menu
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Order Summary -->
+                            @if (selectedArticles.Any())
+                            {
+                                <div class="col-lg-4">
+                                    <div class="summary-section h-100">
+                                        <div class="summary-content">
+                                            <h3 class="fw-bold mb-4">📋 Récapitulatif</h3>
+
+                                            <!-- Emplacement -->
+                                            <div class="mb-4">
+                                                <label class="form-label text-white-50 mb-2">📍 Emplacement</label>
+                                                <select class="form-control form-control-modern" required name="EmplacementId" id="EmplacementId">
+                                                    <option value="">Choisir un emplacement</option>
                                                     @foreach (var emp in emplacements)
                                                     {
-                                                        if (CantineFront.Static.AppSettings.ShopID != emp.Id)
+                                                        if (CantineFront.Static.AppSettings.ShopID != emp.Id && emp.Actif)
                                                         {
-                                                            if (emp.Actif)
-                                                            {
-                                                                <option value="@emp.Id">@emp.Name!.ToUpper()</option>
-                                                            }
-
+                                                            <option value="@emp.Id">@emp.Name!.ToUpper()</option>
                                                         }
-
                                                     }
                                                 </select>
                                             </div>
 
-                                            <div class="d-flex justify-content-between mb-5 text-warning">
-                                                <h5 class="text-uppercase ">Solde</h5>
-                                                <h5 id="solde">  XOF</h5>
+                                            <!-- Solde -->
+                                            <div class="mb-4">
+                                                <div class="d-flex justify-content-between align-items-center text-warning">
+                                                    <h6 class="mb-0">💰 Solde disponible</h6>
+                                                    <h6 class="mb-0" id="solde">0 XOF</h6>
+                                                </div>
+                                                <span class="text-warning small" id="messageSolde"></span>
                                             </div>
-                                            <span class="text-danger " id="messageSolde" style=""></span>
-                                            <div class="mb-4 pb-2 ">
-                                                <label class="mb-3">Méthode de paiement</label>
-                                                <select class="form-control   wide" required name="PaymentMethodId" id="PaymentMethodId">
-                                                    @*    <option value="1">CASH</option>selected='@pm.Code=="QRCODE"'
-                                                    <option value="2" selected>CODE QR</option>*@
+
+                                            <!-- Payment Method -->
+                                            <div class="mb-4">
+                                                <label class="form-label text-white-50 mb-2">💳 Méthode de paiement</label>
+                                                <select class="form-control form-control-modern" required name="PaymentMethodId" id="PaymentMethodId">
                                                     @foreach (var pm in paymentMethods)
                                                     {
                                                         if (pm.Code == "QRCODE")
@@ -181,41 +431,32 @@
                                                         {
                                                             <option data-code="@pm.Code" value="@pm.Id">@pm.Name</option>
                                                         }
-
-
                                                     }
                                                 </select>
                                             </div>
-                                            <hr class="my-4">
-                                            <div class="d-flex justify-content-between mb-5">
-                                                <h5 class="text-uppercase">Prix Total</h5>
-                                                <h5 id="totalPrice"> @montantTotal XOF</h5>
+
+                                            <!-- Total -->
+                                            <div class="border-top border-white-20 pt-3 mt-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                                    <h5 class="mb-0">Total</h5>
+                                                    <h3 class="price-highlight mb-0" id="totalPrice">@montantTotal XOF</h3>
+                                                </div>
+
+                                                <button type="button" class="btn btn-command" id="btnCommand">
+                                                    <i class="fa fa-paper-plane me-2"></i>Finaliser la commande
+                                                </button>
                                             </div>
-
-                                            <button type="button" class="btn btn-dark btn-block btn-lg" id="btnCommand" style="font-size:14px"
-                                                    data-mdb-ripple-color="dark">
-                                                Commander
-                                            </button>
-
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         </div>
-                    </div>
+                    </form>
                 </div>
-
-
-
-
-
-            </form>
+            </div>
         </div>
-
-
     </div>
 </section>
-<!-- end book section -->
 @section Scripts {
 
 
@@ -270,49 +511,15 @@
                 $("#prixTotal_" + id).text(q * price);
             }
 
-
-
             $("#totalPrice").text(`${totalPrice} XOF`);
-
-            // if (!checkSolde) {
-            //     $("#btnCommand").prop("disabled", false);
-            //     $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-            //     $("#messageSolde").text("");
-            // } else {
-            //     if (totalPrice > UserSolde) {
-            //         $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
-            //         if (showMessage) {
-            //             ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
-
-            //         }
-            //         $("#messageSolde").text("Solde insuffisant.");
-            //         $("#btnCommand").prop("disabled", true);
-            //     } else {
-            //         $("#btnCommand").prop("disabled", false);
-            //         $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-            //         $("#messageSolde").text("");
-            //     }
-            // }
-
             return totalPrice;
-
-
         }
 
 
         $(function () {
              const ARTICLES_IDS = Object.keys(ARTICLES_PRIX_DICT)
             var len = ARTICLES_IDS.length;
-            try {
-
-            }
-            catch {
-
-
-            }
-
             loadImageSuccessHandler = (res) => {
-                // console.log("images = ",res.id)
                 if (res != null) {
                     var imageId = res.id
                     $(`#imageArticle_${imageId}`).attr("src", `data:image/png;base64,${res.image}`);
@@ -368,7 +575,6 @@
                                 $("#cartBadgeFloatCount").text(data.object)
 
                                 updateTotalPrice();
-                                // ToastR(data.message, "success", 10, "toast-bottom-right");
                                 console.log(ARTICLES_PRIX_DICT)
                                 $("#selectedArticlesCount").text(Object.keys(ARTICLES_PRIX_DICT).length)
                             }
@@ -464,21 +670,11 @@
                         console.log("Error : " + e);
                     }
                     finally {
-
-
-
                     }
 
                 }
 
             });
-
-
-
-
-
-
-
             var successHandler = (res) => {
 
                 if (!res.success) {
@@ -486,7 +682,6 @@
                     if (!res.data) {
                         ToastR("Utisateur introuvable", "error", 10);
                     }
-
                 }
 
                 else {
@@ -498,19 +693,10 @@
                         $("#userId").val(user.id);
                         $("#solde").text(`${user.solde} XOF`);
                         $("#soldeRestant").val(user.solde);
-                        // UserSolde = user.solde;
 
                     } else {
                         return;
                     }
-                    // if (totalPrice > user.solde) {
-                    //     $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
-                    //     ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
-                    //     $("#messageSolde").text("Solde insuffisant.");
-                    // } else {
-                    //     $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-                    //     $("#messageSolde").text("");
-                    // }
                 }
 
             };
