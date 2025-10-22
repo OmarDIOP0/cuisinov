@@ -9,33 +9,55 @@
 @section slide{
     <partial name="_SlideSection" />
 }
-<section class="food_section layout_padding">
+<section class="food-section py-5 bg-light">
     <div class="container">
-        <div class="heading_container heading_center">
-            <h4>
-                Articles disponibles
-            </h4>
+        <!-- En-tête -->
+        <div class="text-center mb-5">
+            <h2 class="display-5 font-weight-bold text-dark mb-2">
+                Nos Articles
+            </h2>
+            <p class="text-muted">Découvrez notre sélection de plats délicieux</p>
         </div>
 
-        <ul id="filterList" class="filters_menu">
-            <li class="active" data-filter="*">Toutes les catégories</li>
-
-        </ul>
-        <div class="filters-content">
-            <div class="col-12">
-                <label class="form-label">Rechercher</label>
-                <input type="text" class="form-control" placeholder="" id="searchText" />
-            </div>
-            <div class="d-flex justify-content-center">
-                <div class="center my-3 justify-content-center align-self-center" id="noItemsAlert" style="display:none">Aucun article disponible pour cette catégorie</div>
+        <!-- Filtres et recherche -->
+        <div class="row mb-4">
+            <div class="col-12 mb-4">
+                <ul id="filterList" class="nav nav-pills justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link active btn-sm" href="#" data-filter="*">Toutes les catégories</a>
+                    </li>
+                </ul>
             </div>
 
-            <div id="gridArticles" class="row grid">
+            <!-- Barre de recherche -->
+            <div class="col-md-6 mx-auto">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fa fa-search text-muted"></i>
+                        </span>
+                    </div>
+                    <input type="text" class="form-control border-start-0" placeholder="Rechercher un article..." id="searchText">
+                </div>
             </div>
         </div>
-        <div class="btn-box" style="display:none">
-            <a href="">
-                Voir plus
+
+        <!-- Message aucun article -->
+        <div class="text-center my-4">
+            <div class="alert alert-light border d-inline-block py-3 px-4" id="noItemsAlert" style="display:none">
+                <i class="fa fa-search mr-2 text-muted"></i>Aucun article disponible pour cette catégorie
+            </div>
+        </div>
+
+        <!-- Grille des articles -->
+        <div id="gridArticles" class="row">
+            <!-- Les articles seront ajoutés dynamiquement ici -->
+        </div>
+
+        <!-- Bouton Voir plus -->
+        <div class="text-center mt-5" style="display:none">
+            <a href="#" class="btn btn-outline-warning btn-lg px-5">
+                Voir plus <i class="fa fa-chevron-right ml-2"></i>
             </a>
         </div>
     </div>
@@ -148,34 +170,38 @@
                                 var itemCart = { ...item }
                                 // delete itemCart.image;
                                 itemCart = JSON.stringify(itemCart);
-                                $("#gridArticles").append(`
-                                                       <div class="col-sm-6 col-lg-3 all addToCart category_${item.categorieId}"  data-itemcart='${itemCart}' >
-                                                            <div class="box">
-                                                            <div>
-                                                            <div class="img-box">
-                                                                 <img onerror="this.src='/images/default.png';" src="/images/default.png" id="imageArticle_${item.id}">
-                                                            </div>
-                                                            <div class="detail-box">
-                                                                    <h6 class="articleName">
-                                                                        ${item.title}
-                                                                    </h6>
-                                                                    <p style="font-size:12px;height:30px">
-                                                                       ${description}
-                                                                    </p>
-                                                                    <div class="options">
-                                                                        <h6>
-                                                                            ${item.prixDeVente} XOF
-                                                                        </h6>
-                                                                                <a href="#!" class="" data-itemcart='${itemCart}' >
-                                                                                            ${charpSvgIcon}
-                                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                    </div>
-                                            </div>
-                                        </div>
-
-                                            `);
+                                       $("#gridArticles").append(`
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4 all addToCart category_${item.categorieId}" data-itemcart='${itemCart}'>
+                <div class="card article-card h-100 border-0 shadow-sm">
+                    <div class="card-img-top position-relative">
+                        <img onerror="this.src='/images/default.png';"
+                             src="/images/default.png"
+                             id="imageArticle_${item.id}"
+                             class="img-fluid p-4"
+                             alt="${item.title}"
+                             style="height: 200px; object-fit: contain; width: 100%;">
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="article-name card-title font-weight-bold text-dark mb-2">
+                            ${item.title}
+                        </h6>
+                        <p class="card-text text-muted small flex-grow-1 mb-3" style="min-height: 40px;">
+                            ${description}
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                            <span class="h6 font-weight-bold text-warning mb-0">
+                                ${item.prixDeVente} XOF
+                            </span>
+                            <a href="#!" class="btn btn-warning rounded-circle p-2 d-flex align-items-center justify-content-center"
+                               data-itemcart='${itemCart}'
+                               style="width: 45px; height: 45px;">
+                                ${charpSvgIcon}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
                             }
 
                             if (index == len - 1) {

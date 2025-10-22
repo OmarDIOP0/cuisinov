@@ -506,6 +506,49 @@ a:focus {
 .food_section .btn-box a:hover {
   background-color: #e69c00;
 }
+.food-section {
+    background: #f8f9fa;
+}
+
+.article-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+    .article-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+    }
+
+.nav-pills .nav-link.active {
+    background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+}
+
+.nav-pills .nav-link {
+    color: #6c757d;
+    border-radius: 25px;
+    margin: 0 5px;
+    transition: all 0.3s ease;
+}
+
+    .nav-pills .nav-link:hover {
+        color: #495057;
+        background-color: #e9ecef;
+    }
+
+.input-group-lg .form-control {
+    border-radius: 0 50px 50px 0;
+    height: calc(2.5rem + 2px);
+}
+
+.input-group-lg .input-group-text {
+    border-radius: 50px 0 0 50px;
+    border-right: none;
+}
 
 .about_section {
   background: #222831;
