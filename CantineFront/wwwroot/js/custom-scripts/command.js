@@ -100,8 +100,10 @@ function GetPendingCommandes(colClass = "col-12") {
                         </div>
                     ` : "";
 
+                    //$("#messagesList").append(`
+                    //    <div class="command-card ${colClass} all emplacement_${emplacementId}" id="command_${command.id}">
                     $("#messagesList").append(`
-                        <div class="command-card ${colClass} all emplacement_${emplacementId}" id="command_${command.id}">
+     <div class="command-card col-md-6 col-lg-4 col-xl-3 all emplacement_${emplacementId}" id="command_${command.id}">
                             <div class="card-header">
                                 <div class="customer-info">
                                     <i class="fas fa-user customer-icon"></i>
