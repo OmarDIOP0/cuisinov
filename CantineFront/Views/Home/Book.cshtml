@@ -256,7 +256,7 @@
 
         .total-amount {
             font-size: 2rem;
-            font-weight: 800;
+            font-weight: 1000;
             background: linear-gradient(135deg, #FF6B35, #00C9B1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -435,6 +435,9 @@
                         <div class="row g-0">
                             <!-- Articles List -->
                             <div class="col-lg-8">
+                                <div class="d-flex justify-content-end px-2">
+                                    <p class="lead mb-0 opacity-90"><span id="selectedArticlesCount">@selectedArticles.Count</span> article(s) sélectionné(s)</p>
+                                </div>
                                 <div class="p-2 p-md-3">
                                     @if (selectedArticles.Any())
                                     {
