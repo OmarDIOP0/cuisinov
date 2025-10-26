@@ -205,7 +205,7 @@
             height: 100%;
             position: relative;
             /* overflow: hidden; */
-            overflow:visible;
+            overflow:visible !important;
 
         }
 
@@ -243,6 +243,8 @@
             font-weight: 500;
             transition: all 0.3s ease;
             width: 100%;
+            position: relative;
+            z-index: 100;
         }
 
 
@@ -271,8 +273,9 @@
             font-size: 1.1rem;
             font-weight: 600;
             transition: all 0.3s ease;
-            position: relative;
+            /* position: relative; */
             overflow: hidden;
+            /* z-index:10; */
         }
 
             .btn-confirm-command::before {
@@ -294,6 +297,20 @@
                 transform: translateY(-2px);
                 box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
             }
+        /* .summary-section {
+            overflow: visible !important; /* Permet à la liste déroulante de dépasser */
+            z-index: 10; /* Crée un contexte d'empilement au-dessus */
+        }
+
+        .summary-content {
+            position: relative;
+            z-index: 20;
+        }
+
+        .summary-select {
+            position: relative;
+            z-index: 30;
+        } */
 
         /* Responsive */
         @@media (max-width: 768px) {
@@ -317,6 +334,7 @@
         }
 
         }
+
 
         /* Animation pour le solde */
         @@keyframes pulse-solde {
@@ -426,11 +444,6 @@
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="cart-card">
-                    @* <div class="cart-header text-center">
-                        <h1 class="display-5 fw-bold">🛒 Votre Panier</h1>
-                        <p class="lead mb-0 opacity-90"><span id="selectedArticlesCount">@selectedArticles.Count</span> article(s) sélectionné(s)</p>
-                    </div> *@
-
                     <form action="" id="formBooking">
                         <div class="row g-0">
                             <!-- Articles List -->
@@ -572,7 +585,7 @@
                                             </div>
 
                                             <!-- Total -->
-                                            <div class="summary-total mt-3">
+                                            <div class="summary-total mt-5">
                                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                                     <h4 class="text-white mb-0">Total à payer</h4>
                                                     <h2 class="total-amount mb-0" id="totalPrice">@montantTotal XOF</h2>
