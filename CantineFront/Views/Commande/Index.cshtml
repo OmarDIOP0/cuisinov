@@ -27,6 +27,7 @@
             color: white;
             padding: 12px 16px;
             border-bottom: none;
+            text-align:center;
         }
 
         .customer-info {
@@ -228,183 +229,140 @@
 
         }
 
-        /* NOUVEAUX STYLES MODERNES POUR LES EMPLACEMENTS SEULEMENT */
-        .modern-emplacements-section {
+        /* NOUVEAU DESIGN UNIQUEMENT POUR LES EMPLACEMENTS - MÊME STRUCTURE */
+        .food_section {
             background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-            min-height: 100vh;
             padding: 40px 0;
         }
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-title {
+        .heading_container h2 {
             font-size: 2.5rem;
             font-weight: 800;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 0.5rem;
-        }
-
-        .section-subtitle {
-            color: #6c757d;
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        /* Filtres d'emplacements modernes */
-        .modern-filters {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            margin: 2rem 0;
-            list-style: none;
-            padding: 0;
-        }
-
-        .filter-btn {
-            padding: 12px 28px;
-            background: #ffffff;
-            border: 2px solid #e9ecef;
-            border-radius: 25px;
-            color: #6c757d;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-            .filter-btn.active {
-                background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
-                color: #ffffff;
-                border-color: transparent;
-                box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
-            }
-
-            .filter-btn:hover:not(.active) {
-                border-color: #FF6B35;
-                color: #FF6B35;
-                transform: translateY(-2px);
-            }
-
-        /* Barre de recherche moderne */
-        .search-container {
-            max-width: 500px;
-            margin: 0 auto 2rem auto;
-        }
-
-        .search-box {
-            position: relative;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #6c757d;
-            z-index: 5;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 15px 20px 15px 50px;
-            border: 2px solid #e9ecef;
-            border-radius: 50px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: #ffffff;
-        }
-
-            .search-input:focus {
-                border-color: #667eea;
-                box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.1);
-                outline: none;
-            }
-
-        /* Message aucune commande moderne */
-        .no-commands-alert {
             text-align: center;
-            padding: 3rem;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            margin: 2rem auto;
-            max-width: 500px;
-        }
-
-        .no-commands-icon {
-            font-size: 4rem;
-            color: #6c757d;
             margin-bottom: 1rem;
         }
 
-        /* Responsive pour les emplacements */
+        .filters_menu {
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            list-style-type: none;
+            margin: 2rem 0;
+            gap: 12px;
+        }
+
+            .filters_menu li {
+                padding: 12px 28px;
+                cursor: pointer;
+                border-radius: 25px;
+                background: #ffffff;
+                border: 2px solid #e9ecef;
+                color: #6c757d;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+
+                .filters_menu li.active {
+                    background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
+                    color: #ffffff;
+                    border-color: transparent;
+                    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+                }
+
+                .filters_menu li:hover:not(.active) {
+                    border-color: #FF6B35;
+                    color: #FF6B35;
+                    transform: translateY(-2px);
+                }
+
+        /* Barre de recherche moderne */
+        .col-md-6 {
+            max-width: 500px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border-radius: 50px;
+            border: 2px solid #e9ecef;
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+        }
+
+            .form-control:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.1);
+            }
+
+        /* Message aucune commande */
+        #noItemsAlert {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 16px;
+            padding: 2rem;
+            color: #6c757d;
+            font-weight: 500;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Responsive */
         @@media (max-width: 768px) {
-            .section-title
+            .heading_container h2
 
         {
             font-size: 2rem;
         }
 
-        .filter-btn {
+        .filters_menu li {
             padding: 10px 20px;
             font-size: 0.9rem;
         }
 
-        .search-input {
-            padding: 12px 20px 12px 45px;
+        .form-control {
+            padding: 10px 16px;
         }
 
         }
     </style>
 }
 
-<section class="modern-emplacements-section">
-    <div class="container">
-        <!-- En-tête moderne -->
-        <div class="section-header">
-            <h1 class="section-title">📋 Commandes en Attente</h1>
-            <p class="section-subtitle">Gérez les commandes en temps réel</p>
+<!-- MÊME STRUCTURE HTML - SEUL LE CSS A CHANGÉ -->
+<section class="food_section ">
+    <div class="container" style="width:100%;margin-left:0;margin-right:0;max-width:100%;">
+        <div class="heading_container">
+            <h2>
+                Liste des commandes en attente
+            </h2>
         </div>
-
-        <!-- Filtres d'emplacements modernes -->
-        <div class="text-center mb-4">
-            <h4 class="text-dark mb-3">📍 Filtres par Emplacement</h4>
-            <ul id="emplacementsFilterList" class="modern-filters">
-                <li>
-                    <a class="filter-btn active" href="#" data-filter="*">Tous les emplacements</a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Barre de recherche moderne -->
-        <div class="search-container">
-            <div class="search-box">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" class="search-input" placeholder="Rechercher une commande..." id="searchText">
+        <h4 class="d-flex justify-content-center">Emplacements</h4>
+        <ul id="emplacementsFilterList" class="filters_menu">
+            <li class="active" data-filter="*">Tous les emplacements</li>
+        </ul>
+        <div class="d-flex justify-content-center">
+            <div class="col-md-6">
+                <label class="form-label">Rechercher</label>
+                <input type="text" class="form-control" placeholder="" id="searchText" />
             </div>
         </div>
-
-        <!-- Message aucune commande moderne -->
-        <div class="text-center">
-            <div class="no-commands-alert" id="noItemsAlert" style="display:none">
-                <i class="fas fa-clipboard-list no-commands-icon"></i>
-                <h4 class="text-muted mb-3">Aucune commande en attente</h4>
-                <p class="text-muted">Les nouvelles commandes apparaîtront ici automatiquement</p>
+        <div class="d-flex justify-content-center">
+            <div class="center my-3 justify-content-center align-self-center" id="noItemsAlert" style="display:none">
+                Aucune commande en attente n'est disponible
             </div>
         </div>
-
-        <!-- Grille des commandes (conserve l'ancienne structure) -->
-        <div class="filters-content">
-            <div class="col-md-12 row grid" id="messagesList" style="padding:20px;">
-                <!-- Les commandes seront ajoutées dynamiquement ici avec les anciens styles -->
+        <div class="row">
+            <div class="col-md-12 filters-content">
+                <div class="col-md-12 row grid" id="messagesList" style="padding:20px;">
+                    <!-- Les commandes seront ajoutées dynamiquement ici -->
+                </div>
             </div>
         </div>
     </div>
@@ -412,8 +370,8 @@
 
 @section Scripts {
     <script>
+        // MÊME LOGIQUE JAVASCRIPT - RIEN N'A CHANGÉ
         $(function(){
-            // LOGIQUE CONSERVÉE INTACTE
             $("#searchText").on("input", function () {
                 var value = $(this).val()
                 $(".grid").isotope({
@@ -440,14 +398,7 @@
                                 var selected = item.id == "@ViewBag.CategorieId" ? "selected" : "";
                                 $("#catId").append(`<option ${selected} value="${item.id}">${item.name}</option>`);
 
-                                // Utilisation des nouveaux boutons de filtre modernes
-                                $("#emplacementsFilterList").append(
-                                    `<li>
-                                        <a class="filter-btn" href="#" data-filter=".emplacement_${item.id}">
-                                            ${item.name.toUpperCase()}
-                                        </a>
-                                    </li>`
-                                );
+                                $("#emplacementsFilterList").append(`<li id="li_filter_${item.id}" data-filter=".emplacement_${item.id}">${item.name.toUpperCase()}</li>`);
                             }
                         })
                     }
@@ -456,6 +407,6 @@
 
             ajaxManager('GET', '/Emplacement/GetEmplacements', successEmplacementsHandler, errorHandler);
             GetPendingCommandes();
-        });
+        })
     </script>
 }
