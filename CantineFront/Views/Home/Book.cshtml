@@ -204,7 +204,9 @@
             color: white;
             height: 100%;
             position: relative;
-            overflow: hidden;
+            /* overflow: hidden; */
+            overflow:visible;
+
         }
 
             .summary-section::before {
@@ -549,7 +551,7 @@
                                                     <i class="fa fa-credit-card me-2 text-info"></i>
                                                     <label class="form-label text-white mb-0 fw-semibold">Méthode de paiement</label>
                                                 </div>
-                                                <select class="form-control summary-select" required name="PaymentMethodId" id="PaymentMethodId">
+                                                <select class="form-control summary-select payment" required name="PaymentMethodId" id="PaymentMethodId">
                                                     <option value="">Sélectionnez un moyen de paiement</option>
                                                     @foreach (var pm in paymentMethods)
                                                     {
