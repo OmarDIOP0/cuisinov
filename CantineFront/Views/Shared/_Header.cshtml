@@ -28,15 +28,16 @@
             <div class="collapse navbar-collapse" id="navbarMainContent">
                 <!-- Left menu items -->
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/Home/Menu">
-                            <i class="fa fa-utensils mr-1"></i>Menu
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-
                     @if (logged)
                     {
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/Home/Menu">
+                                <i class="fa fa-utensils mr-1"></i>Menu
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+
+                    
                         if (!isGerant)
                         {
                             <li class="nav-item">
