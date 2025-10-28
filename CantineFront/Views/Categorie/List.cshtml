@@ -111,11 +111,10 @@
                                 },
                                 {
                                     data: "actif",
-                                    // width: '15%',
                                     className: 'text-center',
                                     render: function (data, type, row) {
                                         var className = (data == true ? "badge-success" : "badge-danger");
-                                        var status = (data == true ? "Actif" : "Inactif");
+                                        var status = (data == true ? "actif" : "inactif");
                                         var icon = (data == true ? "fa-check-circle" : "fa-times-circle");
 
                                         return '<div class="d-flex justify-content-center align-items-center">' +
