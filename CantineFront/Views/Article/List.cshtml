@@ -239,14 +239,28 @@
                                                    rel="tooltip">modifier</a>`;
                                     }
                                 },
-                                {
+                                // {
+                                //     data: "actif",
+                                //     width: '5%',
+                                //     className: 'text-center',
+                                //     render: function (data, type, row) {
+                                //         var className = (data == true ? "badge-success" : "badge-danger");
+                                //         var status = (data == true ? "actif" : "inactif");
+                                //         return `<span class="badge">${status}</span>`;
+                                //     }
+                                // },
+                                 {
                                     data: "actif",
-                                    width: '5%',
                                     className: 'text-center',
                                     render: function (data, type, row) {
                                         var className = (data == true ? "badge-success" : "badge-danger");
                                         var status = (data == true ? "actif" : "inactif");
-                                        return `<span class="badge">${status}</span>`;
+                                        var icon = (data == true ? "fa-check-circle" : "fa-times-circle");
+
+                                        return '<div class="d-flex justify-content-center align-items-center">' +
+                                               '<i class="fas ' + icon + ' me-2"></i>' +
+                                               '<span class="badge ' + className + '">' + status + '</span>' +
+                                               '</div>';
                                     }
                                 },
                                 {
