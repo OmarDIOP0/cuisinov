@@ -29,31 +29,32 @@
     </div>
 
     <!-- Main Navbar -->
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5">
-        <a href="/Home/Menu" class="navbar-brand ml-4 ml-lg-0">
-            <h1 class="font-weight-bold text-primary m-0">C<span class="text-secondary">uisin</span>ov</h1>
+        <a href="/Home/Menu" class="navbar-brand ms-4 ms-lg-0">
+            <h1 class="fw-bold text-primary m-0">C<span class="text-secondary">uisin</span>ov</h1>
         </a>
 
-        <button type="button" class="navbar-toggler mr-4" data-toggle="collapse" data-target="#navbarCollapse">
+        <!-- ✅ Correction Bootstrap 5 -->
+        <button class="navbar-toggler me-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <!-- Menu Items -->
-            <ul class="navbar-nav ml-auto p-4 p-lg-0">
+            <ul class="navbar-nav ms-auto p-4 p-lg-0">
                 @if (logged)
                 {
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a href="/Home/Menu" class="nav-link">
-                            <i class="fa fa-utensils mr-2"></i>Menu
+                            <i class="fa fa-utensils me-2"></i>Menu
                         </a>
                     </li>
 
-                    if (!isGerant)
+                    @if (!isGerant)
                     {
                         <li class="nav-item">
                             <a href="/Commande/MyCommands" class="nav-link">
-                                <i class="fa fa-list-alt mr-2"></i>Mes Commandes
+                                <i class="fa fa-list-alt me-2"></i>Mes Commandes
                             </a>
                         </li>
                     }
@@ -62,121 +63,76 @@
                     {
                         <li class="nav-item">
                             <a href="/Commande/List" class="nav-link">
-                                <i class="fa fa-clipboard-list mr-2"></i>Commandes
+                                <i class="fa fa-clipboard-list me-2"></i>Commandes
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="/Commande/Index" class="nav-link">
-                                <i class="fa fa-clock mr-2"></i>En Attente
+                                <i class="fa fa-clock me-2"></i>En Attente
                             </a>
                         </li>
 
-                        <!-- Gestion Dropdown -->
+                        <!-- ✅ Menu déroulant Bootstrap 5 -->
                         <li class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-cogs mr-2"></i>Gestion
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fa fa-cogs me-2"></i>Gestion
                             </a>
-                            <div class="dropdown-menu">
-                                <a href="/Article/List" class="dropdown-item">
-                                    <i class="fa fa-box mr-2"></i>Articles
-                                </a>
-                                <a href="/Categorie/List" class="dropdown-item">
-                                    <i class="fa fa-tags mr-2"></i>Catégories
-                                </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/Article/List"><i class="fa fa-box me-2"></i>Articles</a></li>
+                                <li><a class="dropdown-item" href="/Categorie/List"><i class="fa fa-tags me-2"></i>Catégories</a></li>
 
                                 @if (isAdmin)
                                 {
-                                    <div class="dropdown-divider"></div>
-                                    <a href="/Emplacement/List" class="dropdown-item">
-                                        <i class="fa fa-map-marker mr-2"></i>Emplacements
-                                    </a>
-                                    <a href="/User/List" class="dropdown-item">
-                                        <i class="fa fa-users mr-2"></i>Utilisateurs
-                                    </a>
-                                    <a href="/Department/List" class="dropdown-item">
-                                        <i class="fa fa-building mr-2"></i>Départements
-                                    </a>
-                                    <a href="/Entreprise/List" class="dropdown-item">
-                                        <i class="fa fa-briefcase mr-2"></i>Entreprise
-                                    </a>
-                                    <a href="/PaymentMethod/List" class="dropdown-item">
-                                        <i class="fa fa-credit-card mr-2"></i>Paiements
-                                    </a>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" href="/Emplacement/List"><i class="fa fa-map-marker me-2"></i>Emplacements</a></li>
+                                    <li><a class="dropdown-item" href="/User/List"><i class="fa fa-users me-2"></i>Utilisateurs</a></li>
+                                    <li><a class="dropdown-item" href="/Department/List"><i class="fa fa-building me-2"></i>Départements</a></li>
+                                    <li><a class="dropdown-item" href="/Entreprise/List"><i class="fa fa-briefcase me-2"></i>Entreprise</a></li>
+                                    <li><a class="dropdown-item" href="/PaymentMethod/List"><i class="fa fa-credit-card me-2"></i>Paiements</a></li>
                                 }
-                            </div>
+                            </ul>
                         </li>
                     }
                 }
             </ul>
 
-            <!-- Right Side Items -->
-            <div class="d-none d-lg-flex ml-2">
+            <!-- ✅ Icône panier + profil -->
+            <div class="d-none d-lg-flex ms-2">
                 @if (logged)
                 {
-                    <!-- Cart Icon -->
-                    <div class="nav-item position-relative ml-3">
-                        <a class="btn-sm-square bg-white rounded-circle position-relative" href="#" id="cartButton" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+                    <!-- Panier -->
+                    <div class="nav-item position-relative ms-3">
+                        <a class="btn-sm-square bg-white rounded-circle position-relative" href="#" id="cartButton">
                             <small class="fa fa-shopping-cart text-body"></small>
                             @if (CartBadgeCount > 0)
                             {
-                                <span class="position-absolute badge badge-pill badge-danger" style="top: -5px; right: -5px;">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                     @CartBadgeCount
                                 </span>
                             }
                         </a>
                     </div>
 
-                    <!-- User Profile -->
-                    <div class="nav-item dropdown ml-3">
-                        <a class="btn-sm-square bg-white rounded-circle dropdown-toggle" href="#" role="button" data-toggle="dropdown" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+                    <!-- Profil -->
+                    <div class="nav-item dropdown ms-3">
+                        <a class="btn-sm-square bg-white rounded-circle dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             <small class="fa fa-user text-body"></small>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="/Home/Profil">
-                                <i class="fa fa-user mr-2"></i>@username
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="/Login/Logout">
-                                <i class="fa fa-sign-out-alt mr-2"></i>Déconnexion
-                            </a>
-                        </div>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/Home/Profil"><i class="fa fa-user me-2"></i>@username</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item text-danger" href="/Login/Logout"><i class="fa fa-sign-out-alt me-2"></i>Déconnexion</a></li>
+                        </ul>
                     </div>
                 }
                 else
                 {
-                    <!-- Login Button -->
-                    <a class="btn btn-warning text-dark font-weight-bold px-4 ml-3" href="/Login/Index">
-                        <i class="fa fa-sign-in-alt mr-2"></i>Connexion
+                    <a class="btn btn-warning text-dark fw-bold px-4 ms-3" href="/Login/Index">
+                        <i class="fa fa-sign-in-alt me-2"></i>Connexion
                     </a>
-                }
-            </div>
-
-            <!-- Mobile Right Side Items -->
-            <div class="d-lg-none mt-3">
-                @if (logged)
-                {
-                    <div class="d-flex justify-content-center">
-                        <a class="btn btn-outline-primary mr-2" href="#" id="cartButtonMobile">
-                            <i class="fa fa-shopping-cart mr-2"></i>Panier
-                            @if (CartBadgeCount > 0)
-                            {
-                                <span class="badge badge-danger ml-1" id="cartBadgeMobile">@CartBadgeCount</span>
-                            }
-                        </a>
-                        <a class="btn btn-outline-secondary" href="/Home/Profil">
-                            <i class="fa fa-user mr-2"></i>@username
-                        </a>
-                    </div>
-                }
-                else
-                {
-                    <div class="d-flex justify-content-center">
-                        <a class="btn btn-warning text-dark font-weight-bold px-4" href="/Login/Index">
-                            <i class="fa fa-sign-in-alt mr-2"></i>Connexion
-                        </a>
-                    </div>
                 }
             </div>
         </div>
     </nav>
+
 </div>
