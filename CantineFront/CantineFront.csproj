@@ -20,4 +20,8 @@
     <ProjectReference Include="..\DPWorldEncryption.Core\DPWorldEncryption.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\bootstrap5.3.2\" />
+  </ItemGroup>
+
 </Project>

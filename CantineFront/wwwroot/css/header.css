@@ -1,6 +1,6 @@
 ﻿/** DEBUT NAV STYLE CUISINOV **/
 
-/* Fixed top animation */
+/* Fixed top */
 .fixed-top {
     transition: .5s;
 }
@@ -24,7 +24,13 @@
             color: #ffc107 !important;
         }
 
-/* Navbar brand styling */
+/* Navbar styling */
+.navbar {
+    background: white !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 0;
+}
+
 .navbar-brand h1 {
     font-size: 2rem;
     font-weight: 700;
@@ -51,7 +57,7 @@
 /* Nav link styling */
 .navbar .navbar-nav .nav-link {
     padding: 25px 15px;
-    color: #555555;
+    color: #555555 !important;
     font-weight: 500;
     outline: none;
     transition: all 0.3s ease;
@@ -59,7 +65,7 @@
 
     .navbar .navbar-nav .nav-link:hover,
     .navbar .navbar-nav .nav-link.active {
-        color: var(--dark);
+        color: #17a2b8 !important;
         background: rgba(23, 162, 184, 0.1);
     }
 
@@ -90,11 +96,13 @@
     border: none;
     border-radius: 50% !important;
     transition: all 0.3s ease;
+    text-decoration: none;
 }
 
     .btn-sm-square:hover {
         background: #17a2b8 !important;
         transform: translateY(-2px);
+        text-decoration: none;
     }
 
         .btn-sm-square:hover small {
@@ -104,7 +112,6 @@
 /* Badge styling */
 .badge {
     font-size: 0.7rem;
-    padding: 0.25em 0.4em;
 }
 
 /* Mobile responsive */
@@ -121,6 +128,11 @@
 
     .navbar-brand h1 {
         font-size: 1.5rem;
+    }
+
+    .navbar-collapse {
+        background: white;
+        padding: 10px;
     }
 }
 
@@ -166,20 +178,45 @@
         }
 }
 
-/* Wow.js animation support */
-.wow.fadeIn {
-    animation-duration: 1s;
-}
-
 /** FIN NAV STYLE CUISINOV **/
 
 /* Assurez-vous que le body a un padding pour la navbar fixed */
 body {
-    padding-top: 120px; /* Ajustez selon la hauteur de votre navbar */
+    padding-top: 120px;
 }
 
 @media (max-width: 991.98px) {
     body {
         padding-top: 80px;
     }
+}
+
+/* Correction pour les utilitaires Bootstrap 4.3.1 */
+.ml-4 {
+    margin-left: 1.5rem !important;
+}
+
+.mr-4 {
+    margin-right: 1.5rem !important;
+}
+
+.ml-2 {
+    margin-left: 0.5rem !important;
+}
+
+.mr-2 {
+    margin-right: 0.5rem !important;
+}
+
+.ml-3 {
+    margin-left: 1rem !important;
+}
+
+.mr-3 {
+    margin-right: 1rem !important;
+}
+
+.px-5 {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
 }
