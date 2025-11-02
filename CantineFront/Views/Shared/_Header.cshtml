@@ -29,19 +29,20 @@
     </div>
 
     <!-- Main Navbar -->
-    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5">
-        <a href="/Home/Menu" class="navbar-brand ms-4 ms-lg-0">
+        <!-- Logo à gauche -->
+        <a href="/Home/Menu" class="navbar-brand">
             <h1 class="fw-bold text-primary m-0">C<span class="text-secondary">uisin</span>ov</h1>
         </a>
 
-        <!-- ✅ Correction Bootstrap 5 -->
         <button class="navbar-toggler me-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav ms-auto p-4 p-lg-0">
+            <!-- Menu items AU CENTRE -->
+            <ul class="navbar-nav mx-auto p-4 p-lg-0">
+                <!-- ✅ mx-auto pour centrer -->
                 @if (logged)
                 {
                     <li class="nav-item">
@@ -72,7 +73,6 @@
                             </a>
                         </li>
 
-                        <!-- ✅ Menu déroulant Bootstrap 5 -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                 <i class="fa fa-cogs me-2"></i>Gestion
@@ -96,8 +96,9 @@
                 }
             </ul>
 
-            <!-- ✅ Icône panier + profil -->
+            <!-- Panier et profil À DROITE -->
             <div class="d-none d-lg-flex ms-2">
+                <!-- ✅ Pas de ms-auto ici -->
                 @if (logged)
                 {
                     <!-- Panier -->
@@ -134,5 +135,4 @@
             </div>
         </div>
     </nav>
-
 </div>
