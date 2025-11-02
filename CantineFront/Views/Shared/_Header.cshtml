@@ -27,7 +27,7 @@
             <!-- Navbar content -->
             <div class="collapse navbar-collapse" id="navbarMainContent">
                 <!-- Left menu items -->
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav mx-auto">
                     @if (logged)
                     {
                         <li class="nav-item active">
@@ -104,15 +104,6 @@
 
                     @if (logged)
                     {
-                        <!-- QR Code (only for non-gerant) -->
-                        if (!isGerant)
-                        {
-                            @* <div class="nav-item mr-3">
-                                <a id="monQrCode" class="nav-link text-warning font-weight-bold d-none" href="#">
-                                    <i class="fa fa-qrcode mr-1"></i>QR Code
-                                </a>
-                            </div> *@
-                        }
                         <!-- Cart icon -->
                         <div class="nav-item position-relative mr-3">
                             <a class="nav-link text-white" href="#" id="cartButton">
