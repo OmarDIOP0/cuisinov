@@ -1,5 +1,7 @@
 ﻿/** DEBUT NAV STYLE CUISINOV **/
-
+.custom-btn {
+    background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
+}
 body {
     padding-top: 0;
 }
