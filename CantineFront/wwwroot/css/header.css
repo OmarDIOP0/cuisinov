@@ -77,27 +77,6 @@ body {
         color: #17a2b8 !important;
         background: rgba(23, 162, 184, 0.1);
     }
-
-/* ✅ SUPPRIMER L'ANIMATION DE SOULIGNEMENT AUTOMATIQUE */
-/* 
-.navbar .navbar-nav .nav-link::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 15px;
-    left: 50%;
-    background: #17a2b8;
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
-}
-
-.navbar .navbar-nav .nav-link:hover::after,
-.navbar .navbar-nav .nav-link.active::after {
-    width: 50%;
-}
-*/
-
 /* Dropdown arrow styling */
 .navbar .dropdown-toggle::after {
     border: none;
@@ -120,10 +99,10 @@ body {
     transition: all 0.3s ease;
 }
 
-    .dropdown-item:hover {
-        background: #17a2b8;
-        color: white;
-    }
+.dropdown-item:hover {
+    background: #17a2b8;
+    color: white;
+}
 
 /* Button styling */
 .btn-sm-square {
@@ -153,7 +132,6 @@ body {
     font-size: 0.65rem !important;
 }
 
-/* ✅ CORRECTION POUR LE DROPDOWN DU PROFIL */
 .navbar .dropdown-menu {
     z-index: 1050 !important; /* S'assurer qu'il est au-dessus */
 }
