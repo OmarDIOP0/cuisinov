@@ -32,7 +32,7 @@
 }
 
 .navbar-brand {
-    margin-right: 3rem !important; /* Espace après le logo */
+    margin-right: 3rem !important;
 }
 
     .navbar-brand h1 {
@@ -55,7 +55,7 @@
     flex-grow: 1;
 }
 
-/* Nav link styling */
+/* Nav link styling - SUPPRIMER L'ANIMATION DE SOULIGNEMENT */
 .navbar .navbar-nav .nav-link {
     padding: 20px 15px !important;
     color: #555555 !important;
@@ -63,6 +63,7 @@
     outline: none;
     transition: all 0.3s ease;
     margin: 0 2px !important;
+    position: relative; /* Supprimer si vous ne voulez pas de soulignement */
 }
 
     .navbar .navbar-nav .nav-link:hover,
@@ -70,6 +71,26 @@
         color: #17a2b8 !important;
         background: rgba(23, 162, 184, 0.1);
     }
+
+/* ✅ SUPPRIMER L'ANIMATION DE SOULIGNEMENT AUTOMATIQUE */
+/* 
+.navbar .navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 15px;
+    left: 50%;
+    background: #17a2b8;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navbar .navbar-nav .nav-link:hover::after,
+.navbar .navbar-nav .nav-link.active::after {
+    width: 50%;
+}
+*/
 
 /* Dropdown arrow styling */
 .navbar .dropdown-toggle::after {
@@ -126,6 +147,11 @@
     font-size: 0.65rem !important;
 }
 
+/* ✅ CORRECTION POUR LE DROPDOWN DU PROFIL */
+.navbar .dropdown-menu {
+    z-index: 1050 !important; /* S'assurer qu'il est au-dessus */
+}
+
 /* Mobile responsive */
 @media (max-width: 991.98px) {
     .navbar .navbar-nav {
@@ -156,39 +182,15 @@
 }
 
 /* Desktop dropdown animations */
+/* Desktop dropdown - Version simple */
 @media (min-width: 992px) {
-    .navbar .nav-item .dropdown-menu {
+    .navbar .dropdown-menu {
+        display: none;
+    }
+
+    .navbar .dropdown:hover .dropdown-menu,
+    .navbar .dropdown.show .dropdown-menu {
         display: block;
-        visibility: hidden;
-        top: 100%;
-        transform: rotateX(-75deg);
-        transform-origin: 0% 0%;
-        transition: .5s;
-        opacity: 0;
-    }
-
-    .navbar .nav-item:hover .dropdown-menu {
-        transform: rotateX(0deg);
-        visibility: visible;
-        transition: .5s;
-        opacity: 1;
-    }
-
-    .navbar .navbar-nav .nav-link::after {
-        content: '';
-        position: absolute;
-        width: 0;
-        height: 2px;
-        bottom: 15px;
-        left: 50%;
-        background: #17a2b8;
-        transition: all 0.3s ease;
-        transform: translateX(-50%);
-    }
-
-    .navbar .navbar-nav .nav-link:hover::after,
-    .navbar .navbar-nav .nav-link.active::after {
-        width: 50%;
     }
 }
 

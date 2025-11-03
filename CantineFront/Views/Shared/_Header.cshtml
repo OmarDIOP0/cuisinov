@@ -116,10 +116,12 @@
 
                     <!-- Profil -->
                     <div class="nav-item dropdown ms-3">
-                        <a class="btn-sm-square bg-white rounded-circle dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <a class="btn-sm-square bg-white rounded-circle dropdown-toggle" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
                             <small class="fa fa-user text-body"></small>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
+                        <ul class="dropdown-menu dropdown-menu-end" style="z-index: 1060;">
+                            <!-- ✅ dropdown-menu-end et z-index -->
                             <li><a class="dropdown-item" href="/Home/Profil"><i class="fa fa-user me-2"></i>@username</a></li>
                             <li><hr class="dropdown-divider" /></li>
                             <li><a class="dropdown-item text-danger" href="/Login/Logout"><i class="fa fa-sign-out-alt me-2"></i>Déconnexion</a></li>
