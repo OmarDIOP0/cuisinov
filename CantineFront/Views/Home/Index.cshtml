@@ -295,10 +295,19 @@
             overflow: hidden;
         }
 
-            .article-card:hover {
+            /* .article-card:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 12px 30px rgba(0,0,0,0.15) !important;
+            } */
+            /* Animation pour l'image seulement */
+            .article-card .card-img-top img {
+                transition: transform 0.3s ease; /* transition douce */
             }
+
+            .article-card .card-img-top:hover img {
+                transform: scale(1.1); /* zoom léger au survol */
+            }
+
 
         .card-img-container {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
