@@ -186,10 +186,9 @@
                                     width: '8%',
                                     className: 'text-center',
                                     render: function (data, type, row) {
-                                        console.log("controlStockQuantity = ", data)
                                         var className = (data == true ? "badge-success" : "badge-danger");
                                         var status = (data == true ? "oui" : "non");
-                                        return `<span class="badge">${status}</span>`;
+                                        return `<span class="badge ${className}">${status}</span>`;
                                     }
                                 },
                                 {
@@ -208,7 +207,7 @@
                                         var className = (data == true ? "badge-success" : "badge-danger");
                                         var visibilite = (data == true ? "visible" : "invisible");
                                         var changerVisibilite = (data == true ? "invisible" : "visible");
-                                        return `<span class="badge me-2">${visibilite}</span>
+                                        return `<span class="badge ${className}" me-2">${visibilite}</span>
                                                 <a href="#" class="btn-action btn-edit btn-sm"
                                                    data-method="PATCH"
                                                    data-message=" Voulez-vous rendre ${changerVisibilite} l'article <b>${row.title}</b>"
@@ -228,7 +227,7 @@
                                         var approval = (data == true ? "approuvé" : "non approuvé");
                                         var changerApprobation = (data == true ? "désactivé" : "approuvé");
                                         if (!isAdmin) return `<span class="badge">${approval}</span>`;
-                                        return `<span class="badge me-2">${approval}</span>
+                                        return `<span class="badge ${className}" me-2">${approval}</span>
                                                 <a href="#" class="btn-action btn-edit btn-sm"
                                                    data-method="PATCH"
                                                    data-message=" Voulez-vous ${changerApprobation} l'article <b>${row.title}</b>"
@@ -239,16 +238,6 @@
                                                    rel="tooltip">modifier</a>`;
                                     }
                                 },
-                                // {
-                                //     data: "actif",
-                                //     width: '5%',
-                                //     className: 'text-center',
-                                //     render: function (data, type, row) {
-                                //         var className = (data == true ? "badge-success" : "badge-danger");
-                                //         var status = (data == true ? "actif" : "inactif");
-                                //         return `<span class="badge">${status}</span>`;
-                                //     }
-                                // },
                                  {
                                     data: "actif",
                                     className: 'text-center',
