@@ -270,6 +270,27 @@
                 transform: translateY(-2px);
                 box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
             }
+        /* AJOUTEZ ce CSS à votre section Styles */
+        .modal.fade {
+            transition: opacity 0.15s linear;
+        }
+
+        .modal-backdrop.fade {
+            transition: opacity 0.15s linear;
+        }
+
+        /* Correction pour le focus */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1055;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            outline: 0;
+        }
     </style>
 }
 @section slide{
@@ -649,18 +670,17 @@
                 $('html, body').animate({ scrollTop: 0 }, '300'); // remonte en haut
             });
         });
-                // Fonction pour ouvrir le modal de détails
-        function openArticleDetailModal(articleId) {
-            // Chercher l'article dans les données déjà chargées
-            var article = ARTICLES_DATA.find(function(item) {
-                return item.id === articleId;
-            });
 
-            if (article) {
-                populateModal(article);
-            } else {
-                ToastR("Article non trouvé", "error", 15);
-            }
+             var articleModalEl = document.getElementById('articleDetailModal');
+            var articleModal = new bootstrap.Modal(articleModalEl, {
+                backdrop: true,   // permet de fermer en cliquant en dehors
+                keyboard: true    // permet ESC pour fermer
+            });
+               function openArticleDetailModal(articleId) {
+            var article = ARTICLES_DATA.find(item => item.id === articleId);
+            if (!article) return ToastR("Article non trouvé", "error", 15);
+            populateModal(article);
+            articleModal.show();  // réutilise le même modal
         }
 
         // Fonction pour remplir le modal avec les données de l'article
