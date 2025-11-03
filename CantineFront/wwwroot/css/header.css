@@ -30,10 +30,7 @@ body {
 
 /* Navbar styling */
 .navbar {
-    /*    background: #e5e7eb !important;*/
     background-image: url('/images/create_img.jpg');
-    /*    border-bottom:#e5e7eb;*/
-    /*    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);*/
     padding: 0.5rem 0 !important;
 }
 
