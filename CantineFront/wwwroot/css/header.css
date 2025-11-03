@@ -1,7 +1,7 @@
 ﻿/** DEBUT NAV STYLE CUISINOV **/
 
 /* Fixed top */
-.fixed-top {
+.sticky-top {
     transition: .5s;
 }
 
@@ -10,6 +10,7 @@
     height: 45px;
     border-bottom: 1px solid rgba(0, 0, 0, .07);
     background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+
 }
 
     .top-bar small {
