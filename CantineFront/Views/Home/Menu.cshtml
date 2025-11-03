@@ -335,7 +335,7 @@
 </section>
 
 <!-- Modal pour les détails de l'article -->
-<div class="modal fade" id="articleDetailModal" tabindex="-1" aria-labelledby="articleDetailModalLabel" aria-hidden="true">
+<div class="modal fade" id="articleDetailModal" tabindex="-1" aria-labelledby="articleDetailModalLabel">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -382,9 +382,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                <button type="button" class="btn btn-primary" id="modalAddToCartBtn">
-                    <i class="fa fa-shopping-bag me-2"></i>Ajouter au panier
-                </button>
+                @* <button type="button" class="btn btn-primary" id="modalAddToCartBtn">
+                    <i class="fa fa-shopping-bag me-2 addToCart"></i>Ajouter au panier
+                </button> *@
             </div>
         </div>
     </div>
@@ -533,7 +533,7 @@
                                        //      </div>
                                        //  `);
                                         $("#gridArticles").append(`
-                                            <div class="col-xl-3 col-lg-4 col-md-6 mb-4 all addToCart category_${item.categorieId} wow fadeInUp" data-itemcart='${itemCart}' data-wow-delay="0.1s">
+                                            <div class="col-xl-3 col-lg-4 col-md-6 mb-4 all category_${item.categorieId} wow fadeInUp" data-itemcart='${itemCart}' data-wow-delay="0.1s">
                                                 <div class="product-item">
                                                     <div class="position-relative bg-light overflow-hidden">
                                                         <img onerror="this.src='/images/default.png';"
@@ -559,7 +559,7 @@
                                                         </small>
                                                         <small class="w-50 text-center py-2">
                                                             <a class="text-body add-to-cart-btn" href="#!" data-itemcart='${itemCart}'>
-                                                                <i class="fa fa-shopping-bag text-primary me-2"></i>Ajouter
+                                                                <i class="fa fa-shopping-bag text-primary me-2 addToCart"></i>Ajouter
                                                             </a>
                                                         </small>
                                                     </div>
@@ -658,7 +658,7 @@
             var $backToTop = $('.back-to-top');
 
             $(window).scroll(function() {
-                if ($(window).scrollTop() > 100) { // après 100px de scroll
+                if ($(window).scrollTop() > 100) { 
                     $backToTop.fadeIn();
                 } else {
                     $backToTop.fadeOut();
@@ -667,28 +667,32 @@
 
             $backToTop.click(function(e) {
                 e.preventDefault();
-                $('html, body').animate({ scrollTop: 0 }, '300'); // remonte en haut
+                $('html, body').animate({ scrollTop: 0 }, '300'); 
             });
         });
 
-             var articleModalEl = document.getElementById('articleDetailModal');
-            var articleModal = new bootstrap.Modal(articleModalEl, {
-                backdrop: true,   // permet de fermer en cliquant en dehors
-                keyboard: true    // permet ESC pour fermer
-            });
-               function openArticleDetailModal(articleId) {
+        var articleModalEl = document.getElementById('articleDetailModal');
+        var articleModal = new bootstrap.Modal(articleModalEl, {
+            backdrop: true,   
+            keyboard: true   
+        });
+
+        function openArticleDetailModal(articleId) {
             var article = ARTICLES_DATA.find(item => item.id === articleId);
             if (!article) return ToastR("Article non trouvé", "error", 15);
+
             populateModal(article);
-            articleModal.show();  // réutilise le même modal
+            $('#modalAddToCartBtn').blur();
+
+            // Affiche le modal (réutilisation de l'instance)
+            articleModal.show();
         }
 
-        // Fonction pour remplir le modal avec les données de l'article
+        // Fonction pour remplir le modal
         function populateModal(article) {
-            // Utiliser l'image déjà chargée ou l'image par défaut
+            // Image
             var imageElement = document.getElementById('imageArticle_' + article.id);
             var imageSrc = imageElement ? imageElement.src : '/images/default.png';
-
             $('#modalArticleImage').attr('src', imageSrc);
 
             // Titre et description
@@ -699,9 +703,9 @@
             $('#modalArticlePrice').text(article.prixDeVente + ' XOF');
             $('#modalArticleStock').text((article.quantiteStock || 0) + ' unités');
 
-            // Catégorie - vous devrez peut-être adapter cette partie selon votre structure
+            // Catégorie
             var categoryName = article.categorieNavigation ? article.categorieNavigation.name :
-                              (article.categorieName || 'Non catégorisé');
+                               (article.categorieName || 'Non catégorisé');
             $('#modalArticleCategory').text(categoryName);
 
             // Statut
@@ -715,37 +719,12 @@
                 '<span class="text-danger">✗ Indisponible</span>';
             $('#modalArticleAvailability').html(availability);
 
-            // Bouton Ajouter au panier
-            var itemCart = JSON.stringify(article);
-            $('#modalAddToCartBtn').attr('data-itemcart', itemCart);
-
-            // Désactiver le bouton si l'article n'est pas disponible
-            if (!isAvailable) {
-                $('#modalAddToCartBtn').prop('disabled', true).addClass('btn-secondary').removeClass('btn-primary');
-            } else {
-                $('#modalAddToCartBtn').prop('disabled', false).addClass('btn-primary').removeClass('btn-secondary');
-            }
-
-            // Ouvrir le modal
-            var modal = new bootstrap.Modal(document.getElementById('articleDetailModal'));
-            modal.show();
         }
-                // Gestionnaire d'événement pour les boutons "Détails"
+
         $(document).on('click', '.view-detail-btn', function(e) {
             e.preventDefault();
             var articleId = $(this).data('articleid');
             openArticleDetailModal(articleId);
-        });
-
-        // Gestionnaire pour le bouton "Ajouter au panier" dans le modal
-        $(document).on('click', '#modalAddToCartBtn', function() {
-            var itemCart = $(this).data('itemcart');
-            if (itemCart) {
-                addArticleToCart(JSON.parse(itemCart));
-                var modal = bootstrap.Modal.getInstance(document.getElementById('articleDetailModal'));
-                modal.hide();
-                ToastR("Article ajouté au panier", "success", 5);
-            }
         });
 
     </script>
