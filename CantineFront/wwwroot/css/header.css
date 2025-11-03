@@ -1,6 +1,9 @@
 ﻿/** DEBUT NAV STYLE CUISINOV **/
 
-/* Fixed top */
+body {
+    padding-top: 0;
+}
+
 .sticky-top {
     transition: .5s;
 }
