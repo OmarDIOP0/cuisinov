@@ -309,7 +309,7 @@
 }
 <section class="food_section layout_padding">
     <div class="container">
-        <div class="heading_container heading_center">
+        <div class="heading_container heading_center fadeInUp" data-wow-delay="0.1s">
             <h4>
                 Articles disponibles
             </h4>
@@ -453,7 +453,7 @@
                                 // delete itemCart.image;
                                 itemCart = JSON.stringify(itemCart);
                                        $("#gridArticles").append(`
-                                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4 all addToCart category_${item.categorieId}" data-itemcart='${itemCart}'>
+                                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4 all addToCart category_${item.categorieId} wow fadeInUp" data-itemcart='${itemCart}' data-wow-delay="0.1s">
                                                 <div class="card article-card h-100 border-0 shadow-sm">
                                                     <div class="card-img-top position-relative">
                                                         <img onerror="this.src='/images/default.png';"
