@@ -817,9 +817,6 @@
         function updateNoteCell(btn, data) {
 
             var td = $(btn).closest('td');
-
-            console.log("td = ", td)
-            console.log("data = ", data);
             if (data) {
                 var checked5 = data.rate == 5 ? "checked" : "";
                 var checked4 = data.rate == 4 ? "checked" : "";
@@ -828,23 +825,22 @@
                 var checked1 = data.rate == 1 ? "checked" : "";
 
                 td.html(`                            <div class='rating' disabled style="max-width:50px;">
-                                                                                <input type='radio' name='rating${data.id}' ${checked5} value='5' id='5ll${data.id}'><label for='5ll${data.id}' style='font-size:1vw;'>☆</label>
-                                                                                <input type='radio' name='rating${data.id}' ${checked4} value='4' id='4ll${data.id}'><label for='4ll${data.id}' style='font-size:1vw;'>☆</label>
-                                                                                <input type='radio' name='rating${data.id}' ${checked3} value='3' id='3ll${data.id}'><label for='3ll${data.id}' style='font-size:1vw;'>☆</label>
-                                                                                <input type='radio' name='rating${data.id}' ${checked2} value='2' id='2ll${data.id}'><label for='2ll${data.id}' style='font-size:1vw;'>☆</label>
-                                                                                <input type='radio' name='rating${data.id}' ${checked1} value='1' id='1ll${data.id}'><label for='1ll${data.id}' style='font-size:1vw;'>☆</label>
-                                                                            </div>
+                                                                        <input type='radio' name='rating${data.id}' ${checked5} value='5' id='5ll${data.id}'><label for='5ll${data.id}' style='font-size:1vw;'>☆</label>
+                                                                        <input type='radio' name='rating${data.id}' ${checked4} value='4' id='4ll${data.id}'><label for='4ll${data.id}' style='font-size:1vw;'>☆</label>
+                                                                        <input type='radio' name='rating${data.id}' ${checked3} value='3' id='3ll${data.id}'><label for='3ll${data.id}' style='font-size:1vw;'>☆</label>
+                                                                        <input type='radio' name='rating${data.id}' ${checked2} value='2' id='2ll${data.id}'><label for='2ll${data.id}' style='font-size:1vw;'>☆</label>
+                                                                        <input type='radio' name='rating${data.id}' ${checked1} value='1' id='1ll${data.id}'><label for='1ll${data.id}' style='font-size:1vw;'>☆</label>
+                                                                    </div>
 
-                                                                            <button type="button" data-method="GET"
-                                                                                                                         data-modaltitle="Avis du client"
-                                                                                                                                          data-modalbody="${data.customerFeedback}"
-                                                                                                                         data-toggle="modal"
-                                                                                                                          data-target="#genericModal" rel="tooltip"
-                                                                                                                        class="btn btn-primary btn-sm m-2" data-original-title="" title="">
-                                                                                                                    Avis et Note
-                                                                             </button>
-                                                            `);
-                //  td.html(`${data.solde} F CFA`);
+                                                                    <button type="button" data-method="GET"
+                                                                        data-modaltitle="Avis du client"
+                                                                        data-modalbody="${data.customerFeedback}"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#genericModal" rel="tooltip"
+                                                                    class="btn btn-primary btn-sm m-2" data-original-title="" title="">
+                                                                                Avis et Note
+                                                                        </button>
+                                                    `);
 
 
             }
