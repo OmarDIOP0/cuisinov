@@ -281,8 +281,8 @@ function GetPendingCommandes(colClass = "col-12") {
 //                                   data-method="POST"
 //                                   data-callback="DeleteCommandItem"
 //                                        data-message="Veuillez confirmer?"
-//                                        data-url="/Commande/Delivery/${command.id}" data-toggle="modal"
-//                                data-target="#confirmModal"
+//                                        data-url="/Commande/Delivery/${command.id}" data-bs-toggle="modal"
+//                                data-bs-target="#confirmModal"
 //                                 data-commandid="${command.id}"  href="#!">Livrer</a>
 //                                </div>
 //                               <div id='lignesCommande${command.id}'></div>

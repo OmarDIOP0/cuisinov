@@ -374,8 +374,8 @@
                                                             <button type="button" data-method="GET"
                                                                                                          data-modaltitle="Motif du rejet"
                                                                                                                   data-modalbody="${row.rejectComment}"
-                                                                                                         data-toggle="modal"
-                                                                                                          data-target="#genericModal" rel="tooltip"
+                                                                                                         data-bs-toggle="modal"
+                                                                                                          data-bs-target="#genericModal" rel="tooltip"
                                                                                                         class="btn btn-primary btn-sm m-2" data-original-title="" title="">
                                                                                                     Motif
                                                              </button>
@@ -498,8 +498,8 @@
                                             btnDelete = `
                                                                 <button type="button" data-method="DELETE"
                                                                                 data-message=" Voulez-vous vraiment annuler la commande."
-                                                                                data-url="/Commande/DeleteCommande/${row.id}" data-toggle="modal"
-                                                                        data-target="#confirmModal" rel="tooltip"
+                                                                                data-url="/Commande/DeleteCommande/${row.id}" data-bs-toggle="modal"
+                                                                        data-bs-target="#confirmModal" rel="tooltip"
                                                                         class="btn btn-danger btn-sm m-2" data-original-title="" title="">
                                                                     <span class="fa-remove  fa"></span> Annuler
                                                                 </button>`;
@@ -547,7 +547,7 @@
                             drawCallback: function (setting) {
 
 
-                                $('[data-toggle="tooltip"]').tooltip();
+                                $('[data-bs-toggle="tooltip"]').tooltip();
 
 
                             },

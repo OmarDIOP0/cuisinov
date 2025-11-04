@@ -5,13 +5,13 @@
         <a class="col-md-2 btn btn-primary mb-1 " id="generateAllQrCode" href="#!"
            data-method="PUT"
            data-message=" Voulez-vous regénerer tous les Codes QR"
-           data-url="/User/GenerateAllQrCode" data-toggle="modal"
-           data-target="#confirmModal"><i class="fa fa-cogs"></i> Générer les Codes QR</a>
+           data-url="/User/GenerateAllQrCode" data-bs-toggle="modal"
+           data-bs-target="#confirmModal"><i class="fa fa-cogs"></i> Générer les Codes QR</a>
         <a class="col-md-2 offset-md-1 btn btn-primary" id="sendAllQrCode" href="#!"
            data-method="PUT"
            data-message=" Voulez-vous envoyer à chaque employé son QR CODE?"
-           data-url="/User/SendAllQrCode" data-toggle="modal"
-           data-target="#confirmModal"><i class="fa fa-cogs"></i> Envoyer les Codes QR</a>
+           data-url="/User/SendAllQrCode" data-bs-toggle="modal"
+           data-bs-target="#confirmModal"><i class="fa fa-cogs"></i> Envoyer les Codes QR</a>
         <button type="button" data-method="PUT"
                 data-modaltitle="Rechargement multiple "
                 data-successhandler="rechargementMultipleSuccessHandler"
@@ -20,8 +20,8 @@
                 data-forward="rechargeMultiComptesFormValid()"
                 data-getdata="getDataForm()"
                 data-modalbody="<h6>Montant</b><br><br><input class='form-control' name='montant' id='montant' type='number' ></h6>"
-                data-url="/User/RechargerMultipleCompte" data-toggle="modal"
-                data-target="#genericModal" rel="tooltip"
+                data-url="/User/RechargerMultipleCompte" data-bs-toggle="modal"
+                data-bs-target="#genericModal" rel="tooltip"
                 class=" col-md-2  offset-md-1 btn btn-success mb-1 " data-original-title="" title="">
             <i class="fa-money  fa"></i> Recharger les comptes
         </button>
@@ -33,8 +33,8 @@
                 data-forward="resetPwdFormValid()"
                 data-getdata="getDataResetMultiForm()"
                 data-modalbody="Voulez vous réinitialiser les mots de passes des comptes sélectionnés?"
-                data-url="/User/ResetPasswordMultiAccounts" data-toggle="modal"
-                data-target="#genericModal" rel="tooltip"
+                data-url="/User/ResetPasswordMultiAccounts" data-bs-toggle="modal"
+                data-bs-target="#genericModal" rel="tooltip"
                 class="col-md-2  offset-md-1 btn btn-primary mb-1 " data-original-title="" title="">
             <i class="fa-cogs fa"></i> Réinitiliser mot de passe
         </button>
@@ -295,10 +295,10 @@
 
                                             return ` <a href="#" class="link-primary btn-toggle-menu"   data-method="PATCH"
                                                                                                                                          data-message=" Voulez-vous réinitialiser le mot de passe?</b>"
-                                                                                                                                                data-url="/User/RenitializePassword/${row.id}" data-toggle="modal"
+                                                                                                                                                data-url="/User/RenitializePassword/${row.id}" data-bs-toggle="modal"
                                                                                                                                                 data-callback="false"
 
-                                                                                                                                                data-target="#confirmModal" rel="tooltip"> Réinitialiser</a>`;
+                                                                                                                                                data-bs-target="#confirmModal" rel="tooltip"> Réinitialiser</a>`;
                                         }
                                         return '';
                                     }
@@ -368,8 +368,8 @@
                                         var btnDelete = `
                                                                                         <button type="button" data-method="DELETE"
                                                                                                         data-message=" Voulez-vous vraiment supprimer l'utilisateur <b>${row.prenom + " " + row.nom}</b>"
-                                                                                                        data-url="/User/DeleteUser/${row.id}" data-toggle="modal"
-                                                                                                data-target="#confirmModal" rel="tooltip"
+                                                                                                        data-url="/User/DeleteUser/${row.id}" data-bs-toggle="modal"
+                                                                                                data-bs-target="#confirmModal" rel="tooltip"
                                                                                                 class="btn btn-danger m-2 btn-sm" data-original-title="" title="">
                                                                                             <span class="fa-remove  fa"></span>
                                                                                         </button>`;
@@ -385,8 +385,8 @@
                                                                                                                          data-forward="rechargeCompteFormValid()"
                                                                                                                  data-getdata="getDataSoldeForm(${row.id})"
                                                                                                                                                                 data-modalbody=" <h6>Recharger le compte de <b>${row.prenom}  ${row.nom} Mat: ${row.matricule} </b><br><br><input class='form-control' name='montant' id='montant' type='number' ></h6>"
-                                                                                                                                data-url="/User/RechargerCompte" data-toggle="modal"
-                                                                                                                        data-target="#genericModal" rel="tooltip"
+                                                                                                                                data-url="/User/RechargerCompte" data-bs-toggle="modal"
+                                                                                                                        data-bs-target="#genericModal" rel="tooltip"
                                                                                                                 class="btn btn-success m-2 btn-sm" data-original-title="" title="">
                                                                                                             <span class="fa-money  fa"></span>
                                                                                                         </button>`;
@@ -394,8 +394,8 @@
                                              btnSendQrCode = `
                                                                                                         <button type="button" data-method="PUT"
                                                                                                                         data-message=" Voulez-vous envoyer à <b>${row.prenom + " " + row.nom}</b> son QR Code par mail?"
-                                                                                                                     data-url="/User/SendUserQrCode/${row.id}" data-toggle="modal"
-                                                                                                                data-target="#confirmModal" rel="tooltip"
+                                                                                                                     data-url="/User/SendUserQrCode/${row.id}" data-bs-toggle="modal"
+                                                                                                                data-bs-target="#confirmModal" rel="tooltip"
                                                                                                                 class="btn btn-primary m-2 btn-sm" data-original-title="" title="">
                                                                                                                     <span class="fa fa-envelope "></span>
                                                                                                         </button>`;
@@ -761,10 +761,10 @@
 
                                 return ` <a href="#" class="link-primary btn-toggle-menu"   data-method="PATCH"
                                                                                                                                                  data-message=" Voulez-vous réinitialiser le mot de passe?</b>"
-                                                                                                                                                        data-url="/User/RenitializePassword/${row.id}" data-toggle="modal"
+                                                                                                                                                        data-url="/User/RenitializePassword/${row.id}" data-bs-toggle="modal"
                                                                                                                                                         data-callback="false"
 
-                                                                                                                                                        data-target="#confirmModal" rel="tooltip"> Réinitialiser</a>`;
+                                                                                                                                                        data-bs-target="#confirmModal" rel="tooltip"> Réinitialiser</a>`;
                             }
                             return '';
                         }
@@ -834,8 +834,8 @@
                             var btnDelete = `
                                                                                 <button type="button" data-method="DELETE"
                                                                                                 data-message=" Voulez-vous vraiment supprimer l'utilisateur <b>${row.prenom + " " + row.nom}</b>"
-                                                                                                data-url="/User/DeleteUser/${row.id}" data-toggle="modal"
-                                                                                        data-target="#confirmModal" rel="tooltip"
+                                                                                                data-url="/User/DeleteUser/${row.id}" data-bs-toggle="modal"
+                                                                                        data-bs-target="#confirmModal" rel="tooltip"
                                                                                         class="btn btn-danger m-2 btn-sm" data-original-title="" title="">
                                                                                     <span class="fa-remove  fa"></span>
                                                                                 </button>`;
@@ -852,8 +852,8 @@
                                                                 data-forward="rechargeCompteFormValid()"
                                                         data-getdata="getDataSoldeForm(${row.id})"
                                                                                                     data-modalbody=" <h6>Recharger le compte de <b>${row.prenom}  ${row.nom} Mat: ${row.matricule} </b><br><br><input class='form-control' name='montant' id='montant' type='number' ></h6>"
-                                                                    data-url="/User/RechargerCompte" data-toggle="modal"
-                                                            data-target="#genericModal" rel="tooltip"
+                                                                    data-url="/User/RechargerCompte" data-bs-toggle="modal"
+                                                            data-bs-target="#genericModal" rel="tooltip"
                                                     class="btn btn-success m-2 btn-sm" data-original-title="" title="">
                                                 <span class="fa-money  fa"></span>
                                             </button>`;
@@ -861,8 +861,8 @@
                                 btnSendQrCode = `
                                                                                                                 <button type="button" data-method="PUT"
                                                                                                                                 data-message=" Voulez-vous envoyer à <b>${row.prenom + " " + row.nom}</b> son QR Code par mail?"
-                                                                                                                             data-url="/User/SendUserQrCode/${row.id}" data-toggle="modal"
-                                                                                                                        data-target="#confirmModal" rel="tooltip"
+                                                                                                                             data-url="/User/SendUserQrCode/${row.id}" data-bs-toggle="modal"
+                                                                                                                        data-bs-target="#confirmModal" rel="tooltip"
                                                                                                                         class="btn btn-primary m-2 btn-sm" data-original-title="" title="">
                                                                                                                             <span class="fa fa-envelope "></span>
                                                                                                                 </button>`;

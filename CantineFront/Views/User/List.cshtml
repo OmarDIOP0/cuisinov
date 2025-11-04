@@ -184,9 +184,9 @@
                                 //         if (row.useActiveDirectoryAuth != true) {
                                 //             return `<a href="#" class="link-primary btn-toggle-menu" data-method="PATCH"
                                 //                     data-message="Voulez-vous réinitialiser le mot de passe?</b>"
-                                //                     data-url="/User/RenitializePassword/${row.id}" data-toggle="modal"
+                                //                     data-url="/User/RenitializePassword/${row.id}" data-bs-toggle="modal"
                                 //                     data-callback="false"
-                                //                     data-target="#confirmModal" rel="tooltip">Réinitialiser</a>`;
+                                //                     data-bs-target="#confirmModal" rel="tooltip">Réinitialiser</a>`;
                                 //         }
                                 //         return '';
                                 //     }
@@ -271,8 +271,8 @@
                                                                 data-forward="rechargeCompteFormValid()"
                                                         data-getdata="getDataSoldeForm(${row.id})"
                                                                                                     data-modalbody=" <h6>Recharger le compte de <b>${row.login} Tel: ${row.telephone} </b><br><br><input class='form-control' name='montant' id='montant' type='number' ></h6>"
-                                                                    data-url="/User/RechargerCompte" data-toggle="modal"
-                                                            data-target="#genericModal" rel="tooltip"
+                                                                    data-url="/User/RechargerCompte" data-bs-toggle="modal"
+                                                            data-bs-target="#genericModal" rel="tooltip"
                                                     class="btn btn-success m-2 btn-sm" data-original-title="" title="">
                                                 <span class="fa-money  fa"></span>
                                             </button>`;
@@ -301,7 +301,7 @@
                             },
                             drawCallback: function (setting) {
                                 // Re-initialize tooltips
-                                $('[data-toggle="tooltip"]').tooltip();
+                                $('[data-bs-toggle="tooltip"]').tooltip();
                                 $('[title]').tooltip();
                             }
                         });

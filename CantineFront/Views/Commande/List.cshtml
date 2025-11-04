@@ -514,8 +514,8 @@
                                                                                     <button type="button" data-method="GET"
                                                                                         data-modaltitle="Motif du rejet"
                                                                                                 data-modalbody="${row.rejectComment}"
-                                                                                        data-toggle="modal"
-                                                                                        data-target="#genericModal" rel="tooltip"
+                                                                                        data-bs-toggle="modal"
+                                                                                        data-bs-target="#genericModal" rel="tooltip"
                                                                                     class="btn btn-primary btn-sm m-2" data-original-title="" title="">
                                                                                 Motif
                                                                                      </button>
@@ -538,8 +538,8 @@
                                                                             data-forward="rejectFormValid()"
                                                                     data-getdata="getDataForm(${row.id})"
                                                                                                                 data-modalbody="Motif du rejet<br><textarea class='form-control' name='motif' id='motif' ></textarea>"
-                                                                        data-url="/Commande/Reject" data-toggle="modal"
-                                                                data-target="#genericModal" rel="tooltip"
+                                                                        data-url="/Commande/Reject" data-bs-toggle="modal"
+                                                                data-bs-target="#genericModal" rel="tooltip"
                                                                 class="btn btn-danger btn-sm mx-2" data-original-title="" title="">
                                                     Rejeter
                                                 </button>`;
@@ -551,8 +551,8 @@
                                                                    data-method="POST"
                                                                    data-callback="DeliveryCallback"     
                                                                     data-message="Veuillez confirmer?"
-                                                                    data-url="/Commande/Delivery/${row.id}" data-toggle="modal"
-                                                                    data-target="#confirmModal"
+                                                                    data-url="/Commande/Delivery/${row.id}" data-bs-toggle="modal"
+                                                                    data-bs-target="#confirmModal"
                                                                  data-commandid="${row.id}"  href="#!">Livrer</a>
                                                                 `
 
@@ -599,7 +599,7 @@
                     drawCallback: function (setting) {
 
 
-                        $('[data-toggle="tooltip"]').tooltip();
+                        $('[data-bs-toggle="tooltip"]').tooltip();
 
 
                     },

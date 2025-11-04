@@ -80,9 +80,9 @@
                          <a href="#" class="link-primary btn-toggle-menu"
                             data-method="PATCH"
                             data-message=" Voulez-vous rendre ${changerDisponibilite} l'article <b>${data.title}</b>"
-                            data-url="/Article/UpdateStatusArticle/${data.id}" data-toggle="modal"
+                            data-url="/Article/UpdateStatusArticle/${data.id}" data-bs-toggle="modal"
                             data-callback="updateCell"
-                            data-target="#confirmModal"
+                            data-bs-target="#confirmModal"
                             rel="tooltip">modifier
                          </a>`);
             }
@@ -99,9 +99,9 @@
                          <a href="#" class="link-primary btn-toggle-menu"
                             data-method="PATCH"
                             data-message=" Voulez-vous rendre ${changerApprobation} l'article <b>${data.title}</b>"
-                            data-url="/Article/ApproveArticle/${data.id}" data-toggle="modal"
+                            data-url="/Article/ApproveArticle/${data.id}" data-bs-toggle="modal"
                             data-callback="updateCell"
-                            data-target="#confirmModal"
+                            data-bs-target="#confirmModal"
                             rel="tooltip">modifier
                          </a>`);
             }
@@ -212,9 +212,9 @@
                                                    data-method="PATCH"
                                                    data-message=" Voulez-vous rendre ${changerVisibilite} l'article <b>${row.title}</b>"
                                                    data-url="/Article/UpdateStatusArticle/${row.id}"
-                                                   data-toggle="modal"
+                                                   data-bs-toggle="modal"
                                                    data-callback="updateCell"
-                                                   data-target="#confirmModal"
+                                                   data-bs-target="#confirmModal"
                                                    rel="tooltip">modifier</a>`;
                                     }
                                 },
@@ -232,9 +232,9 @@
                                                    data-method="PATCH"
                                                    data-message=" Voulez-vous ${changerApprobation} l'article <b>${row.title}</b>"
                                                    data-url="/Article/ApproveArticle/${row.id}"
-                                                   data-toggle="modal"
+                                                   data-bs-toggle="modal"
                                                    data-callback="updateApproveCell"
-                                                   data-target="#confirmModal"
+                                                   data-bs-target="#confirmModal"
                                                    rel="tooltip">modifier</a>`;
                                     }
                                 },
@@ -264,8 +264,8 @@
                                                                 data-method="DELETE"
                                                                 data-message=" Voulez-vous vraiment supprimer l'article <b>${row.title}</b>"
                                                                 data-url="/Article/DeleteArticle/${row.id}"
-                                                                data-toggle="modal"
-                                                                data-target="#confirmModal"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#confirmModal"
                                                                 rel="tooltip"
                                                                 title="Supprimer">
                                                             <i class="fas fa-trash me-1"></i>Supprimer
@@ -294,8 +294,8 @@
                                                                      </div>
                                                                    </div>"
                                                                    data-url="/Article/Mouvement"
-                                                                   data-toggle="modal"
-                                                                   data-target="#genericModal"
+                                                                   data-bs-toggle="modal"
+                                                                   data-bs-target="#genericModal"
                                                                    rel="tooltip"
                                                                    title="Mouvement de stock">
                                                             <i class="fas fa-exchange-alt me-1"></i>Mouvement
@@ -312,7 +312,7 @@
                                             return "";
                                         }
                                         var dataDisplay = data.length > 50 ? (data.substring(0, 50) + "...") : data;
-                                        return `<div data-toggle="tooltip" title=\"${data}\" tabindex="0"><span style="pointer-events: none;" class="litletext">${dataDisplay}</span></div>`
+                                        return `<div data-bs-toggle="tooltip" title=\"${data}\" tabindex="0"><span style="pointer-events: none;" class="litletext">${dataDisplay}</span></div>`
                                     }
                                 },
                             ],
@@ -323,7 +323,7 @@
                             },
                             drawCallback: function (setting) {
                                 // Re-initialize tooltips
-                                $('[data-toggle="tooltip"]').tooltip();
+                                $('[data-bs-toggle="tooltip"]').tooltip();
                                 $('[title]').tooltip();
                             }
                         });

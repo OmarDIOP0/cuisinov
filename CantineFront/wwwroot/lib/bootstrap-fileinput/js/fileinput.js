@@ -2878,7 +2878,7 @@
                 title = ' title="' + (self.previewZoomButtonTitles[type] || '') + '" ', tag = $h.isBs(5) ? 'bs-' : '',
                 params = title + (type === 'close' ? ' data-' + tag + 'dismiss="modal" aria-hidden="true"' : '');
             if (type === 'fullscreen' || type === 'borderless' || type === 'toggleheader') {
-                params += ' data-toggle="button" aria-pressed="false" autocomplete="off"';
+                params += ' data-bs-toggle="button" aria-pressed="false" autocomplete="off"';
             }
             return '<button type="button" class="' + css + ' btn-kv-' + type + '"' + params + '>' + label + '</button>';
         },
