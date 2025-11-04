@@ -1145,6 +1145,8 @@
 
             });
             $('#genericModal').off('hidden.bs.modal').on('hidden.bs.modal', function (event) {
+                    $('.modal-backdrop').remove();
+                    $('body').removeClass('modal-open').css('padding-right', '');
 
                 const modal = $(this);
 
