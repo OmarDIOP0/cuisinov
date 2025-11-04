@@ -66,7 +66,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.LoginPath = "/Login/Index";
     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-    options.Cookie.MaxAge = options.ExpireTimeSpan; // optional
+    options.Cookie.MaxAge = options.ExpireTimeSpan; 
     options.SlidingExpiration = true;
 });
 
@@ -129,10 +129,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseSession();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Menu}/{id?}");
