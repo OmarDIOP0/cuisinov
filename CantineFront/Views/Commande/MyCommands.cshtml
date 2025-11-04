@@ -427,12 +427,12 @@
                                                                                     </div>
 
                                                                     <button type="button" data-method="GET"
-                                                                                                                 data-modaltitle="Commentaire"
-                                                                                                                          data-modalbody="${row.customerFeedback}"
-                                                                                                                 data-toggle="modal"
-                                                                                                                  data-target="#genericModal" rel="tooltip"
-                                                                                                                class="btn btn-primary btn-sm m-2" data-original-title="" title="">
-                                                                                                            Avis et Note
+                                                                        data-modaltitle="Commentaire"
+                                                                        data-modalbody="${row.customerFeedback}"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#genericModal" rel="tooltip"
+                                                                    class="btn btn-primary btn-sm m-2" data-original-title="" title="">
+                                                                Avis et Note
                                                                      </button>
                                                     `;
                                             }else{
@@ -448,19 +448,19 @@
                                                                             </div>
                                                                     `
                                                 btnReject = `
-                                                                                                                                <button type="button" data-method="POST"
-                                                                                                                                         data-modaltitle="Noter la prestation"
-                                                                                                                                                         data-successhandler="feedbackSuccessHandler"
-                                                                                                                                                 data-errorhandler="errorHandler"
-                                                                                                                                                 data-callback="updateNoteCell"
-                                                                                                                                                         data-forward="feedbackFormValid()"
-                                                                                                                                                 data-getdata="getDataForm(${row.id})"
-                                                                                                                                                                           data-modalbody=" <div class='mb-3'>${starRating} </div><div class='mb-3'><label> Commentaire</label><br><textarea class='form-control' name='Feedback' id='Feedback' ></textarea > </di>"
-                                                                                                                                                                data-url="/Commande/FeedBack" data-bs-toggle="modal"
-                                                                                                                                                data-bs-target="#genericModal" rel="tooltip"
-                                                                                                                                                class="btn btn-warning btn-sm mx-2" data-original-title="" title="">
-                                                                                                                                   Noter
-                                                                                                                                </button>`;
+                                                                    <button type="button" data-method="POST"
+                                                                                data-modaltitle="Noter la prestation"
+                                                                                         data-successhandler="feedbackSuccessHandler"
+                                                                                        data-errorhandler="errorHandler"
+                                                                                        data-callback="updateNoteCell"
+                                                                                        data-forward="feedbackFormValid()"
+                                                                                        data-getdata="getDataForm(${row.id})"
+                                                                                         data-modalbody=" <div class='mb-3'>${starRating} </div><div class='mb-3'><label> Commentaire</label><br><textarea class='form-control' name='Feedback' id='Feedback' ></textarea > </di>"
+                                                                                                    data-url="/Commande/FeedBack" data-bs-toggle="modal"
+                                                                                    data-bs-target="#genericModal" rel="tooltip"
+                                                                                    class="btn btn-warning btn-sm mx-2" data-original-title="" title="">
+                                                                        Noter
+                                                                    </button>`;
 
 
                                                 return btnReject;
