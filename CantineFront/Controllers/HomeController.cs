@@ -30,19 +30,24 @@ namespace CantineFront.Controllers
         [Authorize]
         public async Task<IActionResult> Index(int categorieId)
         {
-            ViewBag.CategorieId = categorieId;
-            if (HttpContext.Session.GetListObjectFromSession<PaymentMethod>("PaymentMethods") == null)
+            if (User.Identity.IsAuthenticated)
             {
-                var urlPaymentMethods = ApiUrlGeneric.ReadAllURL<PaymentMethod>();
-                var apiPaymentMethods = await ApiService<PaymentMethod>.CallGetList(_httpClientFactory, urlPaymentMethods);
-                if (apiPaymentMethods.Data != null)
+                ViewBag.CategorieId = categorieId;
+                if (HttpContext.Session.GetListObjectFromSession<PaymentMethod>("PaymentMethods") == null)
                 {
+                    var urlPaymentMethods = ApiUrlGeneric.ReadAllURL<PaymentMethod>();
+                    var apiPaymentMethods = await ApiService<PaymentMethod>.CallGetList(_httpClientFactory, urlPaymentMethods);
+                    if (apiPaymentMethods.Data != null)
+                    {
 
-                    HttpContext.Session.SetListInSession("PaymentMethods", apiPaymentMethods.Data);
+                        HttpContext.Session.SetListInSession("PaymentMethods", apiPaymentMethods.Data);
+                    }
+
                 }
-
+                return RedirectToAction("Menu");
             }
-            return View();
+
+            return RedirectToAction("Onboarding");
         }
         public async Task<IActionResult> Menu()
         {
@@ -63,6 +68,10 @@ namespace CantineFront.Controllers
 
         public IActionResult Onboarding()
         {
+            if(User.Identities.Any(i=>i.IsAuthenticated))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 

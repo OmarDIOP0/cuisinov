@@ -65,9 +65,12 @@ builder.Services.AddAuthentication(options =>
 }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,options =>
 {
     options.LoginPath = "/Login/Index";
+    options.AccessDeniedPath = "/Home/Onboarding";
     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
     options.Cookie.MaxAge = options.ExpireTimeSpan; 
     options.SlidingExpiration = true;
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
 
