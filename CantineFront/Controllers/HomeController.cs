@@ -61,7 +61,10 @@ namespace CantineFront.Controllers
             return View();
         }
 
-
+        public IActionResult Onboarding()
+        {
+            return View();
+        }
 
         [Authorize(Roles = "USER")]
         public IActionResult Book()
