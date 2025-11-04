@@ -137,7 +137,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Menu}/{id?}");
+    pattern: "{controller=Home}/{action=Onboarding}/{id?}");
 app.MapHub<ChatCommandHub>("/chatHub");
 
 app.Run();
