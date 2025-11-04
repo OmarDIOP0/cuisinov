@@ -27,7 +27,7 @@ namespace CantineFront.Controllers
             _httpClientFactory = httpClientFactory;
             _logger = logger;
         }
-
+        [Authorize]
         public async Task<IActionResult> Index(int categorieId)
         {
             ViewBag.CategorieId = categorieId;
