@@ -781,26 +781,11 @@ namespace CantineBack.Controllers
             }
             string password = String.Empty;
             user.Guid = Guid.NewGuid().ToString();
-            if (user.Profile == "GERANT")
+            password = Common.GetRandomAlphanumericString(8);
+            if (user.Profile == "GERANT" || user.Profile == "USER" || user.Profile == "ADMIN")
             {
-
-                if (String.IsNullOrWhiteSpace(user.Telephone))
-                {
-                    return Problem("Le numéro de téléphone de l'utilisateur est obligatoire pour la réinitialisation de son mot de passe.");
-                }
                 user.ResetPassword = true;
-                password = Common.GetRandomAlphanumericString(8);
                 user.Password = BCrypt.Net.BCrypt.HashPassword(password);
-            }
-            else
-            {
-                user.ResetPassword = false;
-            }
-
-            if (user.Profile != "GERANT" && String.IsNullOrWhiteSpace(user.Matricule))
-            {
-
-                return Problem("Le matricule de l'utilisateur est obligatoire.");
             }
 
 
@@ -817,7 +802,7 @@ namespace CantineBack.Controllers
             if(adminUser != null) {
                 foreach(var admin in adminUser)
                 {
-                    var messageAdmin = String.Format("L'administrateur a réinitialisé le mot de passe de l'utilisateur Username:{0}", user.Login);
+                    var messageAdmin = String.Format("L'administrateur a réinitialisé le mot de passe de l'utilisateur Username:{0} - Password: {1}", user.Login,password);
                     EmailManager.SendEmail(admin.Email!, "Réinitialisation de mot de passe", messageAdmin, null, "");
                 }
             }
