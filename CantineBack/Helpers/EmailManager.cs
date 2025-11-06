@@ -73,7 +73,7 @@ namespace CantineBack.Helpers
                 {
                     DeliveryNotificationOptions = DeliveryNotificationOptions.OnSuccess,
 
-                    From = new MailAddress(emailRH),
+                    From = new MailAddress(smtpUser,emailRH),
                     Priority = MailPriority.High,
                     Subject = subject,
                     Body = body,

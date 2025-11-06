@@ -807,13 +807,19 @@ namespace CantineBack.Controllers
             _context.Entry(user).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
-            if (user.ResetPassword ?? false)
+            if (user.Email != null)
             {
 
                 var message = String.Format("Reinitialisation de Mot de passe Username:{0} - Password: {1}", user.Login, password);
-
-                //SmsManager.SendSMS(user.Telephone, Common.CreateAccountMessage);
-                SmsManager.SendSMS(user.Telephone!, message);
+                EmailManager.SendEmail(user.Email!, "Réinitialisation de mot de passe", message,null,"");
+            }
+            var adminUser = _context.Users.Where(u => u.Profile == "ADMIN" && u.Actif).ToList();
+            if(adminUser != null) {
+                foreach(var admin in adminUser)
+                {
+                    var messageAdmin = String.Format("L'administrateur a réinitialisé le mot de passe de l'utilisateur Username:{0}", user.Login);
+                    EmailManager.SendEmail(admin.Email!, "Réinitialisation de mot de passe", messageAdmin, null, "");
+                }
             }
 
 

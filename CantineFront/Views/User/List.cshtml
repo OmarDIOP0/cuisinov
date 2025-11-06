@@ -100,12 +100,12 @@
                         <tr>
                             <th scope="col"><input id="selectallCheckbox" type="checkbox" class="select-all" /></th>
                             <th scope="col">Login</th>
-                            <th scope="col">Réinitialiser MDP</th>
                             @* <th scope="col">Email</th> *@
                             <th scope="col">Téléphone</th>
                             <th scope="col">Entreprise</th>
                             <th scope="col">Profil</th>
                             <th scope="col">Actif</th>
+                            <th scope="col">Réinitialiser MDP</th>
                             <th scope="col">Actions</th>
                             @* <th scope="col">Plus</th> *@
                         </tr>
@@ -175,21 +175,6 @@
                                     defaultContent: '',
                                     className: "text-center"
                                 },
-                                {
-                                    width: '15%',
-                                    data: null,
-                                    defaultContent: '',
-                                    className: "tablesmalltext",
-                                    render: function (data, type, row) {
-                                        
-                                            return `<a href="#" class="link-primary btn-toggle-menu" data-method="PATCH"
-                                                    data-message="Voulez-vous réinitialiser le mot de passe?</b>"
-                                                    data-url="/User/RenitializePassword/${row.id}" data-bs-toggle="modal"
-                                                    data-callback="false"
-                                                    data-bs-target="#confirmModal" rel="tooltip">Réinitialiser</a>`;
-                                        
-                                    }
-                                },
                                 // {
                                 //     width: '10%',
                                 //     data: 'email',
@@ -239,6 +224,21 @@
                                         var className = data ? "badge-status-active" : "badge-status-inactive";
                                         var status = data ? "actif" : "inactif";
                                         return `<span class="badge ${className}">${status}</span>`;
+                                    }
+                                },
+                                                                {
+                                    // width: '5%',
+                                    data: null,
+                                    defaultContent: '',
+                                    className: "tablesmalltext",
+                                    render: function (data, type, row) {
+
+                                            return `<a href="#" class="btn-toggle-menu btn btn-warning" data-method="PATCH"
+                                                    data-message="Voulez-vous réinitialiser le mot de passe?</b>"
+                                                    data-url="/User/RenitializePassword/${row.id}" data-bs-toggle="modal"
+                                                    data-callback="false"
+                                                    data-bs-target="#confirmModal" rel="tooltip">Réinitialiser</a>`;
+
                                     }
                                 },
                                 {
