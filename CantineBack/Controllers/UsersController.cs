@@ -202,7 +202,8 @@ namespace CantineBack.Controllers
             bool validPassword = BCrypt.Net.BCrypt.Verify(password, user.Password);
             if (!validPassword)
                 return Unauthorized("Mot de passe incorrect.");
-
+            if (user.ResetPassword == true)
+                return Unauthorized("Mot de passe temporaire : veuillez le changer à la prochaine connexion.");
             var userRead = _mapper.Map<UserReadDto>(user);
 
             var claims = new[]
@@ -787,22 +788,20 @@ namespace CantineBack.Controllers
                 user.ResetPassword = true;
                 user.Password = BCrypt.Net.BCrypt.HashPassword(password);
             }
-
-
             _context.Entry(user).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             if (user.Email != null)
             {
 
-                var message = String.Format("L'administrateur a réinitialisé le mot de passe de l'utilisateur Username:{0} - Password: {1}", user.Login, password);
+                var message = String.Format("L'administrateur a réinitialisé le mot de passe de l'utilisateur Nom d'Utilisateur:{0} - Mot de Passe: {1}", user.Login, password);
                 EmailManager.SendEmail(user.Email!, "Réinitialisation de mot de passe", message,null,"");
             }
             var adminUser = _context.Users.Where(u => u.Profile == "ADMIN" && u.Actif).ToList();
             if(adminUser != null) {
                 foreach(var admin in adminUser)
                 {
-                    var messageAdmin = String.Format("L'administrateur a réinitialisé le mot de passe de l'utilisateur Username:{0} - Password: {1}", user.Login,password);
+                    var messageAdmin = String.Format("L'administrateur a réinitialisé le mot de passe de l'utilisateur Nom d'Utilisateur:{0} - Mot de Passe: {1}", user.Login,password);
                     EmailManager.SendEmail(admin.Email!, "Réinitialisation de mot de passe", messageAdmin, null, "");
                 }
             }
