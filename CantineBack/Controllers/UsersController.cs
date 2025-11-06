@@ -795,7 +795,7 @@ namespace CantineBack.Controllers
             if (user.Email != null)
             {
 
-                var message = String.Format("Reinitialisation de Mot de passe Username:{0} - Password: {1}", user.Login, password);
+                var message = String.Format("L'administrateur a réinitialisé le mot de passe de l'utilisateur Username:{0} - Password: {1}", user.Login, password);
                 EmailManager.SendEmail(user.Email!, "Réinitialisation de mot de passe", message,null,"");
             }
             var adminUser = _context.Users.Where(u => u.Profile == "ADMIN" && u.Actif).ToList();
