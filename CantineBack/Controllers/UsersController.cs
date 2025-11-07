@@ -202,8 +202,8 @@ namespace CantineBack.Controllers
             bool validPassword = BCrypt.Net.BCrypt.Verify(password, user.Password);
             if (!validPassword)
                 return Unauthorized("Mot de passe incorrect.");
-            if (user.ResetPassword == true)
-                return Unauthorized("Mot de passe temporaire : veuillez le changer à la prochaine connexion.");
+            //if (user.ResetPassword == true)
+            //    return Unauthorized("Mot de passe temporaire : veuillez le changer à la prochaine connexion.");
             var userRead = _mapper.Map<UserReadDto>(user);
 
             var claims = new[]
