@@ -782,8 +782,8 @@ namespace CantineBack.Controllers
             _context.PasswordResetTokens.Add(resetToken);
             await _context.SaveChangesAsync();
 
-            string linkBackEnd = Common.BackendLink;
-            string linkForgetPassword = $"{linkBackEnd}/api/ForgotPassword?token={resetToken.Token}";
+            string linkFrontEnd = Common.FrontEndLink;
+            string linkForgetPassword = $"{linkFrontEnd}/ForgotPassword?token={resetToken.Token}";
 
             // Envoi du mail à l'utilisateur
             if (!string.IsNullOrEmpty(user.Email))
