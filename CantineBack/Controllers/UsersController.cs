@@ -772,12 +772,18 @@ namespace CantineBack.Controllers
 
             if (!user.Actif)
                 return Problem("Utilisateur inactif.");
+            var resetToken = new PasswordResetToken
+            {
+                Token = Guid.NewGuid().ToString(),
+                ExpireAt = DateTime.Now.AddMinutes(15),
+                UserId = user.Id
+            };
 
-            user.ResetPassword = true;
+            _context.PasswordResetTokens.Add(resetToken);
             await _context.SaveChangesAsync();
 
             string linkBackEnd = Common.BackendLink;
-            string linkForgetPassword = $"{linkBackEnd}/api/ForgotPassword";
+            string linkForgetPassword = $"{linkBackEnd}/api/ForgotPassword?token={resetToken}";
 
             // Envoi du mail à l'utilisateur
             if (!string.IsNullOrEmpty(user.Email))
