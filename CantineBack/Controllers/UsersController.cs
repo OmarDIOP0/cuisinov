@@ -761,6 +761,38 @@ namespace CantineBack.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpPost("ForgetPassword/{email}")]
+        public async Task<ActionResult> ForgetPassword(string email)
+        {
+            var user = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+            if(user == null)
+            {
+                return Problem("Uilisateur introuvable");
+            }
+            if(!user.Actif)
+            {
+                return Problem("Utilisateur inactif");
+            }
+            user.ResetPassword = true;
+            await _context.SaveChangesAsync();
+            if (user.Email != null)
+            {
+                var message = String.Format("L'administrateur a réinitialisé le mot de passe de l'utilisateur Nom d'Utilisateur:{0} - Mot de Passe: {1}", user.Login, password);
+                EmailManager.SendEmail(user.Email!, "Réinitialisation de mot de passe", message, null, "");
+            }
+            var adminUser = _context.Users.Where(u => u.Profile == "ADMIN" && u.Actif).ToList();
+            if (adminUser != null)
+            {
+                foreach (var admin in adminUser)
+                {
+                    var messageAdmin = String.Format("L'administrateur a réinitialisé le mot de passe de l'utilisateur Nom d'Utilisateur:{0} - Mot de Passe: {1}", user.Login, password);
+                    EmailManager.SendEmail(admin.Email!, "Réinitialisation de mot de passe", messageAdmin, null, "");
+                }
+            }
+            return NoContent();
+
+        }
 
         [Authorize(Policy = IdentityData.AdminUserPolicyName)]
         [HttpPut("RenitializePassword/{id}")]
@@ -774,11 +806,7 @@ namespace CantineBack.Controllers
             }
             if (!user.Actif)
             {
-
-
                 return Problem("Utilisateur inactif.");
-
-
             }
             string password = String.Empty;
             user.Guid = Guid.NewGuid().ToString();
@@ -793,7 +821,6 @@ namespace CantineBack.Controllers
 
             if (user.Email != null)
             {
-
                 var message = String.Format("L'administrateur a réinitialisé le mot de passe de l'utilisateur Nom d'Utilisateur:{0} - Mot de Passe: {1}", user.Login, password);
                 EmailManager.SendEmail(user.Email!, "Réinitialisation de mot de passe", message,null,"");
             }
