@@ -52,6 +52,8 @@ namespace CantineFront.Services
         public static string RechargerMultiCompteURL { get { return AppSettings.ApiUrl + "/api/Users/RechargerMultiCompte"; } }
         public static string GetSoldeURL { get { return AppSettings.ApiUrl + "/api/Users/GetSolde/{0}"; } }
         public static string ResetPasswordURL { get { return AppSettings.ApiUrl + "/api/Users/ResetPassword"; } }
+        public static string ForgotPasswordURL { get { return AppSettings.ApiUrl + "/api/Users/ForgotPassword"; } }
+        public static string ForgetPasswordURL { get { return AppSettings.ApiUrl + "/api/Users/ForgetPassword?email={0}"; } }
         public static string ResetPasswordMultiAccountsURL { get { return AppSettings.ApiUrl + "/api/Users/ResetPasswordMultiAccounts"; } }
         public static string RenitializePasswordURL { get { return AppSettings.ApiUrl + "/api/Users/RenitializePassword/{0}"; } }
         public static string RefreshTokenURL { get { return AppSettings.ApiUrl + "/api/Token/refresh"; } }
