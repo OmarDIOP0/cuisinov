@@ -776,10 +776,12 @@ namespace CantineBack.Controllers
             }
             user.ResetPassword = true;
             await _context.SaveChangesAsync();
-            //string linkForgetPassword = 
+            string linkBackEnd = Common.BackendLink;
+
+            string linkForgetPassword = linkBackEnd + ${"/api/"};
             if (user.Email != null)
             {
-                var message = String.Format("Vous voulez reinitialiser votre mot de passe cliquer sur le lien", user.Login);
+                var message = String.Format("Vous voulez reinitialiser votre mot de passe cliquer sur le lien : ", user.Login);
                 EmailManager.SendEmail(user.Email!, "Réinitialisation de mot de passe", message, null, "");
             }
             var adminUser = _context.Users.Where(u => u.Profile == "ADMIN" && u.Actif).ToList();
@@ -833,8 +835,6 @@ namespace CantineBack.Controllers
                     EmailManager.SendEmail(admin.Email!, "Réinitialisation de mot de passe", messageAdmin, null, "");
                 }
             }
-
-
             return NoContent();
 
 
