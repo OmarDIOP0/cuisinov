@@ -57,37 +57,6 @@
                         Se Connecter
                     </button>
                 </div>
-
-                <!-- Reset Password Section -->
-                <div id="resetSection" class="reset-section">
-                    <div class="form-group">
-                        <label class="form-label" for="oldPassword">Ancien mot de passe</label>
-                        <div class="input-group">
-                            <i class="fas fa-lock input-icon"></i>
-                            <input type="password" class="form-input" id="oldPassword" name="oldPassword" placeholder="Votre ancien mot de passe">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="newPassword">Nouveau mot de passe</label>
-                        <div class="input-group">
-                            <i class="fas fa-key input-icon"></i>
-                            <input type="password" class="form-input" id="newPassword" name="newPassword" placeholder="Votre nouveau mot de passe">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="confirmPassword">Confirmation du mot de passe</label>
-                        <div class="input-group">
-                            <i class="fas fa-key input-icon"></i>
-                            <input type="password" class="form-input" id="confirmPassword" name="confirmPassword" placeholder="Confirmez votre mot de passe">
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn-login" id="btnResetPwd">
-                        Modifier le mot de passe
-                    </button>
-                </div>
             </form>
 
             <div class="register-link">
@@ -176,24 +145,30 @@
             ToastR("Nom d'utilisateur ou mot de passe incorrect!", "error", 10);
         }
 
-        const signInListener = event => {
+              const signInListener = event => {
             event.preventDefault();
 
-            let username = $("#username").val()
-            if (username == null || username.trim() == "") {
+            let username = $("#username").val();
+            if (!username || username.trim() === "") {
                 ToastR("Le nom d'utilisateur est requis", "error", 15);
                 return;
             }
-            let password = $("#password").val()
-            if (password == null || password.trim() == "") {
+
+            let password = $("#password").val();
+            if (!password || password.trim() === "") {
                 ToastR("Le mot de passe est requis", "error", 15);
                 return;
             }
 
-            let successHanlder = function (res) {
+            const payload = {
+                Username: username,
+                Password: password
+            };
+
+            let successHandler = function (res) {
                 if (res != null) {
-                    if (res.success) {
-                        ToastR(res.message, "success", 10);
+                    if (res.Success) {
+                        ToastR(res.Message, "success", 10);
                         console.log("Reçu ", res);
 
                         if (res.ResetPassword) {
@@ -203,18 +178,19 @@
                             $("#btnSignIn").hide();
                             $("#btnResetPwd").show();
                         } else {
-                            location.href = location.origin + "/Home/Menu"
+                            location.href = location.origin + "/Home/Menu";
                         }
 
                     } else {
-                        ToastR(res.message, "error", 10);
+                        ToastR(res.Message, "error", 10);
                     }
                 } else {
                     ToastR("Erreur de connexion", "error", 10);
                 }
-            }
+            };
 
-        }
+            ajaxManager("POST", "/Login/SignIn", successHandler, errorHandler, payload);
+        };
 
         const form = document.getElementById('formLogin');
         form.addEventListener('submit', signInListener);

@@ -1256,6 +1256,38 @@
   },
   {
     "ContainingType": "CantineBack.Controllers.UsersController",
+    "Method": "ForgetPassword",
+    "RelativePath": "api/Users/ForgetPassword/{email}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "email",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CantineBack.Controllers.UsersController",
+    "Method": "ForgotPassword",
+    "RelativePath": "api/Users/ForgotPassword",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "utilisateurReset",
+        "Type": "CantineBack.Models.UserRequestForgotPassword",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CantineBack.Controllers.UsersController",
     "Method": "GenerateAllQrCode",
     "RelativePath": "api/Users/GenerateAllQrCode",
     "HttpMethod": "PUT",
