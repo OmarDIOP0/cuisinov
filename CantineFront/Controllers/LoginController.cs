@@ -289,11 +289,11 @@ namespace CantineFront.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return Json(ModelErrorHandler<UserRequestForgotPassword>.ModelStateError(ModelState));
+                return Json(ModelErrorHandler<string>.ModelStateError(ModelState));
             }
             var url = String.Format(ApiUrlGeneric.ForgetPasswordURL, email);
 
-            var apiResponse = await ApiService<UserRequestForgotPassword>.CallApiPost(_httpClientFactory, url, null);
+            var apiResponse = await ApiService<string>.CallApiPost(_httpClientFactory, url, null);
 
 
             bool success = apiResponse.StatusCode == System.Net.HttpStatusCode.NoContent;
@@ -301,7 +301,7 @@ namespace CantineFront.Controllers
             {
                 await ApiService<String>.CallApiPost(_httpClientFactory, ApiUrlGeneric.RevokeTokenURL, null);
             }
-            string msg = success ? "Mot de passe modifié avec succès!" : (apiResponse.Message ?? "Une erreur a été rencontrée.");
+            string msg = success ? "Un email vous a été envoyé !" : (apiResponse.Message ?? "Une erreur a été rencontrée.");
 
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
         }
