@@ -776,9 +776,10 @@ namespace CantineBack.Controllers
             }
             user.ResetPassword = true;
             await _context.SaveChangesAsync();
+            //string linkForgetPassword = 
             if (user.Email != null)
             {
-                var message = String.Format("L'administrateur a réinitialisé le mot de passe de l'utilisateur Nom d'Utilisateur:{0} - Mot de Passe: {1}", user.Login, password);
+                var message = String.Format("Vous voulez reinitialiser votre mot de passe cliquer sur le lien", user.Login);
                 EmailManager.SendEmail(user.Email!, "Réinitialisation de mot de passe", message, null, "");
             }
             var adminUser = _context.Users.Where(u => u.Profile == "ADMIN" && u.Actif).ToList();
@@ -786,7 +787,7 @@ namespace CantineBack.Controllers
             {
                 foreach (var admin in adminUser)
                 {
-                    var messageAdmin = String.Format("L'administrateur a réinitialisé le mot de passe de l'utilisateur Nom d'Utilisateur:{0} - Mot de Passe: {1}", user.Login, password);
+                    var messageAdmin = String.Format("L'utilisateur a réinitialisé son mot de passe de l'utilisateur Nom d'Utilisateur:{0} ", user.Login);
                     EmailManager.SendEmail(admin.Email!, "Réinitialisation de mot de passe", messageAdmin, null, "");
                 }
             }
