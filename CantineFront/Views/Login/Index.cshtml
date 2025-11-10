@@ -214,26 +214,34 @@
                 }
             }
 
-            try {
-                if(Reset_Password){
-                    var postData = {
-                        Login: username,
-                        OldPassword: $("#oldPassword").val(),
-                        NewPassword: $("#newPassword").val(),
-                        ConfirmPassword: $("#confirmPassword").val()
-                    }
-                    ajaxManager("POST", `/Login/ResetPassword`, successHanlder, errorHandler, postData);
-                } else {
-                    ajaxManager("POST", `/Login/SignIn?username=${username}&password=${password}`, successHanlder, errorHandler);
-                }
-
-            } catch (e) {
-                console.error(e);
-            }
         }
 
         const form = document.getElementById('formLogin');
         form.addEventListener('submit', signInListener);
+
+        var errorHandlerEmail = function (err) {
+            ToastR("Une erreur est survenue!", "error", 10);
+        }
+        document.getElementById('btnValidate').addEventListener('click', function () {
+            let email = $("#email").val();
+            if (email == null || email.trim() == "") {
+                ToastR("L'email est requis", "error", 15);
+                return;
+            }
+            let successHandlerEmail = function (res) {
+                if (res != null) {
+                    if (res.success) {
+                        ToastR(res.message, "success", 10);
+                        $('#displayEmailModal').modal('hide');
+                    } else {
+                        ToastR(res.message, "error", 10);
+                    }
+                } else {
+                    ToastR("Erreur lors de l'envoi de l'email", "error", 10);
+                }
+            }
+            ajaxManager("POST", "/Login/ForgetPassword", successHandlerEmail, errorHandlerEmail, { email: email });
+        });
     </script>
 </body>
 </html>
