@@ -230,6 +230,7 @@ body {
 .register-link {
     text-align: center;
     margin-top: 25px;
+    cursor: pointer;
 }
 
     .register-link a {
