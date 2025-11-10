@@ -38,8 +38,11 @@ namespace CantineFront.Controllers
         {
             return View();
         }
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
 
-       
 
         [HttpPost]
         public async Task<JsonResult> Register(UserCURequest userRequest)
