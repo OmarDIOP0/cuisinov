@@ -778,7 +778,7 @@ namespace CantineBack.Controllers
             await _context.SaveChangesAsync();
             string linkBackEnd = Common.BackendLink;
 
-            string linkForgetPassword = linkBackEnd + ${"/api/"};
+            string linkForgetPassword = linkBackEnd + ${ "/api/ForgotPassword"};
             if (user.Email != null)
             {
                 var message = String.Format("Vous voulez reinitialiser votre mot de passe cliquer sur le lien : ", user.Login);
@@ -794,7 +794,41 @@ namespace CantineBack.Controllers
                 }
             }
             return NoContent();
+        }
+        [AllowAnonymous]
+        [HttpPost("ForgotPassword")]
+        public async Task<ActionResult<User>> ForgotPassword([FromBody] UserRequestForgotPassword utilisateurReset)
+        {
 
+            if (ModelState.IsValid)
+            {
+
+                User? utilisateur = await _context.Users
+                                                        .FirstOrDefaultAsync(u => u.Login == utilisateurReset.Login);
+
+                if (utilisateur != null)
+                {
+                    utilisateur.Password = BCrypt.Net.BCrypt.HashPassword(utilisateurReset.NewPassword);
+                    utilisateur.ResetPassword = false;
+                    if (utilisateurReset.NewPassword != utilisateurReset.ConfirmPassword)
+                    {
+                        return BadRequest("Le mot de passe de confirmation ne correspond pas au nouveau mot de passe.");
+                    }
+                    _context.Entry(utilisateur).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+
+                }
+                else
+                {
+                    return Problem("Nom d'utilisateur incorrect.");
+                }
+                return NoContent();
+
+            }
+            else
+            {
+                return Problem("Tous les champs sont obligatoires.");
+            }
         }
 
         [Authorize(Policy = IdentityData.AdminUserPolicyName)]
