@@ -94,7 +94,7 @@
                 <p>Nouveau sur Cuisinov ? <a href="/Login/Register">Créer un compte</a></p>
             </div>
             <div class="register-link">
-                <p>Mot de passe oublié ? <a class="" data-bs-toggle="modal" data-bs-target="#confirmModal">mot de passe oublié</a></p>
+                <p>Mot de passe oublié ? <a class="" data-bs-toggle="modal" data-bs-target="#displayEmailModal">mot de passe oublié</a></p>
             </div>
         </div>
     </div>
@@ -107,10 +107,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
                 </div>
-                <div class="modal-body " id="displayEmailModalBody">
-                    <div class="form-group">
-                        <div class="form-control">
-                            <input type="email" name="email" id="email"/>
+                <div class="modal-body" id="">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label" for="Email">
+                                Email
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-mail-forward"></i></span>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Votre email">
+                            </div>
                         </div>
                     </div>
                 </div>

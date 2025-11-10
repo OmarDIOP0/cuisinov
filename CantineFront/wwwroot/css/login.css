@@ -52,7 +52,7 @@ body {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     border-radius: var(--border-radius);
-    padding: 40px 35px;
+    padding: 10px 35px;
     box-shadow: var(--shadow-medium);
     border: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
