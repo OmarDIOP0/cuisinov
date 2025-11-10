@@ -285,15 +285,15 @@ namespace CantineFront.Controllers
             return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
         }
         [HttpPost]
-        public async Task<JsonResult> ForgotPassword(UserResetPwdRequest userResetPwdRequest)
+        public async Task<JsonResult> ForgotPassword(UserRequestForgotPassword userResetPwdRequest)
         {
             if (!ModelState.IsValid)
             {
-                return Json(ModelErrorHandler<Categorie>.ModelStateError(ModelState));
+                return Json(ModelErrorHandler<UserRequestForgotPassword>.ModelStateError(ModelState));
             }
-            var url = ApiUrlGeneric.ResetPasswordURL;
+            var url = ApiUrlGeneric.ForgotPasswordURL;
 
-            var apiResponse = await ApiService<Categorie>.CallApiPost(_httpClientFactory, url, userResetPwdRequest);
+            var apiResponse = await ApiService<UserRequestForgotPassword>.CallApiPost(_httpClientFactory, url, userResetPwdRequest);
 
 
             bool success = apiResponse.StatusCode == System.Net.HttpStatusCode.NoContent;
