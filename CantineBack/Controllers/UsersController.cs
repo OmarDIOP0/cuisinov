@@ -765,71 +765,79 @@ namespace CantineBack.Controllers
         [HttpPost("ForgetPassword/{email}")]
         public async Task<ActionResult> ForgetPassword(string email)
         {
-            var user = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
-            if(user == null)
-            {
-                return Problem("Uilisateur introuvable");
-            }
-            if(!user.Actif)
-            {
-                return Problem("Utilisateur inactif");
-            }
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (user == null)
+                return Problem("Utilisateur introuvable.");
+
+            if (!user.Actif)
+                return Problem("Utilisateur inactif.");
+
             user.ResetPassword = true;
             await _context.SaveChangesAsync();
-            string linkBackEnd = Common.BackendLink;
 
-            string linkForgetPassword = linkBackEnd + ${ "/api/ForgotPassword"};
-            if (user.Email != null)
+            string linkBackEnd = Common.BackendLink;
+            string linkForgetPassword = $"{linkBackEnd}/api/ForgotPassword";
+
+            // Envoi du mail à l'utilisateur
+            if (!string.IsNullOrEmpty(user.Email))
             {
-                var message = String.Format("Vous voulez reinitialiser votre mot de passe cliquer sur le lien : ", user.Login);
-                EmailManager.SendEmail(user.Email!, "Réinitialisation de mot de passe", message, null, "");
+                string message = $"Bonjour {user.Login},\n\n" +
+                                 $"Vous avez demandé à réinitialiser votre mot de passe.\n" +
+                                 $"Veuillez cliquer sur le lien suivant pour le faire : {linkForgetPassword}\n\n" +
+                                 $"Si vous n'êtes pas à l'origine de cette demande, ignorez ce message.\n\n" +
+                                 $"Cordialement,\nL'équipe Cuisinov.";
+
+                EmailManager.SendEmail(
+                    user.Email!,
+                    "Réinitialisation de votre mot de passe",
+                    message,
+                    null,
+                    ""
+                );
             }
-            var adminUser = _context.Users.Where(u => u.Profile == "ADMIN" && u.Actif).ToList();
-            if (adminUser != null)
+
+            // Notification aux administrateurs
+            var adminUsers = await _context.Users
+                .Where(u => u.Profile == "ADMIN" && u.Actif)
+                .ToListAsync();
+
+            foreach (var admin in adminUsers)
             {
-                foreach (var admin in adminUser)
-                {
-                    var messageAdmin = String.Format("L'utilisateur a réinitialisé son mot de passe de l'utilisateur Nom d'Utilisateur:{0} ", user.Login);
-                    EmailManager.SendEmail(admin.Email!, "Réinitialisation de mot de passe", messageAdmin, null, "");
-                }
+                string messageAdmin = $"L'utilisateur '{user.Login}' a demandé une réinitialisation de mot de passe.";
+                EmailManager.SendEmail(admin.Email!, "Demande de réinitialisation de mot de passe", messageAdmin, null, "");
             }
+
             return NoContent();
         }
+
+
         [AllowAnonymous]
         [HttpPost("ForgotPassword")]
-        public async Task<ActionResult<User>> ForgotPassword([FromBody] UserRequestForgotPassword utilisateurReset)
+        public async Task<ActionResult> ForgotPassword([FromBody] UserRequestForgotPassword utilisateurReset)
         {
-
-            if (ModelState.IsValid)
-            {
-
-                User? utilisateur = await _context.Users
-                                                        .FirstOrDefaultAsync(u => u.Login == utilisateurReset.Login);
-
-                if (utilisateur != null)
-                {
-                    utilisateur.Password = BCrypt.Net.BCrypt.HashPassword(utilisateurReset.NewPassword);
-                    utilisateur.ResetPassword = false;
-                    if (utilisateurReset.NewPassword != utilisateurReset.ConfirmPassword)
-                    {
-                        return BadRequest("Le mot de passe de confirmation ne correspond pas au nouveau mot de passe.");
-                    }
-                    _context.Entry(utilisateur).State = EntityState.Modified;
-                    await _context.SaveChangesAsync();
-
-                }
-                else
-                {
-                    return Problem("Nom d'utilisateur incorrect.");
-                }
-                return NoContent();
-
-            }
-            else
-            {
+            if (!ModelState.IsValid)
                 return Problem("Tous les champs sont obligatoires.");
-            }
+
+            // Recherche de l'utilisateur par login
+            var utilisateur = await _context.Users.FirstOrDefaultAsync(u => u.Login == utilisateurReset.Login);
+
+            if (utilisateur == null)
+                return Problem("Nom d'utilisateur incorrect.");
+
+            if (utilisateurReset.NewPassword != utilisateurReset.ConfirmPassword)
+                return BadRequest("Le mot de passe de confirmation ne correspond pas au nouveau mot de passe.");
+
+            // Hachage du nouveau mot de passe et réinitialisation du flag
+            utilisateur.Password = BCrypt.Net.BCrypt.HashPassword(utilisateurReset.NewPassword);
+            utilisateur.ResetPassword = false;
+
+            _context.Entry(utilisateur).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
+
 
         [Authorize(Policy = IdentityData.AdminUserPolicyName)]
         [HttpPut("RenitializePassword/{id}")]
