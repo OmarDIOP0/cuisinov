@@ -825,24 +825,28 @@ namespace CantineBack.Controllers
             if (!ModelState.IsValid)
                 return Problem("Tous les champs sont obligatoires.");
 
-            // Recherche de l'utilisateur par login
-            var utilisateur = await _context.Users.FirstOrDefaultAsync(u => u.Login == utilisateurReset.Login);
+            var resetTokenEntry = await _context.PasswordResetTokens
+                .Include(t => t.User)
+                .FirstOrDefaultAsync(t => t.Token == utilisateurReset.Token);
 
-            if (utilisateur == null)
-                return Problem("Nom d'utilisateur incorrect.");
+            if (resetTokenEntry == null || resetTokenEntry.ExpireAt < DateTime.UtcNow)
+                return BadRequest("Lien de réinitialisation invalide ou expiré.");
+
+            var utilisateur = resetTokenEntry.User;
 
             if (utilisateurReset.NewPassword != utilisateurReset.ConfirmPassword)
-                return BadRequest("Le mot de passe de confirmation ne correspond pas au nouveau mot de passe.");
+                return BadRequest("Le mot de passe de confirmation ne correspond pas.");
 
-            // Hachage du nouveau mot de passe et réinitialisation du flag
             utilisateur.Password = BCrypt.Net.BCrypt.HashPassword(utilisateurReset.NewPassword);
             utilisateur.ResetPassword = false;
 
-            _context.Entry(utilisateur).State = EntityState.Modified;
+            _context.PasswordResetTokens.Remove(resetTokenEntry);
+
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
+
 
 
         [Authorize(Policy = IdentityData.AdminUserPolicyName)]
