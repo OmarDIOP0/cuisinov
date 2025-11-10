@@ -31,5 +31,6 @@ namespace CantineBack
         public DbSet<PaymentMethod>? PaymentMethods { get; set; }
         public DbSet<Log>? Log { get; set; }
         public DbSet<RefreshToken>? RefreshTokens { get; set; }
+        public DbSet<PasswordResetToken>? PasswordResetTokens { get; set; }
     }
 }
