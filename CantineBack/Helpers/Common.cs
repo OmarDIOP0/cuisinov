@@ -4,7 +4,7 @@
     {
         public static int ShopID { get; set; }
         public static int EntrepriseID { get; set; }
-        public static string BackendLink { get; set; }
+        //public static string BackendLink { get; set; }
         public static string FrontEndLink { get; set; }
         public static string? EnvironmentMode { get; set; }
         public static string? PasswordResetMessage { get; set; }
