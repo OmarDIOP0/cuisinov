@@ -41,3 +41,5 @@ C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Release\net
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Release\net6.0\CantineFront.pdb
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Release\net6.0\CantineFront.genruntimeconfig.cache
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Release\net6.0\ref\CantineFront.dll
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Release\net6.0\CantineFront.sourcelink.json
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Release\net6.0\swae.build.ex.cache

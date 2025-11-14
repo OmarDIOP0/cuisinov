@@ -320,3 +320,5 @@ C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack\obj\Release\net6
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack\obj\Release\net6.0\CantineBack.pdb
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack\obj\Release\net6.0\CantineBack.genruntimeconfig.cache
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack\obj\Release\net6.0\ref\CantineBack.dll
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack\obj\Release\net6.0\CantineBack.sourcelink.json
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineBack\obj\Release\net6.0\swae.build.ex.cache

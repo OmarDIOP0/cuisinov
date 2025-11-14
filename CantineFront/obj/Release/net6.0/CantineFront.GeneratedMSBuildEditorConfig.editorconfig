@@ -1,5 +1,7 @@
 is_global = true
 build_property.TargetFramework = net6.0
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v6.0
 build_property.TargetPlatformMinVersion = 
 build_property.UsingMicrosoftNETSdkWeb = true
 build_property.ProjectTypeGuids = 
@@ -80,6 +82,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbGFjZW1lbnRcVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/Entreprise/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW50cmVwcmlzZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/Entreprise/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW50cmVwcmlzZVxMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/Entreprise/Update.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW50cmVwcmlzZVxVcGRhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/Home/About.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBYm91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -104,12 +118,40 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxNZW51LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/Home/Onboarding.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxPbmJvYXJkaW5nLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/Home/Profil.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcm9maWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/Login/ForgotPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cRm9yZ290UGFzc3dvcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/Login/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/Login/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cUmVnaXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/PaymentMethod/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudE1ldGhvZFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/PaymentMethod/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudE1ldGhvZFxMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/PaymentMethod/Update.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudE1ldGhvZFxVcGRhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/Shared/Error.cshtml]
@@ -142,6 +184,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/User/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/User/List_.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxMaXN0Xy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/bmd tech/OneDrive/Bureau/Project/Cafetaria/CantineFront/Views/User/Update.cshtml]

@@ -42,3 +42,4 @@ C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Debug\net6.
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Debug\net6.0\CantineFront.pdb
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Debug\net6.0\CantineFront.genruntimeconfig.cache
 C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Debug\net6.0\ref\CantineFront.dll
+C:\Users\bmd tech\OneDrive\Bureau\Project\Cafetaria\CantineFront\obj\Debug\net6.0\swae.build.ex.cache
