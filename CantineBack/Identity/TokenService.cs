@@ -23,7 +23,7 @@ namespace CantineBack.Identity
             _config["Jwt:Issuer"],
                 _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(tokenValidityInMinutes),
+                expires: DateTime.UtcNow.AddMinutes(tokenValidityInMinutes),
                 signingCredentials: signinCredentials
             );
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
