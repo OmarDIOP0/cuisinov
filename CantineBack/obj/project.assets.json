@@ -88,6 +88,26 @@
           }
         }
       },
+      "Coravel/6.0.2": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Caching.Memory": "3.1.0",
+          "Microsoft.Extensions.Configuration.Binder": "6.0.0",
+          "Microsoft.Extensions.DependencyInjection": "6.0.1",
+          "Microsoft.Extensions.Hosting.Abstractions": "3.1.0",
+          "Microsoft.Extensions.Logging.Abstractions": "3.1.0"
+        },
+        "compile": {
+          "lib/net6.0/Coravel.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Coravel.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Humanizer/2.14.1": {
         "type": "package",
         "dependencies": {
@@ -3436,6 +3456,21 @@
         "lib/netstandard2.0/BCrypt.Net-Next.xml",
         "lib/netstandard2.1/BCrypt.Net-Next.dll",
         "lib/netstandard2.1/BCrypt.Net-Next.xml",
+        "readme.md"
+      ]
+    },
+    "Coravel/6.0.2": {
+      "sha512": "/XZiRId4Ilar/OqjGKdxkZWfW97ekeT0wgiWNjGdqf8pPxiK508//Zkc0xrKMDOqchFT7B/oqAoQ+Vrx1txpPQ==",
+      "type": "package",
+      "path": "coravel/6.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "coravel.6.0.2.nupkg.sha512",
+        "coravel.nuspec",
+        "lib/net6.0/Coravel.dll",
+        "lib/net6.0/Coravel.xml",
+        "logo.png",
         "readme.md"
       ]
     },
@@ -8869,7 +8904,8 @@
       "QRCoder >= 1.4.3",
       "Serilog.AspNetCore >= 7.0.0",
       "Swashbuckle.AspNetCore >= 6.2.3",
-      "System.DirectoryServices >= 7.0.1"
+      "System.DirectoryServices >= 7.0.1",
+      "coravel >= 6.0.2"
     ]
   },
   "packageFolders": {
@@ -8982,6 +9018,10 @@
           "System.DirectoryServices": {
             "target": "Package",
             "version": "[7.0.1, )"
+          },
+          "coravel": {
+            "target": "Package",
+            "version": "[6.0.2, )"
           }
         },
         "imports": [
