@@ -115,6 +115,7 @@ app.MapControllers();
 // App Services Coravel
 app.Services.ConfigureQueue();
 
+
 using (IServiceScope serviceScope = app.Services.CreateScope())
 {
     if (serviceScope.ServiceProvider != null)

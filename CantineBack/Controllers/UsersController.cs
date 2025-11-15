@@ -31,6 +31,7 @@ using System.Collections;
 using System.ComponentModel;
 using static QRCoder.PayloadGenerator.SwissQrCode;
 using NuGet.Versioning;
+using Coravel.Queuing.Interfaces;
 
 namespace CantineBack.Controllers
 {
@@ -785,22 +786,28 @@ namespace CantineBack.Controllers
             string linkFrontEnd = Common.FrontEndLink;
             string linkForgetPassword = $"{linkFrontEnd}/Login/ForgotPassword?token={resetToken.Token}";
 
+            //Recuperation de la Queue de Coravel
+            var queue = HttpContext.RequestServices.GetRequiredService<IQueue>();
+
             // Envoi du mail à l'utilisateur
             if (!string.IsNullOrEmpty(user.Email))
             {
-                string message = $"Bonjour {user.Login},\n\n" +
-                                 $"Vous avez demandé à réinitialiser votre mot de passe.\n" +
-                                 $"Veuillez cliquer sur le lien suivant pour le faire : {linkForgetPassword}\n\n" +
-                                 $"Si vous n'êtes pas à l'origine de cette demande, ignorez ce message.\n\n" +
-                                 $"Cordialement,\nL'équipe Cuisinov.";
+                queue.QueueTask(() =>
+                {
+                    string message = $"Bonjour {user.Login},\n\n" +
+                     $"Vous avez demandé à réinitialiser votre mot de passe.\n" +
+                     $"Veuillez cliquer sur le lien suivant pour le faire : {linkForgetPassword}\n\n" +
+                     $"Si vous n'êtes pas à l'origine de cette demande, ignorez ce message.\n\n" +
+                     $"Cordialement,\nL'équipe Cuisinov.";
 
-                EmailManager.SendEmail(
-                    user.Email!,
-                    "Réinitialisation de votre mot de passe",
-                    message,
-                    null,
-                    ""
-                );
+                        EmailManager.SendEmail(
+                            user.Email!,
+                            "Réinitialisation de votre mot de passe",
+                            message,
+                            null,
+                            ""
+                        );
+                    });
             }
 
             // Notification aux administrateurs
@@ -810,8 +817,11 @@ namespace CantineBack.Controllers
 
             foreach (var admin in adminUsers)
             {
-                string messageAdmin = $"L'utilisateur '{user.Login}' a demandé une réinitialisation de mot de passe.";
-                EmailManager.SendEmail(admin.Email!, "Demande de réinitialisation de mot de passe", messageAdmin, null, "");
+                queue.QueueTask(() =>
+                {
+                    string messageAdmin = $"L'utilisateur '{user.Login}' a demandé une réinitialisation de mot de passe.";
+                    EmailManager.SendEmail(admin.Email!, "Demande de réinitialisation de mot de passe", messageAdmin, null, "");
+                });
             }
 
             return NoContent();
