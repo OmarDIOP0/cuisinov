@@ -113,10 +113,7 @@ app.UseMiddleware<ErrorHandlerMiddleware>();
 app.MapControllers();
 
 // App Services Coravel
-//app.Services.UseScheduler(scheduler =>
-//{
-//    scheduler.Schedule<EmailManager>().EveryTenMinutes();
-//});
+app.Services.ConfigureQueue();
 
 using (IServiceScope serviceScope = app.Services.CreateScope())
 {
