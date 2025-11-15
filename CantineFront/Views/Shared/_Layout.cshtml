@@ -670,6 +670,27 @@
     <script src="~/js/custom-scripts/commandchat.js"></script>
     <script src="~/js/custom-scripts/command.js"></script>
     <script>
+let lastScrollTop = 0;
+const navbar = document.querySelector('.container-fluid.position-sticky');
+
+window.addEventListener('scroll', function() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop && scrollTop > 100) {
+        // Scroll vers le bas => cacher la navbar
+        navbar.style.transform = 'translateY(-100%)';
+        navbar.style.transition = 'transform 0.3s ease-in-out';
+    } else {
+        // Scroll vers le haut => montrer la navbar
+        navbar.style.transform = 'translateY(0)';
+        navbar.style.transition = 'transform 0.3s ease-in-out';
+    }
+
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // pour éviter les valeurs négatives
+});
+</script>
+
+    <script>
         var elem = document.getElementById("idBody");
         function openFullscreen() {
             if (elem.requestFullscreen) {
