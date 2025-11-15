@@ -10,6 +10,7 @@ using System;
 using System.Configuration;
 using System.Security.Claims;
 using System.Text;
+using Coravel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,8 +26,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 maxRetryDelay: TimeSpan.FromSeconds(15),
                 errorNumbersToAdd: null);
         }));
+builder.Services.AddTransient<ITokenService, TokenService>();
+// Service Coravel
+builder.Services.AddScheduler();
+builder.Services.AddQueue();
+builder.Services.AddMemoryCache();
+builder.Services.AddTransient<EmailManager>();
 
-builder.Services.AddTransient<ITokenService, TokenService>();   
 Common.ShopID = builder.Configuration.GetValue<int>("ShopID");
 Common.EntrepriseID = builder.Configuration.GetValue<int>("EntrepriseID");
 //Common.BackendLink = builder.Configuration.GetValue<string>("BackendLink") ?? string.Empty;
@@ -105,6 +111,12 @@ app.UseMiddleware<ErrorHandlerMiddleware>();
 
 
 app.MapControllers();
+
+// App Services Coravel
+//app.Services.UseScheduler(scheduler =>
+//{
+//    scheduler.Schedule<EmailManager>().EveryTenMinutes();
+//});
 
 using (IServiceScope serviceScope = app.Services.CreateScope())
 {
