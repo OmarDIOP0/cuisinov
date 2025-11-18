@@ -835,7 +835,7 @@ namespace CantineBack.Controllers
                 }
             }
 
-            return Ok(new { success = true, message = "Un email vous a été envoyé !" });
+            return Ok(JsonConvert.SerializeObject(new { success = true, message = "Un email vous a été envoyé !" }));
         }
 
 
