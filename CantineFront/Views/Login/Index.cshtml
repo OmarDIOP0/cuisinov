@@ -194,6 +194,9 @@
 
         const form = document.getElementById('formLogin');
         form.addEventListener('submit', signInListener);
+        const emailModal = document.getElementById('displayEmailModal');
+        const modalEmail = bootstrap.Modal.getInstance(emailModal) ?? new bootstrap.Modal(emailModal);
+
 
         var errorHandlerEmail = function (err) {
             ToastR("Une erreur est survenue!", "error", 10);
@@ -208,7 +211,7 @@
                 if (res != null) {
                     if (res.success) {
                         ToastR(res.message, "success", 10);
-                        $('#displayEmailModal').modal('hide');
+                        modelEmail.hide();
                     } else {
                         ToastR(res.message, "error", 10);
                     }
