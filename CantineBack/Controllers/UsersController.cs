@@ -824,7 +824,7 @@ namespace CantineBack.Controllers
                 });
             }
 
-            return NoContent();
+            return Ok(new { success = true, message = "Un email vous a été envoyé !" });
         }
 
 
