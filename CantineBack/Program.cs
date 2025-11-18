@@ -27,7 +27,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 errorNumbersToAdd: null);
         }));
 builder.Services.AddTransient<ITokenService, TokenService>();
-// Service Coravel
+
+// Service Coravel pour la version 6.0.2
 builder.Services.AddScheduler();
 builder.Services.AddQueue();
 builder.Services.AddMemoryCache();
@@ -35,7 +36,6 @@ builder.Services.AddTransient<EmailManager>();
 
 Common.ShopID = builder.Configuration.GetValue<int>("ShopID");
 Common.EntrepriseID = builder.Configuration.GetValue<int>("EntrepriseID");
-//Common.BackendLink = builder.Configuration.GetValue<string>("BackendLink") ?? string.Empty;
 Common.FrontEndLink = builder.Configuration.GetValue<string>("FrontEndLink") ?? string.Empty;
 Common.EnvironmentMode = builder.Configuration.GetValue<string>("EnvironmentMode");
 Common.CreateAccountMessage = builder.Configuration.GetValue<string>("CreateAccountMessage");
@@ -46,7 +46,6 @@ Common.SmtpSettings = builder.Configuration.GetSection("Smtp").Get<SmtpSettings>
 var config = builder.Configuration;
 builder.Services.AddAuthentication(x =>
 {
-
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -57,23 +56,19 @@ builder.Services.AddAuthentication(x =>
     {
         ValidIssuer = config["Jwt:Issuer"],
         ValidAudience = config["Jwt:Audience"],
-        IssuerSigningKey =new SymmetricSecurityKey(Encoding.UTF8.GetBytes( config["Jwt:Key"]!)),
-        ValidateIssuer=true,
-        ValidateAudience=true,
-        ValidateLifetime=true,  
-        ValidateIssuerSigningKey=true
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!)),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
     };
 });
 
 builder.Services.AddAuthorization(options =>
 {
-
-
     options.AddPolicy(IdentityData.AdminUserPolicyName, p => p.RequireClaim(ClaimTypes.Role, IdentityData.AdminUserClaimName));
     options.AddPolicy(IdentityData.GerantUserPolicyName, p => p.RequireClaim(ClaimTypes.Role, IdentityData.GerantUserClaimName));
-}
-    );
-
+});
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -82,10 +77,8 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 //Auto Mapper 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 
 var logger = new LoggerConfiguration()
                         .ReadFrom.Configuration(builder.Configuration)
@@ -97,7 +90,7 @@ builder.Logging.AddSerilog(logger);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || Common.EnvironmentMode=="TEST")
+if (app.Environment.IsDevelopment() || Common.EnvironmentMode == "TEST")
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -109,12 +102,11 @@ app.UseAuthorization();
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
-
 app.MapControllers();
 
-// App Services Coravel
-app.Services.ConfigureQueue();
-
+// Configuration Coravel pour la version 6.0.2
+// Pas besoin d'appeler UseQueue() ou UseScheduler() séparément
+// Ces services sont déjà disponibles via l'injection de dépendances
 
 using (IServiceScope serviceScope = app.Services.CreateScope())
 {
@@ -122,9 +114,8 @@ using (IServiceScope serviceScope = app.Services.CreateScope())
     {
         if (app.Environment.IsProduction())
         {
-
             Console.WriteLine("----> Attempting to apply migrations..");
-            
+
             try
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -132,12 +123,10 @@ using (IServiceScope serviceScope = app.Services.CreateScope())
             }
             catch (System.Exception ex)
             {
-
                 Console.WriteLine($"----> Could not apply migrations: {ex.Message}");
-
             }
         }
     }
-
 }
+
 app.Run();
