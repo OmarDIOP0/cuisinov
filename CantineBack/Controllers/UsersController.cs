@@ -572,34 +572,34 @@ namespace CantineBack.Controllers
             }
             return NoContent();
         }
-        [Authorize(Policy = IdentityData.AdminUserPolicyName)]
-        [HttpPut("SendUserQrCode/{id}")]
-        public async Task<IActionResult> SendUserQrCode(int id)
-        {
+        //[Authorize(Policy = IdentityData.AdminUserPolicyName)]
+        //[HttpPut("SendUserQrCode/{id}")]
+        //public async Task<IActionResult> SendUserQrCode(int id)
+        //{
 
-            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
-            if (user == null) return NotFound();
+        //    var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+        //    if (user == null) return NotFound();
 
-            if (!String.IsNullOrEmpty(user.QrCode) && !String.IsNullOrEmpty(user.Email))
-            {
-                var qrCode = GenerateQRCode(user.QrCode);
+        //    if (!String.IsNullOrEmpty(user.QrCode) && !String.IsNullOrEmpty(user.Email))
+        //    {
+        //        var qrCode = GenerateQRCode(user.QrCode);
 
-                var fullname = user.Prenom + " " + user.Nom;
-                //  SaveByteArrayToFileWithStaticMethod(qrCode, "QRCode_" + fullname + ".png");
-                var message = String.Format(Common.QrCodeEmailMessage, fullname) + "\n\n\n" + String.Format(Common.QrCodeEmailMessageEn, fullname);
-                var ok = EmailManager.SendEmail(user.Email, "COFFEE SNACK CONTAINER", message, qrCode, "QRCode_" + fullname + ".png");
-                if (!ok)
-                {
-                    return Problem("Une erreur a été rencontrée lors de l'envoi du mail.");
-                }
-            }
-            else
-            {
-                return Problem("Cet utilisateur n'a pas d'adresse email ou son QR Code n'est pas encore généré.");
-            }
+        //        var fullname = user.Prenom + " " + user.Nom;
+        //        //  SaveByteArrayToFileWithStaticMethod(qrCode, "QRCode_" + fullname + ".png");
+        //        var message = String.Format(Common.QrCodeEmailMessage, fullname) + "\n\n\n" + String.Format(Common.QrCodeEmailMessageEn, fullname);
+        //        var ok = EmailManager.SendEmail(user.Email, "COFFEE SNACK CONTAINER", message, qrCode, "QRCode_" + fullname + ".png");
+        //        if (!ok)
+        //        {
+        //            return Problem("Une erreur a été rencontrée lors de l'envoi du mail.");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return Problem("Cet utilisateur n'a pas d'adresse email ou son QR Code n'est pas encore généré.");
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         [Authorize(Policy = IdentityData.AdminUserPolicyName)]
         [HttpPost("RechargerMultiCompte")]
@@ -769,10 +769,11 @@ namespace CantineBack.Controllers
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
 
             if (user == null)
-                return Problem("Utilisateur introuvable.");
+                return Ok(new { success = false, message = "Utilisateur introuvable." });
 
             if (!user.Actif)
-                return Problem("Utilisateur inactif.");
+                return Ok(new { success = false, message = "Utilisateur inactif." });
+
             var resetToken = new PasswordResetToken
             {
                 Token = Guid.NewGuid().ToString(),
@@ -786,28 +787,29 @@ namespace CantineBack.Controllers
             string linkFrontEnd = Common.FrontEndLink;
             string linkForgetPassword = $"{linkFrontEnd}/Login/ForgotPassword?token={resetToken.Token}";
 
-            //Recuperation de la Queue de Coravel
+            // Récupération de la Queue de Coravel
             var queue = HttpContext.RequestServices.GetRequiredService<IQueue>();
 
             // Envoi du mail à l'utilisateur
             if (!string.IsNullOrEmpty(user.Email))
             {
-                queue.QueueTask(() =>
+                queue.QueueAsyncTask(async () =>
                 {
                     string message = $"Bonjour {user.Login},\n\n" +
                      $"Vous avez demandé à réinitialiser votre mot de passe.\n" +
                      $"Veuillez cliquer sur le lien suivant pour le faire : {linkForgetPassword}\n\n" +
+                     $"Ce lien expirera dans 15 minutes.\n\n" +
                      $"Si vous n'êtes pas à l'origine de cette demande, ignorez ce message.\n\n" +
                      $"Cordialement,\nL'équipe Cuisinov.";
 
-                        EmailManager.SendEmail(
-                            user.Email!,
-                            "Réinitialisation de votre mot de passe",
-                            message,
-                            null,
-                            ""
-                        );
-                    });
+                    await EmailManager.SendEmail(
+                        user.Email!,
+                        "Réinitialisation de votre mot de passe",
+                        message,
+                        null,
+                        ""
+                    );
+                });
             }
 
             // Notification aux administrateurs
@@ -817,11 +819,20 @@ namespace CantineBack.Controllers
 
             foreach (var admin in adminUsers)
             {
-                queue.QueueTask(() =>
+                if (!string.IsNullOrEmpty(admin.Email))
                 {
-                    string messageAdmin = $"L'utilisateur '{user.Login}' a demandé une réinitialisation de mot de passe.";
-                    EmailManager.SendEmail(admin.Email!, "Demande de réinitialisation de mot de passe", messageAdmin, null, "");
-                });
+                    queue.QueueAsyncTask(async () =>
+                    {
+                        string messageAdmin = $"L'utilisateur '{user.Login}' a demandé une réinitialisation de mot de passe.";
+                        await EmailManager.SendEmail(
+                            admin.Email!,
+                            "Demande de réinitialisation de mot de passe",
+                            messageAdmin,
+                            null,
+                            ""
+                        );
+                    });
+                }
             }
 
             return Ok(new { success = true, message = "Un email vous a été envoyé !" });
