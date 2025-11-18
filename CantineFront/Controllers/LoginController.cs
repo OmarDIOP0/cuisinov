@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Security.Claims;
@@ -298,15 +299,24 @@ namespace CantineFront.Controllers
 
             var apiResponse = await ApiService<string>.CallApiPost(_httpClientFactory, url, null);
 
+            // Parser la réponse JSON
+            var responseData = apiResponse.Data; // ici Data contient le JSON renvoyé par le backend
+            bool success = false;
+            string msg = "Une erreur a été rencontrée.";
 
-            bool success = apiResponse.StatusCode == System.Net.HttpStatusCode.NoContent;
-            if (success)
+            if (responseData != null)
             {
-                await ApiService<String>.CallApiPost(_httpClientFactory, ApiUrlGeneric.RevokeTokenURL, null);
+                // Désérialiser la réponse JSON
+                var result = JsonConvert.DeserializeObject<FormResponse>(responseData.ToString());
+                if (result != null)
+                {
+                    success = result.Success;
+                    msg = result.Message;
+                }
             }
-            string msg = success ? "Un email vous a été envoyé !" : (apiResponse.Message ?? "Une erreur a été rencontrée.");
 
-            return Json(new FormResponse { Success = success, Object = apiResponse.Data, Message = msg });
+            return Json(new FormResponse { Success = success, Object = responseData, Message = msg });
+
         }
         [HttpPost]
         public async Task<JsonResult> ForgotPassword(UserRequestForgotPassword userResetPwdRequest)
