@@ -154,11 +154,22 @@
     margin-top: 10px;
 }
 
+/* --- LISTE HORIZONTALE --- */
 .commands-list {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
     padding: 20px;
-    max-height: 400px;
-    overflow-y: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    min-width: 280px;
+    flex-shrink: 0;
 }
+
+    .commands-list::-webkit-scrollbar {
+        height: 6px; /* scrollbar horizontale */
+    }
 
 .command-item {
     background: #f8f9fa;

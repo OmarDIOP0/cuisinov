@@ -1,6 +1,148 @@
 ﻿@section Styles {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/createCategorie.css"/>
+    <style>
+        /* ====== COMMAND CARD STYLE ====== */
+
+        .command-card {
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            padding: 0;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--secondary-color);
+            transition: all 0.3s ease;
+        }
+
+            .command-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+            }
+
+            /* Header */
+            .command-card .card-header {
+                background: var(--gradient-primary);
+                padding: 10px 12px;
+                color: white;
+                display: flex;
+                align-items: center;
+            }
+
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .customer-icon {
+            font-size: 1.1rem;
+        }
+
+        /* Body */
+        .command-card .card-body {
+            padding: 12px 15px;
+        }
+
+        /* Location */
+        .location-info,
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 3px 0;
+        }
+
+        .location-icon,
+        .payment-icon {
+            font-size: 1rem;
+            color: var(--primary-color);
+        }
+
+        /* Timer badge */
+        .timer-badge {
+            background: #f1f1f1;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            color: #444;
+            margin-right: 5px;
+        }
+
+        /* Distance badge */
+        .distance-badge {
+            background: #ff6b35;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.80rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Deliver button */
+        .deliver-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white !important;
+            border: none;
+            padding: 7px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            margin-top: 6px;
+        }
+
+            .deliver-btn:hover {
+                background: linear-gradient(135deg, #43a047, #3f8e41);
+                transform: translateY(-2px);
+            }
+
+        /* Articles list */
+        .articles-list {
+            margin-top: 10px;
+        }
+
+        .article-item {
+            background: #f8f9fa;
+            padding: 6px 10px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.90rem;
+            border-left: 3px solid var(--secondary-color);
+        }
+
+        /* Commentaire */
+        .comment-section {
+            background: #fff7e6;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 3px solid #ffb74d;
+        }
+
+        .comment-label {
+            font-weight: 600;
+            color: #ff9800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .comment-text {
+            margin: 3px 0 0 0;
+            font-size: 0.9rem;
+        }
+
+    </style>
 }
 
 <section class="create-section">
