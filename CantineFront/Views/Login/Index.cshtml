@@ -68,7 +68,7 @@
         </div>
     </div>
     <!--Modal pour afficher email apres clic du mot de passe oublié-->
-    <div class="modal fade .bd-example-modal-sm" id="displayEmailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade bd-example-modal-sm" id="displayEmailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered " role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -196,6 +196,9 @@
         form.addEventListener('submit', signInListener);
         const emailModal = document.getElementById('displayEmailModal');
         const modalEmail = bootstrap.Modal.getInstance(emailModal) ?? new bootstrap.Modal(emailModal);
+        emailModal.addEventListener('hidden.bs.modal', function () {
+            $('.modal-backdrop').remove();
+        });
 
 
         var errorHandlerEmail = function (err) {
@@ -212,6 +215,7 @@
                     if (res.success) {
                         ToastR(res.message, "success", 10);
                         modalEmail.hide();
+
                     } else {
                         ToastR(res.message, "error", 10);
                     }
