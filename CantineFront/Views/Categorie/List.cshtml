@@ -119,14 +119,14 @@
                                     data: "startTime",
                                     className: 'text-center',
                                     render: function (data, type, row) {
-                                        return '<span>' + data + '</span>';
+                                        return '<span>' + data.substring(0,5)  + '</span>';
                                     }
                                 },
                                 {
                                     data: "endTime",
                                     className: 'text-center',
                                     render: function (data, type, row) {
-                                        return '<span>' + data + '</span>';
+                                        return '<span>' + data.substring(0,5) + '</span>';
                                     }
                                 },
                                 {
