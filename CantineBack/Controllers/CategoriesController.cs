@@ -38,6 +38,16 @@ namespace CantineBack.Controllers
           TimeSpan now = DateTime.Now.TimeOfDay;
             return await _context.Categories.Where(c=>c.StartTime <= now && c.EndTime >= now).ToListAsync();
         }
+        [HttpGet("GetAllCategories")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<Categorie>>> GetAllCategories()
+        {
+            if (_context.Categories == null)
+            {
+                return NotFound();
+            }
+            return await _context.Categories.ToListAsync();
+        }
 
         // GET: api/Categories/5
         [HttpGet("{id}")]

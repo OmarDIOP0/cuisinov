@@ -32,6 +32,15 @@ namespace CantineFront.Controllers
 
         }
         [HttpGet]
+        public async Task<JsonResult> GetAllCategories() {
+
+            var url = String.Format(ApiUrlGeneric.GetAllCategories);
+            var httpClient = _httpClientFactory.CreateClient("ClearanceApi");
+            HttpResponseMessage response = await httpClient.GetAsync(url);
+            var apiResponse = await ApiResultParser<Categorie>.ParseList(response);
+            return Json(apiResponse);
+        }
+        [HttpGet]
         public async Task<JsonResult> GetCategories() {
 
             var url = ApiUrlGeneric.ReadAllURL<Categorie>();
