@@ -46,6 +46,40 @@
                                                 </small>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label" for="StartTime">
+                                                        <i class="fas fa-clock"></i> Heure de début
+                                                    </label>
+                                                    <input type="time"
+                                                           class="form-control"
+                                                           id="StartTime"
+                                                           name="StartTime"
+                                                           value="@(Model.Categorie.StartTime?.ToString(@"hh\:mm"))"
+                                                           required>
+                                                    <small class="form-text text-muted mt-2">
+                                                        Heure à partir de laquelle la catégorie sera disponible
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label" for="EndTime">
+                                                        <i class="fas fa-clock"></i> Heure de fin
+                                                    </label>
+                                                    <input type="time"
+                                                           class="form-control"
+                                                           id="EndTime"
+                                                           name="EndTime"
+                                                           value="@(Model.Categorie.EndTime?.ToString(@"hh\:mm"))"
+                                                           required>
+                                                    <small class="form-text text-muted mt-2">
+                                                        Heure jusqu’à laquelle la catégorie sera disponible
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         <!-- Statut Actif -->
                                         <div class="col-12">
