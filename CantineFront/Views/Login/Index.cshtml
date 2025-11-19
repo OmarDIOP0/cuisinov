@@ -198,6 +198,7 @@
         const modalEmail = bootstrap.Modal.getInstance(emailModal) ?? new bootstrap.Modal(emailModal);
         emailModal.addEventListener('hidden.bs.modal', function () {
             $('.modal-backdrop').remove();
+            $('email').val('');
         });
 
 
