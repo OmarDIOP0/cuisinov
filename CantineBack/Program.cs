@@ -104,9 +104,6 @@ app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.MapControllers();
 
-// Configuration Coravel pour la version 6.0.2
-// Pas besoin d'appeler UseQueue() ou UseScheduler() séparément
-// Ces services sont déjà disponibles via l'injection de dépendances
 
 using (IServiceScope serviceScope = app.Services.CreateScope())
 {

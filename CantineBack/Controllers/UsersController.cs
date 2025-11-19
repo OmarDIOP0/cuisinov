@@ -53,7 +53,6 @@ namespace CantineBack.Controllers
             _tokenService = tokenService;
         }
 
-        // POST: api/Users
         [Authorize(Policy = IdentityData.AdminUserPolicyName)]
         [HttpPost]
         public async Task<ActionResult> PostUser([FromBody] User user)
@@ -65,18 +64,15 @@ namespace CantineBack.Controllers
 
             user.Profile = string.IsNullOrWhiteSpace(user.Profile) ? "USER" : user.Profile.ToUpper().Trim();
 
-            // Vérifier unicité du login
             var existing = await _context.Users.FirstOrDefaultAsync(u => u.Login == user.Login);
             if (existing != null)
             {
                 return Problem("Ce nom d'utilisateur existe déjà.");
             }
 
-            // Mettre les valeurs par défaut
             user.Actif = true;
             user.Guid = Guid.NewGuid().ToString();
 
-            // Si l'admin n'a pas fourni de mot de passe, on le génère avec le format ROLE_YYYY
             bool passwordWasGenerated = false;
             string plainPassword;
             if (string.IsNullOrWhiteSpace(user.Password))
@@ -154,14 +150,13 @@ namespace CantineBack.Controllers
             // claims pour JWT
             var claims = new[]
             {
-        new Claim(ClaimTypes.Name, userRead.Login!),
-        new Claim(ClaimTypes.NameIdentifier, userRead.Id.ToString()),
-        new Claim(ClaimTypes.Role, userRead.Profile!.ToLower()),
-        new Claim(JwtRegisteredClaimNames.GivenName,$"{userRead.Login} {userRead.Telephone}"),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-    };
+                new Claim(ClaimTypes.Name, userRead.Login!),
+                new Claim(ClaimTypes.NameIdentifier, userRead.Id.ToString()),
+                new Claim(ClaimTypes.Role, userRead.Profile!.ToLower()),
+                new Claim(JwtRegisteredClaimNames.GivenName,$"{userRead.Login} {userRead.Telephone}"),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
 
-            // génération accessToken
             var res = _tokenService.GenerateAccessToken(claims);
             string accessToken = res.Item1;
             DateTime expire = res.Item2;
@@ -199,22 +194,19 @@ namespace CantineBack.Controllers
             if (user == null || !user.Actif)
                 return Unauthorized("Utilisateur introuvable ou inactif.");
 
-            // vérification du password hashé
             bool validPassword = BCrypt.Net.BCrypt.Verify(password, user.Password);
             if (!validPassword)
                 return Unauthorized("Mot de passe incorrect.");
-            //if (user.ResetPassword == true)
-            //    return Unauthorized("Mot de passe temporaire : veuillez le changer à la prochaine connexion.");
             var userRead = _mapper.Map<UserReadDto>(user);
 
             var claims = new[]
             {
-        new Claim(ClaimTypes.Name, userRead.Login!),
-        new Claim(ClaimTypes.NameIdentifier, userRead.Id.ToString()),
-        new Claim(ClaimTypes.Role, userRead.Profile!.ToLower()),
-        new Claim(JwtRegisteredClaimNames.GivenName,$"{userRead.Prenom} {userRead.Nom}"),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-    };
+                new Claim(ClaimTypes.Name, userRead.Login!),
+                new Claim(ClaimTypes.NameIdentifier, userRead.Id.ToString()),
+                new Claim(ClaimTypes.Role, userRead.Profile!.ToLower()),
+                new Claim(JwtRegisteredClaimNames.GivenName,$"{userRead.Prenom} {userRead.Nom}"),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
 
             var res = _tokenService.GenerateAccessToken(claims);
             string accessToken = res.Item1;

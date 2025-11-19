@@ -299,8 +299,7 @@ namespace CantineFront.Controllers
 
             var apiResponse = await ApiService<string>.CallApiPost(_httpClientFactory, url, null);
 
-            // Parser la réponse JSON
-            var responseData = apiResponse.Data; // ici Data contient le JSON renvoyé par le backend
+            var responseData = apiResponse.Data; 
             bool success = false;
             string msg = "Une erreur a été rencontrée.";
 
