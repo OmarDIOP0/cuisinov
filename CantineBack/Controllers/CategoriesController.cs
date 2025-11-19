@@ -35,7 +35,8 @@ namespace CantineBack.Controllers
           {
               return NotFound();
           }
-            return await _context.Categories.ToListAsync();
+          TimeSpan now = DateTime.Now.TimeOfDay;
+            return await _context.Categories.Where(c=>c.StartTime <= now && c.EndTime >= now).ToListAsync();
         }
 
         // GET: api/Categories/5

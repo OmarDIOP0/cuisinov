@@ -60,9 +60,6 @@ namespace CantineBack.Controllers
      
             
                 return await _mapper.ProjectTo<ArticleImageDto>(_context.Articles).ToListAsync();
-
-
-            
         }
         [HttpGet("GetMenu")]
         //[AllowAnonymous]
