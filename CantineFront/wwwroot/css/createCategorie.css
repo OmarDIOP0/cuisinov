@@ -162,7 +162,7 @@
     padding: 20px;
     overflow-x: auto;
     overflow-y: hidden;
-    white-space: nowrap;
+/*    white-space: nowrap;*/
     min-width: 280px;
     flex-shrink: 0;
 }

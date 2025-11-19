@@ -41,6 +41,8 @@
         /* Body */
         .command-card .card-body {
             padding: 12px 15px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         /* Location */
@@ -50,6 +52,7 @@
             align-items: center;
             gap: 8px;
             margin: 3px 0;
+            flex-wrap: wrap;
         }
 
         .location-icon,
@@ -80,6 +83,10 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* Deliver button */
@@ -97,6 +104,10 @@
             cursor: pointer;
             transition: 0.3s ease;
             margin-top: 6px;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
             .deliver-btn:hover {
@@ -140,6 +151,22 @@
         .comment-text {
             margin: 3px 0 0 0;
             font-size: 0.9rem;
+        }
+        @@media (max-width: 480px) {
+            .command-card .card-body {
+                padding: 10px 12px;
+            }
+
+            .distance-badge,
+            .deliver-btn {
+                font-size: 0.75rem;
+                padding: 3px 6px;
+            }
+
+            .location-info,
+            .payment-method {
+                gap: 5px;
+            }
         }
 
     </style>
