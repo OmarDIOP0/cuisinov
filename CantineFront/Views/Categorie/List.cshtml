@@ -30,6 +30,12 @@
                                Nom de la Catégorie
                             </th>
                             <th scope="col" class="text-center">
+                                Heure de Début
+                            </th>
+                            <th scope="col" class="text-center">
+                                Heure de Fin
+                            </th>
+                            <th scope="col" class="text-center">
                                Statut
                             </th>
                             <th scope="col" class="text-center">
@@ -107,6 +113,20 @@
                                                '<i class="fas fa-tag text-primary me-3"></i>' +
                                                '<span class="fw-semibold">' + data + '</span>' +
                                                '</div>';
+                                    }
+                                },
+                                {
+                                    data: "startTime",
+                                    className: 'text-center',
+                                    render: function (data, type, row) {
+                                        return '<span>' + data + '</span>';
+                                    }
+                                },
+                                {
+                                    data: "endTime",
+                                    className: 'text-center',
+                                    render: function (data, type, row) {
+                                        return '<span>' + data + '</span>';
                                     }
                                 },
                                 {
