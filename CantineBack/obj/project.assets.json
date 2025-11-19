@@ -8893,6 +8893,7 @@
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.1",
       "BCrypt.Net-Next >= 4.0.3",
       "CantineBack.Models >= 1.0.0",
+      "Coravel >= 6.0.2",
       "DPWorldEncryption.Core >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.0",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 8.0.0",
@@ -8904,8 +8905,7 @@
       "QRCoder >= 1.4.3",
       "Serilog.AspNetCore >= 7.0.0",
       "Swashbuckle.AspNetCore >= 6.2.3",
-      "System.DirectoryServices >= 7.0.1",
-      "coravel >= 6.0.2"
+      "System.DirectoryServices >= 7.0.1"
     ]
   },
   "packageFolders": {
@@ -8973,6 +8973,10 @@
             "target": "Package",
             "version": "[4.0.3, )"
           },
+          "Coravel": {
+            "target": "Package",
+            "version": "[6.0.2, )"
+          },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
             "version": "[8.0.0, )"
@@ -9018,10 +9022,6 @@
           "System.DirectoryServices": {
             "target": "Package",
             "version": "[7.0.1, )"
-          },
-          "coravel": {
-            "target": "Package",
-            "version": "[6.0.2, )"
           }
         },
         "imports": [
