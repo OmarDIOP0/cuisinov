@@ -507,7 +507,56 @@
                 }
             }
 
+             const ARTICLES_DATA = []; // Ajoutez cette ligne avec ARTICLES_IDS
 
+        // Fonction pour ouvrir le modal de détails
+        function openArticleDetailModal(articleId) {
+            var article = ARTICLES_DATA.find(item => item.id === articleId);
+            if (!article) return ToastR("Article non trouvé", "error", 15);
+
+            populateModal(article);
+            $('#modalAddToCartBtn').blur();
+            articleModal.show();
+        }
+
+        // Fonction pour remplir le modal
+        function populateModal(article) {
+            var imageElement = document.getElementById('imageArticle_' + article.id);
+            var imageSrc = imageElement ? imageElement.src : '/images/default.png';
+            $('#modalArticleImage').attr('src', imageSrc);
+
+            $('#modalArticleTitle').text(article.title);
+            $('#modalArticleDescription').text(article.description || 'Aucune description disponible');
+            $('#modalArticlePrice').text(article.prixDeVente + ' XOF');
+            $('#modalArticleStock').text((article.quantiteStock || 0) + ' unités');
+
+            var categoryName = article.categorieNavigation ? article.categorieNavigation.name :
+                               (article.categorieName || 'Non catégorisé');
+            $('#modalArticleCategory').text(categoryName);
+
+            var status = article.isApproved ? 'Approuvé' : 'En attente';
+            $('#modalArticleStatus').text(status);
+
+            var isAvailable = article.actif && (article.quantiteStock > 0 || !article.controlStockQuantity);
+            var availability = isAvailable ?
+                '<span class="text-success">✓ Disponible</span>' :
+                '<span class="text-danger">✗ Indisponible</span>';
+            $('#modalArticleAvailability').html(availability);
+        }
+
+        // Gestionnaire d'événement pour les boutons de détails
+        $(document).on('click', '.view-detail-btn', function(e) {
+            e.preventDefault();
+            var articleId = $(this).data('articleid');
+            openArticleDetailModal(articleId);
+        });
+
+        // Initialisation du modal Bootstrap
+        var articleModalEl = document.getElementById('articleDetailModal');
+        var articleModal = new bootstrap.Modal(articleModalEl, {
+            backdrop: true,
+            keyboard: true
+        });
 
 
             var successArticleHandler = function (res) {
@@ -528,6 +577,7 @@
                         }
                         $("#gridArticles").html("");
                         res.data.forEach((item, index) => {
+                            ARTICLES_DATA.push(item); 
                             ARTICLES_IDS.push(item.id)
                           if(item.actif){
 
@@ -539,39 +589,39 @@
                                 //     delete itemCart.image;
                                 itemCart = JSON.stringify(itemCart);
                                         $("#gridArticles").append(`
-            <div class="col-xl-3 col-lg-4 col-md-6 mb-4 all category_${item.categorieId} wow fadeInUp" data-itemcart='${itemCart}' data-wow-delay="0.1s">
-                <div class="product-item">
-                    <div class="position-relative bg-light overflow-hidden">
-                        <img onerror="this.src='/images/default.png';"
-                             src="/images/default.png"
-                             id="imageArticle_${item.id}"
-                             class="img-fluid w-100"
-                             alt="${item.title}"
-                             style="height: 200px; object-fit: cover;">
-                        <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">Nouveau</div>
-                    </div>
-                    <div class="text-center p-4">
-                        <a class="d-block h5 mb-2 articleName">${item.title}</a>
-                        <span class="text-primary me-1">${item.prixDeVente} XOF</span>
-                    </div>
-                    <div class="d-flex border-top">
-                        <small class="w-50 text-center border-end py-2">
-                            <a class="text-body view-detail-btn" href="#!"
-                               data-bs-toggle="modal"
-                               data-bs-target="#articleDetailModal"
-                               data-articleid="${item.id}">
-                                <i class="fa fa-eye text-primary me-2"></i>Détails
-                            </a>
-                        </small>
-                        <small class="w-50 text-center py-2">
-                            <a class="text-body add-to-cart-btn addToCart" href="#!" data-itemcart='${itemCart}'>
-                                <i class="fa fa-shopping-bag text-primary me-2"></i>Ajouter
-                            </a>
-                        </small>
-                    </div>
-                </div>
-            </div>
-        `);
+                                            <div class="col-xl-3 col-lg-4 col-md-6 mb-4 all category_${item.categorieId} wow fadeInUp" data-itemcart='${itemCart}' data-wow-delay="0.1s">
+                                                <div class="product-item">
+                                                    <div class="position-relative bg-light overflow-hidden">
+                                                        <img onerror="this.src='/images/default.png';"
+                                                             src="/images/default.png"
+                                                             id="imageArticle_${item.id}"
+                                                             class="img-fluid w-100"
+                                                             alt="${item.title}"
+                                                             style="height: 200px; object-fit: cover;">
+                                                        <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">Nouveau</div>
+                                                    </div>
+                                                    <div class="text-center p-4">
+                                                        <a class="d-block h5 mb-2 articleName">${item.title}</a>
+                                                        <span class="text-primary me-1">${item.prixDeVente} XOF</span>
+                                                    </div>
+                                                    <div class="d-flex border-top">
+                                                        <small class="w-50 text-center border-end py-2">
+                                                            <a class="text-body view-detail-btn" href="#!"
+                                                               data-bs-toggle="modal"
+                                                               data-bs-target="#articleDetailModal"
+                                                               data-articleid="${item.id}">
+                                                                <i class="fa fa-eye text-primary me-2"></i>Détails
+                                                            </a>
+                                                        </small>
+                                                        <small class="w-50 text-center py-2">
+                                                            <a class="text-body add-to-cart-btn addToCart" href="#!" data-itemcart='${itemCart}'>
+                                                                <i class="fa fa-shopping-bag text-primary me-2"></i>Ajouter
+                                                            </a>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `);
                           }
 
 
@@ -675,7 +725,7 @@
                 $('html, body').animate({ scrollTop: 0 }, '300'); // remonte en haut
             });
         });
-
+               
     </script>
 
                                         }
