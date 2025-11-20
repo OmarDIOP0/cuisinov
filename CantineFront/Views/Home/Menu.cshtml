@@ -403,18 +403,24 @@
             }
 
 
-            $("#searchText").on("input", function () {
-                var value = $(this).val()
+               $("#searchText").on("input", function () {
+                var searchValue = $(this).val().toLowerCase();
+                var activeCategory = $(".filters_menu li.active").attr("data-filter") || "*";
+
                 $(".grid").isotope({
                     filter: function () {
-                        var articleTitle = $(this).find('.articleName').text();
-                        articleTitle = articleTitle ? articleTitle : "";
-                        value = value.toLowerCase();
-                        // return true to show, false to hide
-                        return articleTitle.toLowerCase().includes(value)
+                        var title = $(this).find('.articleName').text().toLowerCase();
+                        var matchesSearch = title.includes(searchValue);
+
+                        if (activeCategory === "*") {
+                            return matchesSearch;
+                        } else {
+                            return matchesSearch && $(this).is(activeCategory);
+                        }
                     }
-                })
+                });
             });
+
             var errorHandler = (err) => {
 
                 ToastR("Une erreur a été rencontré", "error", 15);
@@ -556,15 +562,27 @@
 
                                 }
 
-                                $('.filters_menu li').click(function () {
-                                    $('.filters_menu li').removeClass('active');
-                                    $(this).addClass('active');
+                            $('.filters_menu li').click(function () {
+                            $('.filters_menu li').removeClass('active');
+                            $(this).addClass('active');
 
-                                    var data = $(this).attr('data-filter');
-                                    $grid.isotope({
-                                        filter: data
-                                    })
-                                });
+                            var activeCategory = $(this).attr('data-filter') || "*";
+                            var searchValue = $("#searchText").val().toLowerCase();
+
+                            $(".grid").isotope({
+                                filter: function () {
+                                    var title = $(this).find('.articleName').text().toLowerCase();
+                                    var matchesSearch = title.includes(searchValue);
+
+                                    if (activeCategory === "*") {
+                                        return matchesSearch;
+                                    } else {
+                                        return matchesSearch && $(this).is(activeCategory);
+                                    }
+                                }
+                            });
+                        });
+
                                 var initialFilter = $(".filters_menu li.active").attr("data-filter") || "*";
 
                                 var $grid = $(".grid").isotope({
