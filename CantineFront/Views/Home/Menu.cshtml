@@ -304,7 +304,7 @@
         </div>
 
         <ul id="filterList" class="filters_menu">
-            <li class="active" data-filter="*">Toutes les catégories</li>
+            @* <li class="active" data-filter="*">Toutes les catégories</li> *@
         </ul>
 
         <div class="filters-content">
@@ -430,7 +430,8 @@
                             //   console.log("item = ",item)
 
                             if (item.actif) {
-                                $("#filterList").append(`<li data-filter=".category_${item.id}">${item.name}</li>`);
+                                const activeFilter = index === 0 ? "active" : "";
+                                $("#filterList").append(`<li class="${activeFilter}" data-filter=".category_${item.id}">${item.name}</li>`);
                                 var active = index == 0 ? "active" : '';
                                      $("#sildeCarouselInner").append(`
                                         <div class="carousel-item ${active}">
@@ -497,40 +498,7 @@
                                     description = item.description.length > 50 ? (item.description.substring(0, 50) + "...") : item.description;
                                 }
                                 var itemCart = { ...item }
-                                // delete itemCart.image;
                                 itemCart = JSON.stringify(itemCart);
-                                       // $("#gridArticles").append(`
-                                       //      <div class="col-lg-3 col-md-4 col-sm-6 mb-4 all addToCart category_${item.categorieId} wow fadeInUp" data-itemcart='${itemCart}' data-wow-delay="0.1s">
-                                       //          <div class="card article-card h-100 border-0 shadow-sm">
-                                       //              <div class="card-img-top position-relative">
-                                       //                  <img onerror="this.src='/images/default.png';"
-                                       //                       src="/images/default.png"
-                                       //                       id="imageArticle_${item.id}"
-                                       //                       class="img-fluid p-4"
-                                       //                       alt="${item.title}"
-                                       //                       style="height: 200px; object-fit: contain; width: 100%;">
-                                       //              </div>
-                                       //              <div class="card-body d-flex flex-column">
-                                       //                  <h6 class="articleName card-title font-weight-bold text-dark mb-2">
-                                       //                      ${item.title}
-                                       //                  </h6>
-                                       //                  <p class="card-text text-muted small flex-grow-1 mb-3" style="min-height: 40px;">
-                                       //                      ${description}
-                                       //                  </p>
-                                       //                  <div class="d-flex justify-content-between align-items-center mt-auto">
-                                       //                      <span class="h6 font-weight-bold text-warning mb-0">
-                                       //                          ${item.prixDeVente} XOF
-                                       //                      </span>
-                                       //                      <a href="#!" class="btn btn-warning rounded-circle p-2 d-flex align-items-center justify-content-center"
-                                       //                         data-itemcart='${itemCart}'
-                                       //                         style="width: 45px; height: 45px;">
-                                       //                          ${charpSvgIcon}
-                                       //                      </a>
-                                       //                  </div>
-                                       //              </div>
-                                       //          </div>
-                                       //      </div>
-                                       //  `);
                                         $("#gridArticles").append(`
                                             <div class="col-xl-3 col-lg-4 col-md-6 mb-4 all  category_${item.categorieId} wow fadeInUp" data-itemcart='${itemCart}' data-wow-delay="0.1s">
                                                 <div class="product-item">
@@ -597,13 +565,15 @@
                                         filter: data
                                     })
                                 });
+                                var initialFilter = $(".filters_menu li.active").attr("data-filter") || "*";
 
                                 var $grid = $(".grid").isotope({
                                     itemSelector: ".all",
                                     percentPosition: false,
                                     masonry: {
                                         columnWidth: ".all"
-                                    }
+                                    },
+                                    filter: initialFilter
                                 });
                                 $grid.isotope('on', 'layoutComplete', function () {
                                     var numItems = $grid.find('.all:not(.isotope-hidden)').length;
