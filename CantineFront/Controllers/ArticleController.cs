@@ -52,8 +52,19 @@ namespace CantineFront.Controllers
             var apiResponse = await ApiService<Article>.CallGetList(_httpClientFactory, url);
             return Json(apiResponse);
         }
-    
-    public async Task<JsonResult> GetArticleImage(int id)
+        public async Task<JsonResult> GetMenu(int? categorieId,int page=1,int pageSize=8)
+        {
+
+            var url = String.Format(ApiUrlGeneric.GetMenuArticlesURL, categorieId);
+            var allArticles = await ApiService<Article>.CallGetList(_httpClientFactory, url);
+            var pagesArticles = allArticles.Data?
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+            return Json(pagesArticles);
+        }
+
+        public async Task<JsonResult> GetArticleImage(int id)
     {
             ArticleImageDto? image=null;
             var ListImages = HttpContext.Session.GetListObjectFromSession<ArticleImageDto>("ImagesArticles");
