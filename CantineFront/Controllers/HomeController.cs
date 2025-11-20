@@ -44,7 +44,7 @@ namespace CantineFront.Controllers
                     }
 
                 }
-                return RedirectToAction("Menu");
+                return View("Menu");
             }
 
             return RedirectToAction("Onboarding");
