@@ -34,7 +34,10 @@ namespace CantineBack.Controllers
            {
                 return NotFound();
             }
-            return await _context.Entreprises.Where(e => e.Actif == true).ToListAsync();
+            return await _context.Entreprises
+                .Where(e => e.Actif == true)
+                .OrderBy(e=> e.Nom)
+                .ToListAsync();
         }
         [HttpGet("All")]
         [Authorize(Policy = IdentityData.AdminUserPolicyName)]

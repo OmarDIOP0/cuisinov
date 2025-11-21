@@ -230,6 +230,24 @@ namespace CantineFront.Controllers
             return Json(apiResponse);
         }
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
+        public async Task<JsonResult> GetPendingCommandesV2(int? entrepriseId = null, int? emplacementId = null)
+        {
+            var url = String.Format(ApiUrlGeneric.ReadCommandesByStateURL, CommandStateEnum.Pending);
+
+            // Ajouter les paramètres de filtrage
+            var parameters = new List<string>();
+            if (entrepriseId.HasValue)
+                parameters.Add($"entrepriseId={entrepriseId.Value}");
+            if (emplacementId.HasValue)
+                parameters.Add($"emplacementId={emplacementId.Value}");
+
+            if (parameters.Any())
+                url += "?" + string.Join("&", parameters);
+
+            var apiResponse = await ApiService<Commande>.CallGetList(_httpClientFactory, url);
+            return Json(apiResponse);
+        }
+        [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
         public async Task<JsonResult> GetAllCommandes(DateTime? startDate = null, DateTime? endDate = null)
         {
             var url = String.Empty;

@@ -144,9 +144,11 @@ namespace CantineBack.Controllers
         [HttpGet]
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
         public async Task<ActionResult<IEnumerable<CommandeReadDto>>> GetCommandes(
-                                     CommandStateEnum? state,
-                                     DateTime? startDate,
-                                     DateTime? endDate)
+                             CommandStateEnum? state,
+                             DateTime? startDate,
+                             DateTime? endDate,
+                             int? entrepriseId = null,
+                             int? emplacementId = null)
         {
             if (_context.Commandes == null)
                 return NotFound();
@@ -168,6 +170,18 @@ namespace CantineBack.Controllers
                     .ThenInclude(e => e.Entreprise)
                 .Include(c => c.PaymentMethodNavigation)
                 .AsQueryable();
+
+            // Filtrage par entreprise
+            if (entrepriseId.HasValue)
+            {
+                query = query.Where(c => c.EmplacementNavigation.Entreprise.Id == entrepriseId.Value);
+            }
+
+            // Filtrage par emplacement
+            if (emplacementId.HasValue)
+            {
+                query = query.Where(c => c.EmplacementNavigation.Id == emplacementId.Value);
+            }
 
             if (startDate.HasValue && endDate.HasValue)
                 query = query.Where(c => c.Date >= startDate && c.Date <= endDate);
