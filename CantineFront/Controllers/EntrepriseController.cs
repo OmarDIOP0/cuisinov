@@ -73,6 +73,7 @@ namespace CantineFront.Controllers
             return Json(apiResponse);
         }
 
+
         [HttpPost]
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
         public async Task<JsonResult> CreateEntreprise(Entreprise request)

@@ -27,7 +27,7 @@ namespace CantineBack.Controllers
         }
         // GET: api/<EntreprisesController>
         [HttpGet]
-        [Authorize(Policy = IdentityData.AdminOrGerantUserRoles)]
+        [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
         public async Task<ActionResult<IEnumerable<Entreprise>>> GetEntreprises()
         {
            if(_context.Entreprises == null)
