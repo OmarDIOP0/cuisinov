@@ -35,7 +35,7 @@
         </div>
 
         <div class="btn-box" style="display:none">
-            <a href="">
+            <a href="" id="voirPlus">
                 Voir plus
             </a>
         </div>
@@ -105,6 +105,10 @@
     <script>
         const ARTICLES_IDS = []
         const ARTICLES_DATA = [];
+        let currentPage = 1;
+        const pageSize = 8; 
+        let currentCategoryId = null;
+
         $(function () {
             try {
             } catch {
@@ -172,12 +176,7 @@
                                     `);
                             }
 
-
-
                             if (index == len - 1) {
-
-
-
                                 ajaxManager('GET', '/Article/GetMenu', successArticleHandler, errorHandler);
                             }
                         })
