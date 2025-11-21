@@ -9,6 +9,7 @@ namespace CantineBack.Models.Enums
     public enum CommandStateEnum
     {
         Delivered,
-        Pending
+        Pending,
+        Rejected,
     }
 }
