@@ -92,8 +92,6 @@ namespace CantineBack.Controllers
         public async Task<ActionResult<string>> GetPendingCommandesCount()
         {
             return (await _context.Commandes.Where(c => c.IsDelivered == false && c.IsRejected == false).CountAsync()).ToString();
-
-
         }
         // GET: api/Commandes
         //[HttpGet]

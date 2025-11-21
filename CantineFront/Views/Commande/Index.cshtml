@@ -409,12 +409,11 @@
 
 @section Scripts {
     <script>
-        // Variables globales pour stocker les filtres
         var selectedEntrepriseId = 0;
         var selectedEmplacementId = 0;
 
         $(function(){
-            // Initialisation de la recherche
+            // --- Recherche par client ---
             $("#searchText").on("input", function () {
                 var value = $(this).val().toLowerCase();
                 $(".grid").isotope({
@@ -426,27 +425,26 @@
             });
 
             var errorHandler = (err) => {
-                ToastR("Une erreur a été rencontré", "error", 15);
+                ToastR("Une erreur a été rencontrée", "error", 15);
             }
 
-            // Chargement des entreprises
+            // --- Chargement entreprises ---
             var successEntreprisesHandler = function (res) {
                 if (res && res.success && res.data) {
-                    res.data.forEach((entreprise, index) => {
-                            var nom = entreprise.nom ? entreprise.nom.toUpperCase() : "NOM INCONNU";
+                    res.data.forEach((entreprise) => {
+                        var nom = entreprise.nom ? entreprise.nom.toUpperCase() : "NOM INCONNU";
                         $("#entreprisesFilterList").append(
                             `<li data-entreprise-id="${entreprise.id}">${nom}</li>`
                         );
                     });
 
-                    // Gestion des clics sur les entreprises
+                    // Click sur entreprise
                     $('#entreprisesFilterList li').off("click").on("click", function () {
                         $('#entreprisesFilterList li').removeClass('active');
                         $(this).addClass('active');
 
                         selectedEntrepriseId = $(this).data('entreprise-id');
 
-                        // Charger les emplacements de l'entreprise sélectionnée
                         if (selectedEntrepriseId > 0) {
                             loadEmplacementsByEntreprise(selectedEntrepriseId);
                             $('#emplacementsSection').addClass('active');
@@ -459,13 +457,11 @@
                 }
             }
 
-            // Chargement des emplacements par entreprise
             function loadEmplacementsByEntreprise(entrepriseId) {
                 var successEmplacementsHandler = function (res) {
                     if (res && res.success && res.data) {
                         $("#emplacementsFilterList").html('<li class="active" data-emplacement-id="0">Tous les emplacements</li>');
-
-                        res.data.forEach((emplacement, index) => {
+                        res.data.forEach((emplacement) => {
                             if (emplacement.actif) {
                                 $("#emplacementsFilterList").append(
                                     `<li data-emplacement-id="${emplacement.id}">${emplacement.name.toUpperCase()}</li>`
@@ -473,7 +469,6 @@
                             }
                         });
 
-                        // Gestion des clics sur les emplacements
                         $('#emplacementsFilterList li').off("click").on("click", function () {
                             $('#emplacementsFilterList li').removeClass('active');
                             $(this).addClass('active');
@@ -482,75 +477,57 @@
                             GetPendingCommandes();
                         });
 
-                        // Charger les commandes après avoir chargé les emplacements
+                        // Charger commandes après les emplacements
                         GetPendingCommandes();
                     }
                 }
 
-                // Appel API pour récupérer les emplacements par entreprise
                 ajaxManager('GET', `/Emplacement/GetEmplacementsByEntreprise?entrepriseId=${entrepriseId}`, successEmplacementsHandler, errorHandler);
             }
 
-            // Fonction modifiée pour récupérer les commandes avec filtres
+            // --- Récupération commandes ---
             function GetPendingCommandes() {
                 var url = '/Commande/GetPendingCommandesV2';
                 var params = [];
 
-                if (selectedEntrepriseId > 0) {
-                    params.push(`entrepriseId=${selectedEntrepriseId}`);
-                }
-                if (selectedEmplacementId > 0) {
-                    params.push(`emplacementId=${selectedEmplacementId}`);
-                }
+                if (selectedEntrepriseId > 0) params.push(`entrepriseId=${selectedEntrepriseId}`);
+                if (selectedEmplacementId > 0) params.push(`emplacementId=${selectedEmplacementId}`);
+                if (params.length > 0) url += '?' + params.join('&');
 
-                if (params.length > 0) {
-                    url += '?' + params.join('&');
-                }
-
-                var successCommandeHandler = function (res) {
-                    if (res && res.success) {
-                        displayCommandes(res.data);
-                    }
-                }
-
-                ajaxManager('GET', url, successCommandeHandler, errorHandler);
+                ajaxManager('GET', url, function(res){
+                    if(res && res.success) displayCommandes(res.data);
+                }, errorHandler);
             }
 
-            // Fonction pour afficher les commandes
+            // --- Affichage commandes ---
             function displayCommandes(commandes) {
                 $("#messagesList").html("");
-
                 if (!commandes || commandes.length === 0) {
                     $("#noItemsAlert").show();
                     return;
                 }
-
                 $("#noItemsAlert").hide();
 
-                commandes.forEach((command, index) => {
+                commandes.forEach((command) => {
                     var fullname = command.userNavigation ? command.userNavigation.login : "";
                     var emplacement = command.emplacementNavigation ? command.emplacementNavigation.name : "";
                     var paymentMethod = command.paymentMethodNavigation ? command.paymentMethodNavigation.name : "";
                     var emplacementId = command.emplacementNavigation ? command.emplacementNavigation.id : 0;
                     var entrepriseId = command.emplacementNavigation && command.emplacementNavigation.entreprise ?
-                                     command.emplacementNavigation.entreprise.id : 0;
-
-                    var colClass = "col-md-4 mx-2 col-lg-4 col-xl-3 all";
+                                       command.emplacementNavigation.entreprise.id : 0;
 
                     paymentMethod = paymentMethod == "SOLDE" ? "DOTATION" : paymentMethod;
                     var paymentMethodHtml = paymentMethod ? `
                         <div class="payment-method">
                             <i class="fas fa-credit-card payment-icon"></i>
                             <span class="payment-text">${paymentMethod}</span>
-                        </div>
-                    ` : '';
+                        </div>` : '';
 
                     var commandeADistance = command.commandeADistance ? `
                         <span class="distance-badge">
                             <i class="fas fa-truck"></i>
                             À distance
-                        </span>
-                    ` : '';
+                        </span>` : '';
 
                     var commentaire = command.comment;
                     var commentaireHtml = commentaire ? `
@@ -560,11 +537,10 @@
                                 Commentaire:
                             </div>
                             <p class="comment-text">${commentaire}</p>
-                        </div>
-                    ` : "";
+                        </div>` : "";
 
                     $("#messagesList").append(`
-                         <div class="command-card ${colClass} entreprise_${entrepriseId} emplacement_${emplacementId}" id="command_${command.id}">
+                         <div class="command-card col-md-4 mx-2 col-lg-4 col-xl-3 all entreprise_${entrepriseId} emplacement_${emplacementId}" id="command_${command.id}">
                             <div class="card-header">
                                 <div class="customer-info">
                                     <i class="fas fa-user customer-icon"></i>
@@ -583,15 +559,7 @@
                                 <div class="command-actions">
                                     <div class="timer-badge" id="time${command.id}"></div>
                                     ${commandeADistance}
-                                    <a class="deliver-btn"
-                                       data-method="POST"
-                                       data-callback="DeleteCommandItem"
-                                       data-message="Veuillez confirmer?"
-                                       data-url="/Commande/Delivery/${command.id}"
-                                       data-bs-toggle="modal"
-                                       data-bs-target="#confirmModal"
-                                       data-commandid="${command.id}"
-                                       href="#!">
+                                    <a class="deliver-btn" data-commandid="${command.id}" href="#!">
                                         <i class="fas fa-check deliver-icon"></i>
                                         Livrer
                                     </a>
@@ -607,7 +575,7 @@
                     `);
 
                     if (command.ligneCommandesNavigation) {
-                        command.ligneCommandesNavigation.forEach((ligne, index) => {
+                        command.ligneCommandesNavigation.forEach((ligne) => {
                             $(`#lignesCommande${command.id}`).append(`
                                 <div class="article-item" id="row_${ligne.articleNavigation.id}">
                                     <span class="article-name">${ligne.articleNavigation.title}</span>
@@ -618,15 +586,12 @@
                     }
                 });
 
-                // Initialiser Isotope après l'ajout des commandes
                 initializeIsotope();
 
-                // Démarrer les timers
                 clearInterval(window.setTimers);
                 window.setTimers = setInterval(setTimers, 1000, commandes);
             }
 
-            // Initialiser Isotope
             function initializeIsotope() {
                 try {
                     var itemReveal = Isotope.Item.prototype.reveal;
@@ -649,32 +614,47 @@
 
                 $grid.isotope('on', 'layoutComplete', function () {
                     var numItems = $grid.find('.all:not(.isotope-hidden)').length;
-                    if (numItems == 0) {
-                        $("#noItemsAlert").show();
-                    } else {
-                        $("#noItemsAlert").hide();
-                    }
+                    if (numItems == 0) $("#noItemsAlert").show();
+                    else $("#noItemsAlert").hide();
                 });
 
                 return $grid;
             }
 
-            // Chargement initial
+            // --- Livraison commandes via AJAX ---
+            $(document).on('click', '.deliver-btn', function(e) {
+                e.preventDefault();
+                var commandId = $(this).data('commandid');
+                if(confirm("Voulez-vous vraiment livrer cette commande ?")) {
+                    $.ajax({
+                        type: 'POST',
+                        url: `/Commande/Delivery/${commandId}`,
+                        success: function(res) {
+                            if(res && res.success) {
+                                DeleteCommandItem(commandId);
+                            } else {
+                                alert(res.message || "Erreur lors de la livraison");
+                            }
+                        },
+                        error: function() {
+                            alert("Erreur serveur, veuillez réessayer");
+                        }
+                    });
+                }
+            });
+
+            // --- Supprimer commande du DOM ---
+            function DeleteCommandItem(commandId) {
+                $(`#command_${commandId}`).remove();
+                var $grid = $(".grid").isotope();
+                $grid.isotope('layout');
+
+                if($grid.find('.all:not(.isotope-hidden)').length === 0)
+                    $("#noItemsAlert").show();
+            }
+
+            // --- Chargement initial ---
             ajaxManager('GET', '/Entreprise/GetEntreprises', successEntreprisesHandler, errorHandler);
         });
-
-        // Fonction pour supprimer une commande après livraison
-        function DeleteCommandItem(commandId) {
-            $(`#command_${commandId}`).remove();
-
-            var $grid = $(".grid").isotope();
-            $grid.isotope('layout');
-
-            // Vérifier s'il reste des commandes
-            var numItems = $grid.find('.all:not(.isotope-hidden)').length;
-            if (numItems == 0) {
-                $("#noItemsAlert").show();
-            }
-        }
     </script>
 }
