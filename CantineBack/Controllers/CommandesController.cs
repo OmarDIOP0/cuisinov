@@ -627,7 +627,9 @@ namespace CantineBack.Controllers
                 }
             }
 
-            var emplacementId = commandDto.CommandeADistance ? Common.ShopID : emplacement.Id;
+            //var emplacementId = commandDto.CommandeADistance ? Common.ShopID : emplacement.Id;
+            var emplacementId = commandDto.EmplacementId > 0 ? commandDto.EmplacementId : Common.ShopID;
+
 
 
             Commande newCommande = new Commande
