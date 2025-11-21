@@ -64,6 +64,7 @@ namespace CantineBack.Controllers
                             case PaymentMethodsEnum.CASH:
                                 label = item.ToString();
                                 break;
+
                             case PaymentMethodsEnum.WAVE:
                                 label = item.ToString();
                                 break;
@@ -80,8 +81,6 @@ namespace CantineBack.Controllers
                     {
                         _logger.LogError(ex.Message);
                     }
-
-
                 }
 
             }
@@ -99,55 +98,99 @@ namespace CantineBack.Controllers
         // GET: api/Commandes
         [HttpGet]
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
-        public async Task<ActionResult<IEnumerable<CommandeReadDto>>> GetCommandes(
-    CommandStateEnum? state,
-    DateTime? startDate,
-    DateTime? endDate)
+        public async Task<ActionResult<IEnumerable<CommandeReadDto>>> GetCommandes(CommandStateEnum? state, DateTime? startDate, DateTime? endDate)
         {
             if (_context.Commandes == null)
+            {
                 return NotFound();
+            }
+            if (startDate.HasValue)
+            {
+                if(endDate==null ) endDate=DateTime.Now;
 
-            if (startDate.HasValue && !endDate.HasValue)
-                endDate = DateTime.Now;
-
-            if (!startDate.HasValue && state == null)
+                var r = await _context.Commandes.Where(c => c.Date >= startDate && c.Date <= endDate).Include(c => c.LigneCommandesNavigation).ThenInclude(x => x.ArticleNavigation).Include(c => c.UserNavigation).Include(c => c.EmplacementNavigation).Include(c => c.PaymentMethodNavigation).OrderByDescending(c => c.Date).ToListAsync();
+                return Ok(_mapper.Map<IEnumerable<CommandeReadDto>>(r));
+            }
+            if (state == null)
             {
                 startDate = DateTime.Now.AddDays(-1);
                 endDate = DateTime.Now.AddDays(1);
+                var r = await _context.Commandes.Where(c => c.Date >= startDate && c.Date <= endDate).Include(c => c.LigneCommandesNavigation).ThenInclude(x => x.ArticleNavigation).Include(c => c.UserNavigation).Include(c => c.EmplacementNavigation).Include(c => c.PaymentMethodNavigation).OrderByDescending(c => c.Date).ToListAsync();
+                return Ok(_mapper.Map<IEnumerable<CommandeReadDto>>(r));
             }
-
-            var query = _context.Commandes
-                .Include(c => c.LigneCommandesNavigation)
-                    .ThenInclude(l => l.ArticleNavigation)
-                .Include(c => c.UserNavigation)
-                .Include(c => c.EmplacementNavigation)
-                    .ThenInclude(e => e.EntrepriseNavigation) 
-                .Include(c => c.PaymentMethodNavigation)
-                .AsQueryable();
-
-            if (startDate.HasValue && endDate.HasValue)
-                query = query.Where(c => c.Date >= startDate && c.Date <= endDate);
-
-            if (state.HasValue)
+            else
             {
-                switch (state.Value)
+                if (state == CommandStateEnum.Delivered)
                 {
-                    case CommandStateEnum.Delivered:
-                        query = query.Where(c => c.IsDelivered && !c.IsRejected);
-                        break;
-                    case CommandStateEnum.Pending:
-                        query = query.Where(c => !c.IsDelivered && !c.IsRejected);
-                        break;
-                    case CommandStateEnum.Rejected:
-                        query = query.Where(c => c.IsRejected);
-                        break;
+                    var r = await _context.Commandes.Where(c => c.IsDelivered == true && c.IsRejected == false).Include(c => c.LigneCommandesNavigation).ThenInclude(x => x.ArticleNavigation)
+                        .Include(c => c.UserNavigation).Include(c => c.EmplacementNavigation).Include(c => c.PaymentMethodNavigation).OrderByDescending(c => c.Date).ToListAsync();
+                    return Ok(_mapper.Map<IEnumerable<CommandeReadDto>>(r));
+                }
+                else
+                {
+                    try
+                    {
+                        var r = await _context.Commandes.Where(c => c.IsDelivered == false && c.IsRejected == false).Include(c => c.LigneCommandesNavigation).ThenInclude(x => x.ArticleNavigation).Include(c => c.UserNavigation).Include(c => c.EmplacementNavigation).Include(c => c.PaymentMethodNavigation).OrderBy(c => c.Date).ToListAsync();
+                        var l = _mapper.Map<IEnumerable<CommandeReadDto>>(r);
+                        return Ok(l);
+                    }
+                    catch (Exception ex)
+                    {
+                        return null;
+                    }
                 }
             }
-
-            var commandes = await query.OrderByDescending(c => c.Date).ToListAsync();
-            return Ok(_mapper.Map<IEnumerable<CommandeReadDto>>(commandes));
         }
+        //[HttpGet]
+        //[Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
+        //public async Task<ActionResult<IEnumerable<CommandeReadDto>>> GetCommandes(
+        //                             CommandStateEnum? state,
+        //                             DateTime? startDate,
+        //                             DateTime? endDate)
+        //{
+        //    if (_context.Commandes == null)
+        //        return NotFound();
 
+        //    if (startDate.HasValue && !endDate.HasValue)
+        //        endDate = DateTime.Now;
+
+        //    if (!startDate.HasValue && state == null)
+        //    {
+        //        startDate = DateTime.Now.AddDays(-1);
+        //        endDate = DateTime.Now.AddDays(1);
+        //    }
+
+        //    var query = _context.Commandes
+        //        .Include(c => c.LigneCommandesNavigation)
+        //            .ThenInclude(l => l.ArticleNavigation)
+        //        .Include(c => c.UserNavigation)
+        //        .Include(c => c.EmplacementNavigation)
+        //            .ThenInclude(e => e.EntrepriseNavigation)
+        //        .Include(c => c.PaymentMethodNavigation)
+        //        .AsQueryable();
+
+        //    if (startDate.HasValue && endDate.HasValue)
+        //        query = query.Where(c => c.Date >= startDate && c.Date <= endDate);
+
+        //    if (state.HasValue)
+        //    {
+        //        switch (state.Value)
+        //        {
+        //            case CommandStateEnum.Delivered:
+        //                query = query.Where(c => c.IsDelivered && !c.IsRejected);
+        //                break;
+        //            case CommandStateEnum.Pending:
+        //                query = query.Where(c => !c.IsDelivered && !c.IsRejected);
+        //                break;
+        //            case CommandStateEnum.Rejected:
+        //                query = query.Where(c => c.IsRejected);
+        //                break;
+        //        }
+        //    }
+
+        //    var commandes = await query.OrderByDescending(c => c.Date).ToListAsync();
+        //    return Ok(_mapper.Map<IEnumerable<CommandeReadDto>>(commandes));
+        //}
 
 
         // GET: api/Commandes

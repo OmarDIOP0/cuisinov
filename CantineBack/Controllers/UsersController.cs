@@ -189,8 +189,16 @@ namespace CantineBack.Controllers
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return BadRequest("Identifiants manquants.");
+            var user = new User();
+            try
+            {
+                user = await _context.Users.FirstOrDefaultAsync(u => u.Login.ToLower() == username.ToLower());
+            }catch(Exception ex)
+            {
+                Console.WriteLine("ERREUR EF ===> " + ex.Message);
+                return BadRequest(new { success = false, message = ex.Message });
+            }
 
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Login.ToLower() == username.ToLower());
             if (user == null || !user.Actif)
                 return Unauthorized("Utilisateur introuvable ou inactif.");
 
