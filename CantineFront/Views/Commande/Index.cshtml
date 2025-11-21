@@ -406,11 +406,31 @@
         </div>
     </div>
 </section>
+<!-- Modal de confirmation livraison -->
+<div class="modal fade" id="deliverModal" tabindex="-1" aria-labelledby="deliverModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deliverModalLabel">Confirmer la livraison</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir livrer cette commande ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-success" id="confirmDeliverBtn">Livrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @section Scripts {
     <script>
         var selectedEntrepriseId = 0;
         var selectedEmplacementId = 0;
+        var currentCommandId = 0; // Commande à livrer
 
         $(function(){
             // --- Recherche par client ---
@@ -587,7 +607,6 @@
                 });
 
                 initializeIsotope();
-
                 clearInterval(window.setTimers);
                 window.setTimers = setInterval(setTimers, 1000, commandes);
             }
@@ -621,26 +640,32 @@
                 return $grid;
             }
 
-            // --- Livraison commandes via AJAX ---
+            // --- Livraison commandes via MODAL ---
             $(document).on('click', '.deliver-btn', function(e) {
                 e.preventDefault();
-                var commandId = $(this).data('commandid');
-                if(confirm("Voulez-vous vraiment livrer cette commande ?")) {
-                    $.ajax({
-                        type: 'POST',
-                        url: `/Commande/Delivery/${commandId}`,
-                        success: function(res) {
-                            if(res && res.success) {
-                                DeleteCommandItem(commandId);
-                            } else {
-                                alert(res.message || "Erreur lors de la livraison");
-                            }
-                        },
-                        error: function() {
-                            alert("Erreur serveur, veuillez réessayer");
+                currentCommandId = $(this).data('commandid');
+                var modal = new bootstrap.Modal(document.getElementById('deliverModal'));
+                modal.show();
+            });
+
+            $('#confirmDeliverBtn').on('click', function() {
+                $.ajax({
+                    type: 'POST',
+                    url: `/Commande/Delivery/${currentCommandId}`,
+                    success: function(res) {
+                        if(res && res.success) {
+                            DeleteCommandItem(currentCommandId);
+                            var modalEl = document.getElementById('deliverModal');
+                            var modal = bootstrap.Modal.getInstance(modalEl);
+                            modal.hide();
+                        } else {
+                            alert(res.message || "Erreur lors de la livraison");
                         }
-                    });
-                }
+                    },
+                    error: function() {
+                        alert("Erreur serveur, veuillez réessayer");
+                    }
+                });
             });
 
             // --- Supprimer commande du DOM ---
@@ -658,3 +683,4 @@
         });
     </script>
 }
+
