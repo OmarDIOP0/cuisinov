@@ -658,8 +658,10 @@
                             var modalEl = document.getElementById('deliverModal');
                             var modal = bootstrap.Modal.getInstance(modalEl);
                             modal.hide();
+                            ToastR("Commande livrée avec succès", "success", 10);
+
                         } else {
-                            alert(res.message || "Erreur lors de la livraison");
+                            ToastR("Erreur lors de la livraison,veuillez reessayer", "error", 10); 
                         }
                     },
                     error: function() {
