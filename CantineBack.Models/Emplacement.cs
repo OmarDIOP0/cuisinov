@@ -12,5 +12,6 @@
         public int? EntrepriseId { get; set; }
         public virtual Entreprise? Entreprise{ get; set; }
         public virtual IEnumerable<Commande>? CommandesNavigation { get; set; }
+        public virtual Entreprise? EntrepriseNavigation { get; set; }
     }
 }
