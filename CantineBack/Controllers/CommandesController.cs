@@ -584,7 +584,6 @@ namespace CantineBack.Controllers
                 amountCommand += article.PrixDeVente * ligneCommand.Quantite;
             }
 
-            // Validation de la méthode de paiement
             PaymentMethod? paymentMethod = await _context.PaymentMethods.FindAsync(commandDto.PaymentMethodId);
             if (paymentMethod == null)
             {
@@ -596,20 +595,6 @@ namespace CantineBack.Controllers
             var userAction = await _context.Users
                     .AsNoTracking()
                     .FirstOrDefaultAsync(u => u.Id == userId);
-
-            //User? user = null;
-
-            //if (user != null )
-            //{
-            //    user = await _context.Users.FindAsync(user.Id);
-            //}
-
-            //if (commandDto.UserId.HasValue)
-            //{
-            //    user = await _context.Users.FindAsync(commandDto.UserId);
-            //}
-            //var emplacement = await _context.Emplacement
-            //            .FirstOrDefaultAsync(e => EF.Functions.Like(e.Name, "%SURPLACE%"));
             Emplacement? emplacement = null;
 
             if (!commandDto.CommandeADistance)
@@ -621,7 +606,8 @@ namespace CantineBack.Controllers
 
                 if (emplacement == null)
                 {
-                    return Problem("L'emplacement nommé 'SURPLACE' est introuvable pour cette entreprise.");
+                    emplacement = await _context.Emplacement
+                        .FirstOrDefaultAsync(e => e.Id == Common.ShopID);
                 }
             }
 
