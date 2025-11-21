@@ -1,0 +1,293 @@
+﻿
+.custom-btn {
+    background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
+}
+
+.food_section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    padding: 10px 0;
+}
+
+.heading_center h4 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+    .heading_center h4::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
+        border-radius: 2px;
+    }
+
+.filters_menu {
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style-type: none;
+    margin: 2rem 0;
+    gap: 10px;
+}
+
+    .filters_menu li {
+        padding: 12px 28px;
+        cursor: pointer;
+        border-radius: 25px;
+        background: #ffffff;
+        border: 2px solid #e9ecef;
+        color: #6c757d;
+        font-weight: 500;
+        margin: 5px;
+    }
+
+        .filters_menu li.active {
+            background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .filters_menu li:hover:not(.active) {
+            border-color: #FF6B35;
+            color: #FF6B35;
+        }
+
+.filters-content .col-12 {
+    max-width: 500px;
+    margin: 0 auto 2rem auto;
+}
+
+.filters-content .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.filters-content .form-control {
+    border-radius: 12px;
+    border: 2px solid #e9ecef;
+    padding: 12px 20px;
+}
+
+    .filters-content .form-control:focus {
+        border-color: #FF6B35;
+        box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.1);
+    }
+
+#noItemsAlert {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 2rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+.btn-box {
+    text-align: center;
+    margin-top: 2rem;
+}
+.btn-box a {
+    display: inline-block;
+    padding: 12px 40px;
+    background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
+    color: #ffffff;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+    .btn-box a:hover {
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+/* NOUVEAU STYLE POUR LES PRODUITS - SIMILAIRE À L'EXEMPLE */
+.product-item {
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 45px rgba(0, 0, 0, .07);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+    .product-item .position-relative {
+        background: #f8f9fa;
+        position: relative;
+        overflow: hidden;
+        height: 200px; /* HAUTEUR FIXE POUR TOUTES LES IMAGES */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .product-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* POUR AVOIR TOUTES LES IMAGES DE MÊME TAILLE */
+        transition: .5s;
+    }
+
+    .product-item:hover img {
+        transform: scale(1.1);
+    }
+
+    .product-item .bg-secondary {
+        background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%) !important;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+.text-center.p-4 {
+    padding: 1.5rem !important;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+    .text-center.p-4 .d-block {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        text-decoration: none;
+    }
+
+.text-primary {
+    color: #FF6B35 !important;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.text-body.text-decoration-line-through {
+    color: #6c757d !important;
+    font-size: 0.9rem;
+}
+
+.d-flex.border-top {
+    border-top: 1px solid #e9ecef !important;
+}
+
+    .d-flex.border-top small {
+        padding: 0.75rem 0;
+    }
+
+        .d-flex.border-top small a {
+            color: #6c757d !important;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+            .d-flex.border-top small a:hover {
+                color: #FF6B35 !important;
+            }
+
+.back-to-top {
+    position: fixed;
+    display: none;
+    left: 30px;
+    bottom: 30px;
+    z-index: 99;
+    justify-content: center;
+    background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
+}
+
+.btn-lg-square {
+    width: 48px;
+    height: 48px;
+}
+
+/* Responsive */
+@@media (max-width: 768px) {
+    .food_section {
+        padding: 60px 0;
+    }
+
+    .heading_center h4 {
+        font-size: 2rem;
+    }
+
+    .filters_menu li {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+/* Styles pour le modal de détails */
+#articleDetailModal .modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.2);
+}
+
+#articleDetailModal .modal-header {
+    background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
+    color: white;
+    border-bottom: none;
+    border-radius: 15px 15px 0 0;
+}
+
+#articleDetailModal .modal-title {
+    font-weight: 600;
+}
+
+#articleDetailModal .btn-close {
+    filter: invert(1);
+}
+
+#articleDetailModal .modal-body {
+    padding: 2rem;
+}
+
+#modalArticleImage {
+    border: 3px solid #f8f9fa;
+    transition: transform 0.3s ease;
+}
+
+    #modalArticleImage:hover {
+        transform: scale(1.02);
+    }
+
+#modalAddToCartBtn {
+    background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-weight: 600;
+}
+
+    #modalAddToCartBtn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+    }
+/* AJOUTEZ ce CSS à votre section Styles */
+.modal.fade {
+    transition: opacity 0.15s linear;
+}
+
+.modal-backdrop.fade {
+    transition: opacity 0.15s linear;
+}
+
+/* Correction pour le focus */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1055;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+}
+
