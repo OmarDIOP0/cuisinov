@@ -241,7 +241,9 @@ namespace CantineFront.Controllers
                 parameters.Add($"emplacementId={emplacementId.Value}");
 
             if (parameters.Any())
-                url += "?" + string.Join("&", parameters);
+            {
+                url += (url.Contains("?") ? "&" : "?") + string.Join("&", parameters);
+            }
 
             var apiResponse = await ApiService<Commande>.CallGetList(_httpClientFactory, url);
             return Json(apiResponse);

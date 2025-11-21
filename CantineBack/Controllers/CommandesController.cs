@@ -171,17 +171,19 @@ namespace CantineBack.Controllers
                 .Include(c => c.PaymentMethodNavigation)
                 .AsQueryable();
 
-            // Filtrage par entreprise
             if (entrepriseId.HasValue)
             {
-                query = query.Where(c => c.EmplacementNavigation.Entreprise.Id == entrepriseId.Value);
+                query = query.Where(c => c.EmplacementNavigation != null &&
+                                         c.EmplacementNavigation.Entreprise != null &&
+                                         c.EmplacementNavigation.Entreprise.Id == entrepriseId.Value);
             }
 
-            // Filtrage par emplacement
             if (emplacementId.HasValue)
             {
-                query = query.Where(c => c.EmplacementNavigation.Id == emplacementId.Value);
+                query = query.Where(c => c.EmplacementNavigation != null &&
+                                         c.EmplacementNavigation.Id == emplacementId.Value);
             }
+
 
             if (startDate.HasValue && endDate.HasValue)
                 query = query.Where(c => c.Date >= startDate && c.Date <= endDate);
