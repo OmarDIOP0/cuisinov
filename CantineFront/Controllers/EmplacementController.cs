@@ -42,10 +42,10 @@ namespace CantineFront.Controllers
         }
         public async Task<JsonResult> GetEmplacementsByEntreprise(int entrepriseId)
         {
-
-            var url = ApiUrlGeneric.ReadAllURL<Emplacement>();
+            var url = ApiUrlGeneric.GetEmplacementsByEntrepriseURL;
             var httpClient = _httpClientFactory.CreateClient("ClearanceApi");
-            HttpResponseMessage response = await httpClient.GetAsync(url);
+            var finalUrl = $"{url}?entrepriseId={entrepriseId}";
+            HttpResponseMessage response = await httpClient.GetAsync(finalUrl);
             var apiResponse = await ApiResultParser<Emplacement>.ParseList(response);
             return Json(apiResponse);
         }

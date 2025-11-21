@@ -430,8 +430,9 @@
             var successEntreprisesHandler = function (res) {
                 if (res && res.success && res.data) {
                     res.data.forEach((entreprise, index) => {
+                            var nom = entreprise.nom ? entreprise.nom.toUpperCase() : "NOM INCONNU";
                         $("#entreprisesFilterList").append(
-                            `<li data-entreprise-id="${entreprise.id}">${entreprise.name.toUpperCase()}</li>`
+                            `<li data-entreprise-id="${entreprise.id}">${nom}</li>`
                         );
                     });
 
