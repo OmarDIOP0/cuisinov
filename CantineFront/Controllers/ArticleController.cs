@@ -52,7 +52,7 @@ namespace CantineFront.Controllers
             var apiResponse = await ApiService<Article>.CallGetList(_httpClientFactory, url);
             return Json(apiResponse);
         }
-        public async Task<JsonResult> GetMenu(int? categorieId,int page=1,int pageSize=8)
+        public async Task<JsonResult> GetMenuParPage(int? categorieId,int page=1,int pageSize=8)
         {
 
             var url = String.Format(ApiUrlGeneric.GetMenuArticlesURL, categorieId);

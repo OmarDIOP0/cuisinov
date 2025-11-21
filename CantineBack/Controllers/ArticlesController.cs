@@ -112,9 +112,6 @@ namespace CantineBack.Controllers
         public async Task<ActionResult<Article>> GetArticle(int id)
         {
 
-
-
-
             if (_context.Articles == null)
             {
                 return NotFound();
