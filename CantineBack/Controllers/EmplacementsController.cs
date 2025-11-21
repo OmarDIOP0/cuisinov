@@ -59,6 +59,20 @@ namespace CantineBack.Controllers
 
             return emplacement;
         }
+        [HttpGet("GetEmplacementsByEntreprise")]
+        [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
+        public async Task<ActionResult<IEnumerable<EmplacementReadDto>>> GetEmplacementsByEntreprise(int entrepriseId)
+        {
+            if (_context.Emplacement == null)
+                return NotFound();
+
+            var emplacements = await _context.Emplacement
+                .Where(e => e.EntrepriseId == entrepriseId && e.Actif)
+                .OrderBy(e => e.Name)
+                .ToListAsync();
+
+            return Ok(_mapper.Map<IEnumerable<EmplacementReadDto>>(emplacements));
+        }
 
         // PUT: api/Emplacements/5
         [HttpPut("{id}")]

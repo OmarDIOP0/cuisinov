@@ -234,7 +234,6 @@ namespace CantineFront.Controllers
         {
             var url = String.Format(ApiUrlGeneric.ReadCommandesByStateURL, CommandStateEnum.Pending);
 
-            // Ajouter les paramètres de filtrage
             var parameters = new List<string>();
             if (entrepriseId.HasValue)
                 parameters.Add($"entrepriseId={entrepriseId.Value}");

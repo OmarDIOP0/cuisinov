@@ -28,6 +28,7 @@ namespace CantineFront.Services
         public static  string ReadOneURL<T>() => AppSettings.ApiUrl + $"/api/{typeof(T).Name}s" + "/{0}"; // { get { return _appSettings.ApiUrl + $"/api/{ typeof(T).Name}s"  + "/{0}"; } }
         public static  string ReadAllURL<T>() => AppSettings.ApiUrl + $"/api/{typeof(T).Name}s"; // { get { return _appSettings.ApiUrl + $"/api/{ typeof(T).Name}s" ; } }
         public static string ReadArticlesByCategoryURL { get { return AppSettings.ApiUrl + "/api/Articles?categorieId={0}" ; } }
+        public static string GetEmplacementsByEntrepriseURL { get { return AppSettings.ApiUrl + "/api/Emplacements/GetEmplacementsByEntreprise"; } }
         public static string GetAllCategories { get { return AppSettings.ApiUrl + "/api/Categories/GetAllCategories"; } }
         public static string UpdateUserProfile { get { return AppSettings.ApiUrl + "/api/Users/UpdateProfileUser"; } }
         public static string GetArticleImagesURL { get { return AppSettings.ApiUrl + "/api/Articles/GetArticleImages"; } }

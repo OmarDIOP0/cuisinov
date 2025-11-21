@@ -27,7 +27,7 @@
             color: white;
             padding: 12px 16px;
             border-bottom: none;
-            text-align:center;
+            text-align: center;
         }
 
         .customer-info {
@@ -202,32 +202,74 @@
             line-height: 1.4;
         }
 
-        @@media (max-width: 768px) {
-            .command-card
+        /* FILTRES ENTREPRISES ET EMPLACEMENTS */
+        .filters-container {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
 
-        {
+        .filter-section {
+            margin-bottom: 20px;
+        }
+
+            .filter-section:last-child {
+                margin-bottom: 0;
+            }
+
+        .filter-title {
+            font-weight: 700;
+            color: #2c3e50;
             margin-bottom: 12px;
-        }
-
-        .card-header {
-            padding: 10px 12px;
-        }
-
-        .card-body {
-            padding: 12px;
-        }
-
-        .command-actions {
-            flex-direction: column;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
             gap: 8px;
-            align-items: stretch;
         }
 
-        .deliver-btn {
-            justify-content: center;
+        .filters_menu {
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            list-style-type: none;
+            margin: 0;
+            gap: 8px;
         }
 
+            .filters_menu li {
+                padding: 10px 20px;
+                cursor: pointer;
+                border-radius: 25px;
+                background: #ffffff;
+                border: 2px solid #e9ecef;
+                color: #6c757d;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                font-size: 14px;
+            }
+
+                .filters_menu li.active {
+                    background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
+                    color: #ffffff;
+                    border-color: transparent;
+                    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+                }
+
+                .filters_menu li:hover:not(.active) {
+                    border-color: #FF6B35;
+                    color: #FF6B35;
+                    transform: translateY(-2px);
+                }
+
+        .emplacements-section {
+            display: none;
         }
+
+            .emplacements-section.active {
+                display: block;
+            }
 
         /* NOUVEAU DESIGN UNIQUEMENT POUR LES EMPLACEMENTS - MÊME STRUCTURE */
         .food_section {
@@ -245,40 +287,6 @@
             text-align: center;
             margin-bottom: 1rem;
         }
-
-        .filters_menu {
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            list-style-type: none;
-            margin: 2rem 0;
-            gap: 12px;
-        }
-
-            .filters_menu li {
-                padding: 12px 28px;
-                cursor: pointer;
-                border-radius: 25px;
-                background: #ffffff;
-                border: 2px solid #e9ecef;
-                color: #6c757d;
-                font-weight: 600;
-                transition: all 0.3s ease;
-            }
-
-                .filters_menu li.active {
-                    background: linear-gradient(135deg, #FF6B35 0%, #00C9B1 100%);
-                    color: #ffffff;
-                    border-color: transparent;
-                    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
-                }
-
-                .filters_menu li:hover:not(.active) {
-                    border-color: #FF6B35;
-                    color: #FF6B35;
-                    transform: translateY(-2px);
-                }
 
         /* Barre de recherche moderne */
         .col-md-6 {
@@ -316,26 +324,27 @@
 
         /* Responsive */
         @@media (max-width: 768px) {
-            .heading_container h2
+            .heading_container h2 {
+                font-size: 2rem;
+            }
 
-        {
-            font-size: 2rem;
-        }
+            .filters_menu li {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
 
-        .filters_menu li {
-            padding: 10px 20px;
-            font-size: 0.9rem;
-        }
+            .form-control {
+                padding: 10px 16px;
+            }
 
-        .form-control {
-            padding: 10px 16px;
-        }
-
+            .filters-container {
+                padding: 15px;
+            }
         }
     </style>
 }
 
-<!-- MÊME STRUCTURE HTML - SEUL LE CSS A CHANGÉ -->
+<!-- STRUCTURE HTML AVEC FILTRES ENTREPRISES ET EMPLACEMENTS -->
 <section class="food_section ">
     <div class="container" style="width:100%;margin-left:0;margin-right:0;max-width:100%;">
         <div class="heading_container">
@@ -343,21 +352,48 @@
                 Liste des commandes en attente
             </h2>
         </div>
-        <h4 class="d-flex justify-content-center">Emplacements</h4>
-        <ul id="emplacementsFilterList" class="filters_menu">
-            <li class="active" data-filter="*">Tous les emplacements</li>
-        </ul>
+
+        <!-- Section des filtres -->
+        <div class="filters-container">
+            <!-- Filtre par entreprise -->
+            <div class="filter-section">
+                <div class="filter-title">
+                    <i class="fas fa-building"></i>
+                    Entreprises
+                </div>
+                <ul id="entreprisesFilterList" class="filters_menu">
+                    <li class="active" data-entreprise-id="0">Toutes les entreprises</li>
+                </ul>
+            </div>
+
+            <!-- Filtre par emplacement -->
+            <div id="emplacementsSection" class="filter-section emplacements-section">
+                <div class="filter-title">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Emplacements
+                </div>
+                <ul id="emplacementsFilterList" class="filters_menu">
+                    <li class="active" data-emplacement-id="0">Tous les emplacements</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Barre de recherche -->
         <div class="d-flex justify-content-center">
             <div class="col-md-6">
-                <label class="form-label">Rechercher</label>
+                <label class="form-label">Rechercher par client</label>
                 <input type="text" class="form-control" placeholder="" id="searchText" />
             </div>
         </div>
+
+        <!-- Message aucune commande -->
         <div class="d-flex justify-content-center">
             <div class="center my-3 justify-content-center align-self-center" id="noItemsAlert" style="display:none">
                 Aucune commande en attente n'est disponible
             </div>
         </div>
+
+        <!-- Liste des commandes -->
         <div class="row">
             <div class="col-md-12 filters-content">
                 <div class="col-md-12 row grid" id="messagesList" style="padding:20px;">
@@ -370,43 +406,271 @@
 
 @section Scripts {
     <script>
-        // MÊME LOGIQUE JAVASCRIPT - RIEN N'A CHANGÉ
+        // Variables globales pour stocker les filtres
+        var selectedEntrepriseId = 0;
+        var selectedEmplacementId = 0;
+
         $(function(){
+            // Initialisation de la recherche
             $("#searchText").on("input", function () {
-                var value = $(this).val()
+                var value = $(this).val().toLowerCase();
                 $(".grid").isotope({
                     filter: function () {
-                        var fullname = $(this).find('.fullname').text();
-                        fullname = fullname ? fullname : "";
-                        console.log("fullname  ", fullname)
-                        value = value.toLowerCase();
-                        return fullname.toLowerCase().includes(value)
+                        var fullname = $(this).find('.fullname').text().toLowerCase();
+                        return fullname.includes(value);
                     }
-                })
+                });
             });
 
             var errorHandler = (err) => {
                 ToastR("Une erreur a été rencontré", "error", 15);
             }
 
-            var successEmplacementsHandler = function (res) {
-                if (res) {
-                    if (res.success && res.data) {
-                        var len = res.data.length;
-                        res.data.forEach((item, index) => {
-                            if(item.actif){
-                                var selected = item.id == "@ViewBag.CategorieId" ? "selected" : "";
-                                $("#catId").append(`<option ${selected} value="${item.id}">${item.name}</option>`);
+            // Chargement des entreprises
+            var successEntreprisesHandler = function (res) {
+                if (res && res.success && res.data) {
+                    res.data.forEach((entreprise, index) => {
+                        $("#entreprisesFilterList").append(
+                            `<li data-entreprise-id="${entreprise.id}">${entreprise.name.toUpperCase()}</li>`
+                        );
+                    });
 
-                                $("#emplacementsFilterList").append(`<li id="li_filter_${item.id}" data-filter=".emplacement_${item.id}">${item.name.toUpperCase()}</li>`);
-                            }
-                        })
-                    }
+                    // Gestion des clics sur les entreprises
+                    $('#entreprisesFilterList li').off("click").on("click", function () {
+                        $('#entreprisesFilterList li').removeClass('active');
+                        $(this).addClass('active');
+
+                        selectedEntrepriseId = $(this).data('entreprise-id');
+
+                        // Charger les emplacements de l'entreprise sélectionnée
+                        if (selectedEntrepriseId > 0) {
+                            loadEmplacementsByEntreprise(selectedEntrepriseId);
+                            $('#emplacementsSection').addClass('active');
+                        } else {
+                            $('#emplacementsSection').removeClass('active');
+                            selectedEmplacementId = 0;
+                            GetPendingCommandes();
+                        }
+                    });
                 }
             }
 
-            ajaxManager('GET', '/Emplacement/GetEmplacements', successEmplacementsHandler, errorHandler);
-            GetPendingCommandes();
-        })
+            // Chargement des emplacements par entreprise
+            function loadEmplacementsByEntreprise(entrepriseId) {
+                var successEmplacementsHandler = function (res) {
+                    if (res && res.success && res.data) {
+                        $("#emplacementsFilterList").html('<li class="active" data-emplacement-id="0">Tous les emplacements</li>');
+
+                        res.data.forEach((emplacement, index) => {
+                            if (emplacement.actif) {
+                                $("#emplacementsFilterList").append(
+                                    `<li data-emplacement-id="${emplacement.id}">${emplacement.name.toUpperCase()}</li>`
+                                );
+                            }
+                        });
+
+                        // Gestion des clics sur les emplacements
+                        $('#emplacementsFilterList li').off("click").on("click", function () {
+                            $('#emplacementsFilterList li').removeClass('active');
+                            $(this).addClass('active');
+
+                            selectedEmplacementId = $(this).data('emplacement-id');
+                            GetPendingCommandes();
+                        });
+
+                        // Charger les commandes après avoir chargé les emplacements
+                        GetPendingCommandes();
+                    }
+                }
+
+                // Appel API pour récupérer les emplacements par entreprise
+                ajaxManager('GET', `/Emplacement/GetEmplacementsByEntreprise?entrepriseId=${entrepriseId}`, successEmplacementsHandler, errorHandler);
+            }
+
+            // Fonction modifiée pour récupérer les commandes avec filtres
+            function GetPendingCommandes() {
+                var url = '/Commande/GetPendingCommandes';
+                var params = [];
+
+                if (selectedEntrepriseId > 0) {
+                    params.push(`entrepriseId=${selectedEntrepriseId}`);
+                }
+                if (selectedEmplacementId > 0) {
+                    params.push(`emplacementId=${selectedEmplacementId}`);
+                }
+
+                if (params.length > 0) {
+                    url += '?' + params.join('&');
+                }
+
+                var successCommandeHandler = function (res) {
+                    if (res && res.success) {
+                        displayCommandes(res.data);
+                    }
+                }
+
+                ajaxManager('GET', url, successCommandeHandler, errorHandler);
+            }
+
+            // Fonction pour afficher les commandes
+            function displayCommandes(commandes) {
+                $("#messagesList").html("");
+
+                if (!commandes || commandes.length === 0) {
+                    $("#noItemsAlert").show();
+                    return;
+                }
+
+                $("#noItemsAlert").hide();
+
+                commandes.forEach((command, index) => {
+                    var fullname = command.userNavigation ? command.userNavigation.login : "";
+                    var emplacement = command.emplacementNavigation ? command.emplacementNavigation.name : "";
+                    var paymentMethod = command.paymentMethodNavigation ? command.paymentMethodNavigation.name : "";
+                    var emplacementId = command.emplacementNavigation ? command.emplacementNavigation.id : 0;
+                    var entrepriseId = command.emplacementNavigation && command.emplacementNavigation.entreprise ?
+                                     command.emplacementNavigation.entreprise.id : 0;
+
+                    var colClass = "col-md-4 mx-2 col-lg-4 col-xl-3 all";
+
+                    paymentMethod = paymentMethod == "SOLDE" ? "DOTATION" : paymentMethod;
+                    var paymentMethodHtml = paymentMethod ? `
+                        <div class="payment-method">
+                            <i class="fas fa-credit-card payment-icon"></i>
+                            <span class="payment-text">${paymentMethod}</span>
+                        </div>
+                    ` : '';
+
+                    var commandeADistance = command.commandeADistance ? `
+                        <span class="distance-badge">
+                            <i class="fas fa-truck"></i>
+                            À distance
+                        </span>
+                    ` : '';
+
+                    var commentaire = command.comment;
+                    var commentaireHtml = commentaire ? `
+                        <div class="comment-section">
+                            <div class="comment-label">
+                                <i class="fas fa-comment comment-icon"></i>
+                                Commentaire:
+                            </div>
+                            <p class="comment-text">${commentaire}</p>
+                        </div>
+                    ` : "";
+
+                    $("#messagesList").append(`
+                         <div class="command-card ${colClass} entreprise_${entrepriseId} emplacement_${emplacementId}" id="command_${command.id}">
+                            <div class="card-header">
+                                <div class="customer-info">
+                                    <i class="fas fa-user customer-icon"></i>
+                                    <span class="customer-name fullname">${fullname}</span>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="location-info">
+                                    <i class="fas fa-map-marker-alt location-icon"></i>
+                                    <span class="location-text">${emplacement}</span>
+                                </div>
+
+                                ${paymentMethodHtml}
+
+                                <div class="command-actions">
+                                    <div class="timer-badge" id="time${command.id}"></div>
+                                    ${commandeADistance}
+                                    <a class="deliver-btn"
+                                       data-method="POST"
+                                       data-callback="DeleteCommandItem"
+                                       data-message="Veuillez confirmer?"
+                                       data-url="/Commande/Delivery/${command.id}"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#confirmModal"
+                                       data-commandid="${command.id}"
+                                       href="#!">
+                                        <i class="fas fa-check deliver-icon"></i>
+                                        Livrer
+                                    </a>
+                                </div>
+
+                                <div class="articles-section">
+                                    <div id='lignesCommande${command.id}' class="articles-list"></div>
+                                </div>
+
+                                ${commentaireHtml}
+                            </div>
+                        </div>
+                    `);
+
+                    if (command.ligneCommandesNavigation) {
+                        command.ligneCommandesNavigation.forEach((ligne, index) => {
+                            $(`#lignesCommande${command.id}`).append(`
+                                <div class="article-item" id="row_${ligne.articleNavigation.id}">
+                                    <span class="article-name">${ligne.articleNavigation.title}</span>
+                                    <span class="article-quantity">${ligne.quantite}</span>
+                                </div>
+                            `);
+                        });
+                    }
+                });
+
+                // Initialiser Isotope après l'ajout des commandes
+                initializeIsotope();
+
+                // Démarrer les timers
+                clearInterval(window.setTimers);
+                window.setTimers = setInterval(setTimers, 1000, commandes);
+            }
+
+            // Initialiser Isotope
+            function initializeIsotope() {
+                try {
+                    var itemReveal = Isotope.Item.prototype.reveal;
+                    Isotope.Item.prototype.reveal = function () {
+                        itemReveal.apply(this, arguments);
+                        $(this.element).removeClass('isotope-hidden');
+                    };
+                    var itemHide = Isotope.Item.prototype.hide;
+                    Isotope.Item.prototype.hide = function () {
+                        itemHide.apply(this, arguments);
+                        $(this.element).addClass('isotope-hidden');
+                    };
+                } catch { }
+
+                var $grid = $(".grid").isotope({
+                    itemSelector: ".all",
+                    percentPosition: false,
+                    masonry: { columnWidth: ".all" }
+                });
+
+                $grid.isotope('on', 'layoutComplete', function () {
+                    var numItems = $grid.find('.all:not(.isotope-hidden)').length;
+                    if (numItems == 0) {
+                        $("#noItemsAlert").show();
+                    } else {
+                        $("#noItemsAlert").hide();
+                    }
+                });
+
+                return $grid;
+            }
+
+            // Chargement initial
+            ajaxManager('GET', '/Entreprise/GetEntreprises', successEntreprisesHandler, errorHandler);
+        });
+
+        // Fonction pour supprimer une commande après livraison
+        function DeleteCommandItem(commandId) {
+            $(`#command_${commandId}`).remove();
+
+            var $grid = $(".grid").isotope();
+            $grid.isotope('layout');
+
+            // Vérifier s'il reste des commandes
+            var numItems = $grid.find('.all:not(.isotope-hidden)').length;
+            if (numItems == 0) {
+                $("#noItemsAlert").show();
+            }
+        }
     </script>
 }
