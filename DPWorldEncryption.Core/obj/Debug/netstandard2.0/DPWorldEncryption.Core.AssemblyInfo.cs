@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DPWorldEncryption.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe641848f156cddb204435367ac574def58dd6ec")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+966e02964029d8d074d9184d6d54ea4fad2e8c01")]
 [assembly: System.Reflection.AssemblyProductAttribute("DPWorldEncryption.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DPWorldEncryption.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
