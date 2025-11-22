@@ -159,7 +159,7 @@ namespace CantineBack.Controllers
                 startDate = DateTime.Now.AddDays(-1);
                 endDate = DateTime.Now.AddDays(1);
             }
-
+         
             var query = _context.Commandes
                 .Include(c => c.LigneCommandesNavigation)
                     .ThenInclude(l => l.ArticleNavigation)

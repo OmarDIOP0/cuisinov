@@ -10,7 +10,6 @@
     var emplacements = Accessor.HttpContext?.Session.GetListObjectFromSession<Emplacement>("Emplacements") ?? new List<Emplacement>();
     var paymentMethods = Accessor.HttpContext?.Session.GetListObjectFromSession<PaymentMethod>("PaymentMethods") ?? new List<PaymentMethod>();
     PaymentMethod cashPay = paymentMethods.FirstOrDefault(p => p.Code == "CASH");
-    // PaymentMethod qrCodePay = paymentMethods.FirstOrDefault(p => p.Code == "QRCODE");
     PaymentMethod wavePay = paymentMethods.FirstOrDefault(p => p.Code == "WAVE");
     PaymentMethod omPay = paymentMethods.FirstOrDefault(p => p.Code == "OM");
     IDictionary<int, int> articlePrixDict = new Dictionary<int, int>();
@@ -42,8 +41,6 @@
         }
 
     }
-
-
     var articlePrixDictJSON = JsonConvert.SerializeObject(articlePrixDict);
     var articleImagesJSON = JsonConvert.SerializeObject(articlesImages);
 }
@@ -173,15 +170,8 @@
 
     </style>
 }
-<!-- book section -->
 <section class="book_section layout_padding">
     <div class="container-fluid px-5">
-        @*<div class="heading_container">
-        <h2>
-        Book A Table
-        </h2>
-        </div>*@
-
         <div class="">
             <form action="" id="formBooking">
 
@@ -204,8 +194,6 @@
                                                 <div class="row mb-4 d-flex justify-content-between align-items-center" id="row_@item.Id">
                                                     <div class="col-md-2 col-lg-2 col-xl-2">
                                                         <img id="imageArticle_@item.Id" src="data:image/png;base64,@item.Image" class="zoom rounded-circle" width="50" height="50" onerror="this.src='/images/default.png';">
-                                                        @* <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
-                                                    class="img-fluid rounded-3" alt="Cotton T-shirt">*@
                                                     </div>
                                                     <div class="col-md-3 col-lg-3 col-xl-3">
                                                         <h6 class="text-muted">@item.Categorie?.Name</h6>
@@ -240,9 +228,6 @@
 
 
                                             </div>
-
-
-
                                             <hr class="my-4">
 
                                             <div class="pt-5">
@@ -258,7 +243,6 @@
                                         <div class="p-5">
                                             <h3 class="fw-bold mb-5 mt-2 pt-1">Résumé</h3>
                                             <hr class="my-4">
-                                            @* <input type="hidden" id="EmplacementId" value="1" /> *@
                                             <div class="mb-4 pb-2 ">
                                                 <label class="mb-3">Méthode de paiement</label>
                                                 <div class="radio-inputs">
@@ -271,20 +255,10 @@
                                                             <span class="radio-label font-weight-bold">CASH</span>
                                                         </span>
                                                     </label>
-                                                    @* <label>
-                                                        <input class="radio-input" type="radio" name="PaymentMethodId" value="@(qrCodePay?.Id??2)" id="qrCodePay" data-code="@(qrCodePay?.Code??"QRCODE")">
-                                                        <span class="radio-tile">
-                                                            <span class="radio-icon">
-                                                                <i class="fa fa-qrcode"></i>
-                                                            </span>
-                                                            <span class="radio-label font-weight-bold">SOLDE</span>
-                                                        </span>
-                                                    </label> *@
                                                     <label>
                                                         <input class="radio-input" type="radio" name="PaymentMethodId" value="@(wavePay?.Id??3)" id="wavePay" data-code="@(wavePay?.Code ?? "WAVE")">
                                                         <span class="radio-tile">
                                                             <span class="radio-icon">
-                                                                @*<i class="fa fa-qrcode"></i>*@
                                                                 <img src="~/images/wave.png" width="40" height="40" />
                                                             </span>
                                                             <span class="radio-label font-weight-bold">WAVE</span>
@@ -294,7 +268,6 @@
                                                         <input class="radio-input" type="radio" name="PaymentMethodId" value="@(omPay?.Id??4)" id="wavePay" data-code="@(omPay?.Code ?? "OM")">
                                                         <span class="radio-tile">
                                                             <span class="radio-icon">
-                                                             @*   <i class="fa fa-qrcode"></i>*@
                                                                 <img src="~/images/orangemoney.png" width="40" height="40" />
                                                             </span>
                                                             <span class="radio-label font-weight-bold">OM</span>
@@ -307,22 +280,10 @@
                                                     </div>
                                                     Scannez votre QR CODE
                                                 </div>
-                                               
-                                               @* <select class="form-control   wide" required name="PaymentMethodId" id="PaymentMethodId">
-
-                                                    @foreach (var pm in paymentMethods)
-                                                    {
-
-                                                        <option selected='@pm.Code=="QRCODE"' data-code="@pm.Code" value="@pm.Id">@pm.Name</option>
-                                                    }
-
-                                                </select>*@
                                             </div>
                                             <input class="form-control" name="QrCode" id="qrCode" style="opacity: 0; position: absolute; top: 0; left: 0" />
                                             <div class="mb-4 pb-2 " style="display:none" id="qrCodeDiv">
                                                 <label class="mb-3">QR Code</label>
-
-                                             @*   <input class="form-control" name="QrCode" id="qrCode" style="opacity: 0; position: absolute; top: 0; left: 0" />*@
                                             </div>
                                             <input type="hidden" id="soldeRestant" />
                                             <div class=" justify-content-between mb-5" style="display:none" id="clientDiv">
@@ -356,22 +317,11 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
-
             </form>
         </div>
-
-
     </div>
 </section>
-<!-- end book section -->
 @section Scripts {
-
-
-
     <script>
         const CommandeADistance = false;
         let userSolde = 0;
@@ -413,18 +363,10 @@
         console.clear();
         const ARTICLES_PRIX_DICT = JSON.parse('@Html.Raw(articlePrixDictJSON)');
         var articleImages = JSON.parse('@Html.Raw(articleImagesJSON)');
-        console.log(articleImages)
-
-
-
-        console.log(ARTICLES_PRIX_DICT);
-
-
         function updateTotalPrice(showMessage = true) {
 
             var totalPrice = 0;
             for (const [id, price] of Object.entries(ARTICLES_PRIX_DICT)) {
-                //   console.log(key, value);
                 var $quantite = $("#quantite_" + id)
                 var q = $quantite.length > 0 ? $quantite.val() : 0
                 totalPrice += q * price;
@@ -432,23 +374,6 @@
             }
 
             $("#totalPrice").text(`${totalPrice} XOF`);
-            // if (setUserSolde) {
-            //     if (totalPrice > userSolde) {
-            //         $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
-            //         if (showMessage) {
-            //             ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
-            //             $("#messageSolde").text("Solde insuffisant.");
-            //         }
-
-            //         $("#btnCommand").prop("disabled", true);
-            //     } else {
-            //         $("#btnCommand").prop("disabled", false);
-            //         $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-            //         $("#messageSolde").text("");
-            //     }
-
-            // }
-
             return totalPrice;
         }
 
@@ -457,7 +382,6 @@
                 const ARTICLES_IDS = Object.keys(ARTICLES_PRIX_DICT)
                 var len = ARTICLES_IDS.length
                 loadImageSuccessHandler = (res) => {
-                    // console.log("images = ",res.id)
                     if (res != null) {
                         var imageId = res.id
                         $(`#imageArticle_${imageId}`).attr("src", `data:image/png;base64,${res.image}`);
@@ -478,14 +402,7 @@
                 }
             }
             catch {
-
-
             }
-
-
-
-
-
             $("#PaymentMethodId").on("change", function () {
 
                 checkSolde = $(this).find("option:selected").data("code") == "QRCODE";
@@ -497,20 +414,8 @@
                     $("#messageSolde").text("");
                 } else {
                     let montantTotal = updateTotalPrice(false);
-                    // if (montantTotal > userSolde) {
-                    //     $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
-                    //     ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
-                    //     $("#messageSolde").text("Solde insuffisant.");
-                    //     $("#btnCommand").prop("disabled", true);
-                    // } else {
-                    //     $("#btnCommand").prop("disabled", false);
-                    //     $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-                    //     $("#messageSolde").text("");
-                    // }
                 }
             });
-
-
             var getUserSuccessHandler = (res) => {
                 if (res) {
                     if (res.success) {
@@ -529,25 +434,6 @@
                             return;
                         }
                         let montantTotal = updateTotalPrice(false);
-                        // if (checkSolde) {
-                        //     if (montantTotal > user.solde) {
-                        //         $("#solde").removeClass("text-warning text-danger text-success").addClass("text-danger");
-                        //         ToastR("Le montant total est supérieur à ton solde", "error", 10, "toast-bottom-right");
-                        //         $("#messageSolde").text("Solde insuffisant.");
-                        //         $("#btnCommand").prop("disabled", true);
-                        //     } else {
-                        //         $("#btnCommand").prop("disabled", false);
-                        //         $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-                        //         $("#messageSolde").text("");
-                        //     }
-                        // } else {
-
-                        //     $("#btnCommand").prop("disabled", false);
-                        //     $("#solde").removeClass("text-warning text-danger text-success").addClass("text-success");
-                        //     $("#messageSolde").text("");
-                        // }
-
-
 
                     } 
                     else {
@@ -561,8 +447,6 @@
 
             }
             $("#qrCode").on("change", function () {
-
-            //    console.log("result scan  =  ", this.value)
               if(this.value){
                   if(this.value.length>24){
                         this.value = this.value.trim().substring(0, 24);
@@ -576,21 +460,12 @@
 
                         if (val && typeof val === "string") {
 
-                            // alert( "Bon")
-
                             if (val.length = 24) {
                                 ajaxManager("GET", "/User/GetUserByQrCode", getUserSuccessHandler, errorHandler, { qrCode: val })
                             }
-
-
                         }
-
                     }, 1000);
-
                 }
-
-     
-
             });
 
             $(".deleteArticleCart").off("click").on("click", function () {
@@ -613,25 +488,18 @@
                                 $("#cartBadgeFloatCount").text(data.object)
 
                                 updateTotalPrice();
-                                // ToastR(data.message, "success", 10, "toast-bottom-right");
                                 console.log(ARTICLES_PRIX_DICT)
                                 $("#selectedArticlesCount").text(Object.keys(ARTICLES_PRIX_DICT).length)
                             }
-
                             else {
-
                                 ToastR(data.message, "error", 10);
-
                             }
-
                         }
-
                     };
                     var errorHandler = (err) => {
 
                         ToastR("La suppréssion a échoué", "error", 10);
                     };
-
                     ajaxManager("DELETE", "/Home/DeleteArticleCart", successHandler, errorHandler, { id: id })
                 }
             }
@@ -646,13 +514,8 @@
                         CommandeADistance: false,
                         PaymentMethodId: parseInt($("input[type='radio'][name='PaymentMethodId']:checked").val()),
                         PaymentMethodeCode: $("input[type='radio'][name='PaymentMethodId']:checked").data("code")
-                        // PaymentMethodId: $("#PaymentMethodId").val(),
-                        //PaymentMethodeCode: $("#PaymentMethodId option:selected").data("code")
                     }
-
-
                     var lignesCommandes = [];
-
                     for (const [id, price] of Object.entries(ARTICLES_PRIX_DICT)) {
 
                         var $quantite = $("#quantite_" + id)
@@ -662,8 +525,6 @@
                                   Quantite: parseInt(q),
                                   PrixTotal: parseInt(q) * price
                                 })
-
-
                     }
                     if (lignesCommandes.length == 0) {
                         ToastR("Aucune ligne de commande n'est trouvée", "error", 5);
@@ -673,11 +534,8 @@
                     postData["LigneCommands"] = lignesCommandes;
                     console.log(postData);
                     postData["Comment"] = $.trim($("#Comment").val());
-
                     try {
                         var successHandler = (data) => {
-                            //console.log("res= " + JSON.stringify(data));
-
                             endLoadingById("body");
                             if (data == undefined || data == null || data == "")
                                 ToastR("Une erreur a été rencontrée", "error", 10);
@@ -688,25 +546,18 @@
                                         ToastR("Commande enregistrée avec succès!", "success", 10, "toast-bottom-right");
                                        
                                             setTimeout(() => { window.location = window.location.origin + "/Home/Menu"; }, 3000)
-                                       
                                     }else{
                                         ToastR("Commande envoyée avec succès!", "success", 10, "toast-bottom-right");
                                         sendDataCommand("shop", JSON.stringify(data.object)).then(() => {
                                             setTimeout(() => { window.location = window.location.origin + "/Home/Menu"; }, 3000)
-                                            //  location.reload();
                                         });
                                     }
-                            
-
                                 }
-
                                 else {
                                     btn.prop("disabled", false);
                                     ToastR(data.message, "error", 10);
                                 }
-
                             }
-
                         };
                         var errorHandler = (err) => {
                             btn.prop("disabled", false);
@@ -720,24 +571,13 @@
                         }else{
                             ajaxManager("POST", "/Commande/PostLocalCommande", successHandler, errorHandler, { QrCode: $("#qrCode").val(), ...postData });
                         }
-                      
-                      
-                        //ajaxManager("POST", "/Commande/CreateCommande", successHandler, errorHandler, postData);
-
-
                     } catch (e) {
                         console.log("Error : " + e);
                     }
                     finally {
-
-
-
                     }
-
                 }
-
             });
-
 
             $("#cashPay, #qrCodePay, #wavePay, #omPay").change(function () {
                 if ($("#cashPay").is(":checked") || $("#wavePay").is(":checked") || $("#omPay").is(":checked")) {
@@ -745,22 +585,15 @@
                     $('#clientDiv').removeClass("d-flex").hide();
                     $('#soldeDiv').removeClass("d-flex").hide();
                     $("#messageSolde").text("").hide();
-                 //   $("#qrCodeDiv").hide()
                     $("#qrCode").val("")
                 }
                 else if ($("#qrCodePay").is(":checked")) {
                     $('#scanLoading').show();
                     $('#clientDiv').addClass("d-flex").show();
                     $('#soldeDiv').addClass("d-flex").show();
-                   //TR2jPASFe1X8qyOrnCRLWA==
-                   //  $("#qrCodeDiv").show()
                     $("#qrCode").focus()
                 }
-               
             });
-
         });
-
-
     </script>
                         }
