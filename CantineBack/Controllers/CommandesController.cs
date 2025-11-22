@@ -141,12 +141,80 @@ namespace CantineBack.Controllers
         //}
         [HttpGet]
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
+        //public async Task<ActionResult<IEnumerable<CommandeReadDto>>> GetCommandes(
+        //                     CommandStateEnum? state,
+        //                     DateTime? startDate,
+        //                     DateTime? endDate,
+        //                     int? entrepriseId = null,
+        //                     int? emplacementId = null)
+        //{
+        //    if (_context.Commandes == null)
+        //        return NotFound();
+
+        //    if (startDate.HasValue && !endDate.HasValue)
+        //        endDate = DateTime.Now;
+
+        //    if (!startDate.HasValue && state == null)
+        //    {
+        //        startDate = DateTime.Now.AddDays(-1);
+        //        endDate = DateTime.Now.AddDays(1);
+        //    }
+        //    var userLogin = User.Identity.Name;
+        //    var currentUser = await _context.Users
+        //        .AsNoTracking()
+        //        .FirstOrDefaultAsync(u => u.Login == userLogin);
+
+        //    var query = _context.Commandes
+        //        .Include(c => c.LigneCommandesNavigation)
+        //            .ThenInclude(l => l.ArticleNavigation)
+        //        .Include(c => c.UserNavigation)
+        //        .Include(c => c.EmplacementNavigation)
+        //            .ThenInclude(e => e.Entreprise)
+        //        .Include(c => c.PaymentMethodNavigation)
+        //        .AsQueryable();
+
+        //    if (entrepriseId.HasValue)
+        //    {
+        //        query = query.Where(c => c.EmplacementNavigation != null &&
+        //                                 c.EmplacementNavigation.Entreprise != null &&
+        //                                 c.EmplacementNavigation.Entreprise.Id == entrepriseId.Value);
+        //    }
+
+        //    if (emplacementId.HasValue)
+        //    {
+        //        query = query.Where(c => c.EmplacementNavigation != null &&
+        //                                 c.EmplacementNavigation.Id == emplacementId.Value);
+        //    }
+
+
+        //    if (startDate.HasValue && endDate.HasValue)
+        //        query = query.Where(c => c.Date >= startDate && c.Date <= endDate);
+
+        //    if (state.HasValue)
+        //    {
+        //        switch (state.Value)
+        //        {
+        //            case CommandStateEnum.Delivered:
+        //                query = query.Where(c => c.IsDelivered && !c.IsRejected);
+        //                break;
+        //            case CommandStateEnum.Pending:
+        //                query = query.Where(c => !c.IsDelivered && !c.IsRejected);
+        //                break;
+        //            case CommandStateEnum.Rejected:
+        //                query = query.Where(c => c.IsRejected);
+        //                break;
+        //        }
+        //    }
+
+        //    var commandes = await query.OrderByDescending(c => c.Date).ToListAsync();
+        //    return Ok(_mapper.Map<IEnumerable<CommandeReadDto>>(commandes));
+        //}
         public async Task<ActionResult<IEnumerable<CommandeReadDto>>> GetCommandes(
-                             CommandStateEnum? state,
-                             DateTime? startDate,
-                             DateTime? endDate,
-                             int? entrepriseId = null,
-                             int? emplacementId = null)
+                     CommandStateEnum? state,
+                     DateTime? startDate,
+                     DateTime? endDate,
+                     int? entrepriseId = null,
+                     int? emplacementId = null)
         {
             if (_context.Commandes == null)
                 return NotFound();
@@ -159,7 +227,18 @@ namespace CantineBack.Controllers
                 startDate = DateTime.Now.AddDays(-1);
                 endDate = DateTime.Now.AddDays(1);
             }
-         
+
+            var userLogin = User.Identity?.Name;
+            var currentUser = await _context.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Login == userLogin);
+
+            if (currentUser == null)
+            {
+                // utilisateur non identifié -> interdire l'accès aux commandes
+                return Forbid();
+            }
+
             var query = _context.Commandes
                 .Include(c => c.LigneCommandesNavigation)
                     .ThenInclude(l => l.ArticleNavigation)
@@ -169,11 +248,20 @@ namespace CantineBack.Controllers
                 .Include(c => c.PaymentMethodNavigation)
                 .AsQueryable();
 
-            if (entrepriseId.HasValue)
+            if (!string.Equals(currentUser.Profile, "admin", StringComparison.OrdinalIgnoreCase))
             {
-                query = query.Where(c => c.EmplacementNavigation != null &&
-                                         c.EmplacementNavigation.Entreprise != null &&
-                                         c.EmplacementNavigation.Entreprise.Id == entrepriseId.Value);
+                query = query.Where(c => c.EmplacementNavigation != null
+                                         && c.EmplacementNavigation.Entreprise != null
+                                         && c.EmplacementNavigation.Entreprise.Id == currentUser.EntrepriseId);
+            }
+            else
+            {
+                if (entrepriseId.HasValue)
+                {
+                    query = query.Where(c => c.EmplacementNavigation != null
+                                             && c.EmplacementNavigation.Entreprise != null
+                                             && c.EmplacementNavigation.Entreprise.Id == entrepriseId.Value);
+                }
             }
 
             if (emplacementId.HasValue)
@@ -181,7 +269,6 @@ namespace CantineBack.Controllers
                 query = query.Where(c => c.EmplacementNavigation != null &&
                                          c.EmplacementNavigation.Id == emplacementId.Value);
             }
-
 
             if (startDate.HasValue && endDate.HasValue)
                 query = query.Where(c => c.Date >= startDate && c.Date <= endDate);
