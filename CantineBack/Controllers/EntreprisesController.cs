@@ -38,7 +38,6 @@ namespace CantineBack.Controllers
 
             var query = _context.Entreprises.Where(e => e.Actif).AsQueryable();
 
-            // Si ce n'est PAS un admin --> uniquement son entreprise
             if (!string.Equals(currentUser.Profile, "admin", StringComparison.OrdinalIgnoreCase))
             {
                 query = query.Where(e => e.Id == currentUser.EntrepriseId);
