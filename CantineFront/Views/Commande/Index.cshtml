@@ -1,7 +1,7 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@inject IHttpContextAccessor Accessor;
 @{
+    bool isGerant = Convert.ToBoolean(Accessor.HttpContext?.Session.GetString("IsGerant") ?? "false");
+    int gerantEntrepriseId = Convert.ToInt32(Accessor.HttpContext?.Session.GetString("EntrepriseId") ?? "0");
 }
 @section Styles {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -428,6 +428,8 @@
 
 @section Scripts {
     <script>
+        var isGerant = @isGerant.ToString().ToLower(); 
+        var gerantEntrepriseId = @gerantEntrepriseId;
         var selectedEntrepriseId = 0;
         var selectedEmplacementId = 0;
         var currentCommandId = 0; // Commande à livrer
@@ -449,33 +451,54 @@
             }
 
             // --- Chargement entreprises ---
-            var successEntreprisesHandler = function (res) {
-                if (res && res.success && res.data) {
-                    res.data.forEach((entreprise) => {
-                        var nom = entreprise.nom ? entreprise.nom.toUpperCase() : "NOM INCONNU";
-                        $("#entreprisesFilterList").append(
-                            `<li data-entreprise-id="${entreprise.id}">${nom}</li>`
-                        );
-                    });
+                    var successEntreprisesHandler = function (res) {
+            if (res && res.success && res.data) {
+                $("#entreprisesFilterList").html('<li class="active" data-entreprise-id="0">Toutes les entreprises</li>');
+                res.data.forEach((entreprise) => {
+                    var nom = entreprise.nom ? entreprise.nom.toUpperCase() : "NOM INCONNU";
+                    $("#entreprisesFilterList").append(
+                        `<li data-entreprise-id="${entreprise.id}">${nom}</li>`
+                    );
+                });
 
-                    // Click sur entreprise
-                    $('#entreprisesFilterList li').off("click").on("click", function () {
+                // Click sur entreprise (réattacher)
+                $('#entreprisesFilterList li').off("click").on("click", function () {
+                    $('#entreprisesFilterList li').removeClass('active');
+                    $(this).addClass('active');
+
+                    selectedEntrepriseId = $(this).data('entreprise-id');
+
+                    if (selectedEntrepriseId > 0) {
+                        loadEmplacementsByEntreprise(selectedEntrepriseId);
+                        $('#emplacementsSection').addClass('active');
+                    } else {
+                        $('#emplacementsSection').removeClass('active');
+                        selectedEmplacementId = 0;
+                        GetPendingCommandes();
+                    }
+                });
+
+                // --- Si gérant, sélectionner automatiquement son entreprise ---
+                if (isGerant && gerantEntrepriseId && gerantEntrepriseId > 0) {
+                    // Trouver le li correspondant
+                    var $li = $(`#entreprisesFilterList li[data-entreprise-id='${gerantEntrepriseId}']`);
+                    if ($li.length) {
                         $('#entreprisesFilterList li').removeClass('active');
-                        $(this).addClass('active');
-
-                        selectedEntrepriseId = $(this).data('entreprise-id');
-
-                        if (selectedEntrepriseId > 0) {
-                            loadEmplacementsByEntreprise(selectedEntrepriseId);
-                            $('#emplacementsSection').addClass('active');
-                        } else {
-                            $('#emplacementsSection').removeClass('active');
-                            selectedEmplacementId = 0;
-                            GetPendingCommandes();
-                        }
-                    });
+                        $li.addClass('active');
+                        selectedEntrepriseId = gerantEntrepriseId;
+                        // Charger ses emplacements (et ensuite les commandes via loadEmplacementsByEntreprise)
+                        loadEmplacementsByEntreprise(selectedEntrepriseId);
+                    } else {
+                        // fallback si l'entreprise n'est pas dans la liste : charger directement emplacements via endpoint spécifique
+                        loadEmplacementsByEntreprise(gerantEntrepriseId);
+                    }
+                } else {
+                    // cas normal, on affiche toutes les commandes initiales
+                    GetPendingCommandes();
                 }
             }
+        }
+
 
             function loadEmplacementsByEntreprise(entrepriseId) {
                 var successEmplacementsHandler = function (res) {
