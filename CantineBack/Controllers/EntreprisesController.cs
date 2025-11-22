@@ -30,15 +30,23 @@ namespace CantineBack.Controllers
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
         public async Task<ActionResult<IEnumerable<Entreprise>>> GetEntreprises()
         {
-           if(_context.Entreprises == null)
-           {
-                return NotFound();
+            var userLogin = User.Identity?.Name;
+            var currentUser = await _context.Users.FirstOrDefaultAsync(u => u.Login == userLogin);
+
+            if (currentUser == null)
+                return Forbid();
+
+            var query = _context.Entreprises.Where(e => e.Actif).AsQueryable();
+
+            // Si ce n'est PAS un admin --> uniquement son entreprise
+            if (!string.Equals(currentUser.Profile, "admin", StringComparison.OrdinalIgnoreCase))
+            {
+                query = query.Where(e => e.Id == currentUser.EntrepriseId);
             }
-            return await _context.Entreprises
-                .Where(e => e.Actif == true)
-                .OrderBy(e=> e.Nom)
-                .ToListAsync();
+
+            return await query.OrderBy(e => e.Nom).ToListAsync();
         }
+
         [HttpGet("All")]
         [Authorize(Policy = IdentityData.AdminUserPolicyName)]
         public async Task<ActionResult<IEnumerable<Entreprise>>> GetAllEntreprises()
