@@ -596,6 +596,7 @@ namespace CantineBack.Controllers
                     .AsNoTracking()
                     .FirstOrDefaultAsync(u => u.Id == userId);
             Emplacement? emplacement = null;
+            var emplacementId = 0;
 
             if (!commandDto.CommandeADistance)
             {
@@ -609,16 +610,14 @@ namespace CantineBack.Controllers
                     emplacement = await _context.Emplacement
                         .FirstOrDefaultAsync(e => e.Id == Common.ShopID);
                 }
+                emplacementId = emplacement.Id;
             }
             else
             {
-                var emplacementId = commandDto.EmplacementId > 0 ? commandDto.EmplacementId : Common.ShopID;
+                emplacementId = commandDto.EmplacementId > 0 ? commandDto.EmplacementId : Common.ShopID;
             }
 
                 //var emplacementId = commandDto.CommandeADistance ? Common.ShopID : emplacement.Id;
-
-
-
 
             Commande newCommande = new Commande
             {
