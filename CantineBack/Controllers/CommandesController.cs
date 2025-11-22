@@ -91,7 +91,12 @@ namespace CantineBack.Controllers
         [Authorize(Roles = IdentityData.AdminOrGerantUserRoles)]
         public async Task<ActionResult<string>> GetPendingCommandesCount()
         {
-            var entrepriseId = int.Parse(User.FindFirst("EntrepriseId").Value);
+            var userLogin = User.Identity?.Name;
+            var currentUser = await _context.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Login == userLogin);
+            var entrepriseId = currentUser?.EntrepriseId ?? 0;
+
             return (await _context.Commandes
                                         .Where(c => c.IsDelivered == false && c.IsRejected == false &&
                                         c.EmplacementNavigation.EntrepriseId == entrepriseId)
