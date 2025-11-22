@@ -610,9 +610,13 @@ namespace CantineBack.Controllers
                         .FirstOrDefaultAsync(e => e.Id == Common.ShopID);
                 }
             }
+            else
+            {
+                var emplacementId = commandDto.EmplacementId > 0 ? commandDto.EmplacementId : Common.ShopID;
+            }
 
-            //var emplacementId = commandDto.CommandeADistance ? Common.ShopID : emplacement.Id;
-            var emplacementId = commandDto.EmplacementId > 0 ? commandDto.EmplacementId : Common.ShopID;
+                //var emplacementId = commandDto.CommandeADistance ? Common.ShopID : emplacement.Id;
+
 
 
 
