@@ -612,6 +612,10 @@ namespace CantineBack.Controllers
                 Montant = amountCommand,
                 Comment = commandDto.Comment
             };
+            if(newCommande.UserId ==null || newCommande.UserId==0)
+            {
+                newCommande.UserId = userAction.Id;
+            }
 
             _context.Commandes.Add(newCommande);
             try
