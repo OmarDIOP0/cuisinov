@@ -45,161 +45,170 @@
     var articleImagesJSON = JsonConvert.SerializeObject(articlesImages);
 }
 @section Styles{
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
+    <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
 
 <link rel="stylesheet" href="/css/shop.css"/>
 }
-<section class="book_section layout_padding">
+<section class="modern-cart-section">
     <div class="container-fluid px-5">
-        <div class="">
-            <form action="" id="formBooking">
+        <form id="formBooking">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12">
+                    <div class="cart-card">
+                        <div class="row g-0">
 
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-12">
-                        <div class="card card-registration card-registration-2" style="border-radius: 15px;min-height:500px">
-                            <div class="card-body p-0">
-                                <div class="row g-0">
-                                    <div class="col-lg-8">
-                                        <div class="p-5">
-                                            <div class="d-flex justify-content-between align-items-center mb-5">
-                                                <h1 class="fw-bold mb-0 text-black">Panier de commande</h1>
-                                                <h6 class="mb-0 text-muted"><span id="selectedArticlesCount">@selectedArticles.Count</span> article(s)</h6>
-                                            </div>
+                            <!-- LEFT PART - LISTE DES ARTICLES -->
+                            <div class="col-lg-8">
+                                <div class="p-5">
 
-                                            @foreach (var item in selectedArticles)
-                                            {
-                                                <hr class="my-4" id="line_@item.Id">
-
-                                                <div class="row mb-4 d-flex justify-content-between align-items-center" id="row_@item.Id">
-                                                    <div class="col-md-2 col-lg-2 col-xl-2">
-                                                        <img id="imageArticle_@item.Id" src="data:image/png;base64,@item.Image" class="zoom rounded-circle" width="50" height="50" onerror="this.src='/images/default.png';">
-                                                    </div>
-                                                    <div class="col-md-3 col-lg-3 col-xl-3">
-                                                        <h6 class="text-muted">@item.Categorie?.Name</h6>
-                                                        <h6 class="text-black mb-0">@item.Title</h6>
-                                                    </div>
-                                                    <div class="col-md-3 col-lg-2 col-xl-2 d-flex">
-                                                        <button class="btn btn-link px-2 text-muted" type="button"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown();updateTotalPrice()">
-                                                            <i class="fa fa-minus"></i>
-                                                        </button>
-
-                                                        <input id="quantite_@item.Id" min="0" name="Quantite" value="@item.Quantite" type="number" onchange="updateTotalPrice()"
-                                                               class="form-control form-control-sm" />
-
-                                                        <button class="btn btn-link px-2 text-muted" type="button"
-                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp();updateTotalPrice()">
-                                                            <i class="fa fa-plus"></i>
-                                                        </button>
-                                                    </div>
-                                                    <div class="col-md-4 col-lg-3 col-xl-3 ">
-                                                        <h7 class="mb-0  " style="font-size:0.8rem">@item.Quantite * @item.PrixDeVente = <span id="prixTotal_@item.Id">@(item.Quantite * item.PrixDeVente)</span> XOF</h7>
-                                                    </div>
-                                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                                        <a href="#!" class="text-muted deleteArticleCart" data-articleid="@item.Id"><i class="fa fa-times"></i></a>
-                                                    </div>
-                                                </div>
-                                            }
-
-                                            <div class="col-12 ">
-                                                <label class="mb-3">Commentaire </label>
-                                                <textarea class="form-control   wide" name="Comment" id="Comment"></textarea>
-
-
-                                            </div>
-                                            <hr class="my-4">
-
-                                            <div class="pt-5">
-                                                <h6 class="mb-0">
-                                                    <a href="/Home/Menu" class="text-body">
-                                                        <i class="fa fa-arrow-left me-2"></i>Retour à la boutique
-                                                    </a>
-                                                </h6>
-                                            </div>
-                                        </div>
+                                    <div class="cart-header d-flex justify-content-between align-items-center mb-4">
+                                        <h6 class="text-white"><span id="selectedArticlesCount">@selectedArticles.Count</span> article(s)</h6>
                                     </div>
-                                    <div class="col-lg-4 bg-grey">
-                                        <div class="p-5">
-                                            <h3 class="fw-bold mb-5 mt-2 pt-1">Résumé</h3>
-                                            <hr class="my-4">
-                                            <div class="mb-4 pb-2 ">
-                                                <label class="mb-3">Méthode de paiement</label>
-                                                <div class="radio-inputs">
-                                                    <label>
-                                                        <input class="radio-input" type="radio" name="PaymentMethodId" value="@(cashPay?.Id??1)" id="cashPay" checked data-code="@(cashPay?.Code??"CASH")">
-                                                        <span class="radio-tile">
-                                                            <span class="radio-icon">
-                                                                <i class="fa fa-money"></i>
-                                                            </span>
-                                                            <span class="radio-label font-weight-bold">CASH</span>
-                                                        </span>
-                                                    </label>
-                                                    <label>
-                                                        <input class="radio-input" type="radio" name="PaymentMethodId" value="@(wavePay?.Id??3)" id="wavePay" data-code="@(wavePay?.Code ?? "WAVE")">
-                                                        <span class="radio-tile">
-                                                            <span class="radio-icon">
-                                                                <img src="~/images/wave.png" width="40" height="40" />
-                                                            </span>
-                                                            <span class="radio-label font-weight-bold">WAVE</span>
-                                                        </span>
-                                                    </label>
-                                                    <label>
-                                                        <input class="radio-input" type="radio" name="PaymentMethodId" value="@(omPay?.Id??4)" id="wavePay" data-code="@(omPay?.Code ?? "OM")">
-                                                        <span class="radio-tile">
-                                                            <span class="radio-icon">
-                                                                <img src="~/images/orangemoney.png" width="40" height="40" />
-                                                            </span>
-                                                            <span class="radio-label font-weight-bold">OM</span>
-                                                        </span>
-                                                    </label>
+
+                                    @foreach (var item in selectedArticles)
+                                    {
+                                        <div class="cart-item" id="row_@item.Id">
+
+                                            <div class="cart-item-content">
+
+                                                <div class="item-image-container">
+                                                    <img src="data:image/png;base64,@item.Image"
+                                                         onerror="this.src='/images/default.png';"
+                                                         class="item-image" id="imageArticle_@item.Id">
                                                 </div>
-                                                <div class="my-2" id="scanLoading" style="display:none">
-                                                    <div class="spinner-border" role="status">
-                                                        <span class="sr-only">Loading...</span>
-                                                    </div>
-                                                    Scannez votre QR CODE
+
+                                                <div class="item-details">
+                                                    <h6 class="text-muted">@item.Categorie?.Name</h6>
+                                                    <h5>@item.Title</h5>
                                                 </div>
+
+                                                <div class="quantity-control">
+                                                    <button class="quantity-btn" type="button"
+                                                            onclick="this.parentNode.querySelector('input').stepDown();updateTotalPrice()">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+
+                                                    <input id="quantite_@item.Id" min="0" name="Quantite"
+                                                           value="@item.Quantite" type="number"
+                                                           class="quantity-input" onchange="updateTotalPrice()">
+
+                                                    <button class="quantity-btn" type="button"
+                                                            onclick="this.parentNode.querySelector('input').stepUp();updateTotalPrice()">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
+
+                                                <div class="price-section">
+                                                    <span class="price-highlight">
+                                                        <span id="prixTotal_@item.Id">
+                                                            @(item.Quantite* item.PrixDeVente)
+                                                        </span> XOF
+                                                    </span>
+                                                </div>
+
+                                                <div>
+                                                    <button class="delete-btn deleteArticleCart"
+                                                            data-articleid="@item.Id">
+                                                        <i class="fa fa-times"></i>
+                                                    </button>
+                                                </div>
+
                                             </div>
-                                            <input class="form-control" name="QrCode" id="qrCode" style="opacity: 0; position: absolute; top: 0; left: 0" />
-                                            <div class="mb-4 pb-2 " style="display:none" id="qrCodeDiv">
-                                                <label class="mb-3">QR Code</label>
-                                            </div>
-                                            <input type="hidden" id="soldeRestant" />
-                                            <div class=" justify-content-between mb-5" style="display:none" id="clientDiv">
-                                                <h6 class="text-uppercase" >Client</h6>
-                                                <h6 id="client">  </h6>
-                                            </div>
-
-                                            <div class="justify-content-between mb-5 text-warning" style="display:none" id="soldeDiv">
-                                                <h6 class="text-uppercase ">Solde</h6>
-                                                <h6 id="solde">  XOF</h6>
-                                            </div>
-                                            <span class="text-danger" id="messageSolde" style=""></span>
-
-
-
-                                            <hr class="my-4">
-                                            <div class="d-flex justify-content-between mb-5">
-                                                <h5 class="text-uppercase">Prix Total</h5>
-                                                <h5 id="totalPrice"> @montantTotal XOF</h5>
-                                            </div>
-
-                                            <button type="button" class="btn btn-dark btn-block btn-lg" id="btnCommand" style="font-size:14px"
-                                                    data-mdb-ripple-color="dark">
-                                                Soumettre la commande
-                                            </button>
-
                                         </div>
+                                    }
+
+                                    <div class="mt-4">
+                                        <label class="mb-2">Commentaire</label>
+                                        <textarea class="comment-box w-100" name="Comment" id="Comment"></textarea>
+                                    </div>
+
+                                    <div class="pt-4">
+                                        <a href="/Home/Menu" class="back-link">
+                                            <i class="fa fa-arrow-left me-2"></i>Retour à la boutique
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- RIGHT PART - RESUME -->
+                            <div class="col-lg-4">
+                                <div class="summary-section">
+                                    <div class="summary-content">
+
+                                        <h3 class="fw-bold mb-4">Résumé</h3>
+
+                                        <div class="summary-item mb-4">
+                                            <label class="mb-2">Méthode de paiement</label>
+
+                                            <!-- Radios NON modifiés -->
+                                            <div class="radio-inputs">
+                                                <label>
+                                                    <input class="radio-input" type="radio" name="PaymentMethodId"
+                                                           value="@(cashPay?.Id ?? 1)" checked
+                                                           data-code="@(cashPay?.Code ?? "CASH")">
+                                                    <span class="radio-tile">
+                                                        <span class="radio-icon"><i class="fa fa-money"></i></span>
+                                                        <span class="radio-label">CASH</span>
+                                                    </span>
+                                                </label>
+
+                                                <label>
+                                                    <input class="radio-input" type="radio" name="PaymentMethodId"
+                                                           value="@(wavePay?.Id ?? 3)"
+                                                           data-code="@(wavePay?.Code ?? "WAVE")">
+                                                    <span class="radio-tile">
+                                                        <span class="radio-icon">
+                                                            <img src="~/images/wave.png" width="40" height="40" />
+                                                        </span>
+                                                        <span class="radio-label">WAVE</span>
+                                                    </span>
+                                                </label>
+
+                                                <label>
+                                                    <input class="radio-input" type="radio" name="PaymentMethodId"
+                                                           value="@(omPay?.Id ?? 4)"
+                                                           data-code="@(omPay?.Code ?? "OM")">
+                                                    <span class="radio-tile">
+                                                        <span class="radio-icon">
+                                                            <img src="~/images/orangemoney.png" width="40" height="40" />
+                                                        </span>
+                                                        <span class="radio-label">OM</span>
+                                                    </span>
+                                                </label>
+                                            </div>
+
+                                            <div class="my-2" id="scanLoading" style="display:none">
+                                                <div class="spinner-border"></div>
+                                                Scannez votre QR CODE
+                                            </div>
+                                        </div>
+
+                                        <hr>
+
+                                        <div class="d-flex justify-content-between mb-4">
+                                            <h5 class="text-uppercase">Prix Total</h5>
+                                            <h5 class="total-amount" id="totalPrice">@montantTotal XOF</h5>
+                                        </div>
+
+                                        <button type="button" id="btnCommand"
+                                                class="btn-confirm-command w-100">
+                                            Soumettre la commande
+                                        </button>
+
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+
+                        </div> <!-- row -->
+                    </div> <!-- cart-card -->
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </section>
+
 @section Scripts {
     <script>
         const CommandeADistance = false;
